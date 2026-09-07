@@ -271,6 +271,63 @@
     }
   }
 
+  /* Event cards — single source of truth is config.js */
+  function buildEventCard(ev) {
+    var card = document.createElement("article");
+    card.className = "card reveal-fade";
+
+    var when = document.createElement("p");
+    when.className = "card__when";
+    when.textContent =
+      ((ev.date || "").replace(/\s*\d{4}\s*$/, "") + (ev.time ? " · " + ev.time : "")).trim();
+    card.appendChild(when);
+
+    var h = document.createElement("h3");
+    h.textContent = ev.title || "";
+    card.appendChild(h);
+
+    if (ev.subtitle) {
+      var sub = document.createElement("p");
+      sub.className = "card__sub";
+      sub.textContent = ev.subtitle;
+      card.appendChild(sub);
+    }
+    if (ev.note) {
+      var note = document.createElement("p");
+      note.textContent = ev.note;
+      card.appendChild(note);
+    }
+
+    if (ev.map) {
+      var a = document.createElement("a");
+      a.className = "btn";
+      a.href = ev.map;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.textContent = "View location" + (ev.place ? " · " + ev.place : "");
+      card.appendChild(a);
+    } else {
+      var s = document.createElement("span");
+      s.className = "btn btn--mute";
+      s.textContent = "Venue arriving soon";
+      card.appendChild(s);
+    }
+    return card;
+  }
+
+  function renderEvents() {
+    var day = document.getElementById("dayEvents");
+    var night = document.getElementById("nightEvents");
+    if ((!day && !night) || !CFG.events || !CFG.events.length) return;
+    for (var ei = 0; ei < CFG.events.length; ei++) {
+      var ev = CFG.events[ei];
+      var isNight = /evening|night/i.test(ev.kicker || "");
+      var host = (isNight ? night : day) || day || night;
+      if (host) host.appendChild(buildEventCard(ev));
+    }
+  }
+  renderEvents();
+
   var slots = document.querySelectorAll("[data-photo]");
   for (var i = 0; i < slots.length; i++) {
     (function (slot) {

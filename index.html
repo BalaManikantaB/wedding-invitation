@@ -82,27 +82,13 @@
         <img class="layer layer-fore" data-plx="-42" src="assets/invite-fore.png" alt="" loading="lazy" decoding="async" />
       </section>
 
-      <!-- 3. Events over illustrated couple -->
+      <!-- 3. Events over illustrated couple — cards rendered from config.js -->
       <section class="events-wrap parallax-scene">
         <p class="kicker gold reveal">On the following events</p>
         <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
         <h2 class="reveal">The celebrations</h2>
 
-        <article class="card reveal-fade">
-          <p class="card__when">12 October · 10:00 AM</p>
-          <h3>Pelli Koduku</h3>
-          <p class="card__sub">Groom’s ceremony</p>
-          <p>Bala’s traditional ceremony with family, in Kakinada.</p>
-          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kakinada%2C%20Andhra%20Pradesh" target="_blank" rel="noopener">View location · Kakinada</a>
-        </article>
-
-        <article class="card reveal-fade">
-          <p class="card__when">12 October · 10:00 AM</p>
-          <h3>Pelli Kuthuru</h3>
-          <p class="card__sub">Bride’s ceremony</p>
-          <p>Bhavana’s traditional ceremony with family, in Kaikaluru.</p>
-          <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kaikaluru%2C%20Andhra%20Pradesh" target="_blank" rel="noopener">View location · Kaikaluru</a>
-        </article>
+        <div id="dayEvents"></div>
 
         <div class="bleed-wrap">
           <video class="bleed" autoplay muted loop playsinline>
@@ -126,20 +112,7 @@
         <img class="layer layer-back" data-plx="28" src="assets/night.jpg" alt="Temple at night" loading="lazy" decoding="async" />
         <div class="shot__veil shot__veil--night"></div>
         <div class="night-cards">
-          <article class="card reveal-fade">
-            <p class="card__when">14 October · 7:00 PM</p>
-            <h3>Reception</h3>
-            <p class="card__sub">Sreerastu Convention, Kakinada</p>
-            <p>Rama Rao Peta — an evening of dinner, music and blessings.</p>
-            <a class="btn" href="https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9" target="_blank" rel="noopener">View location</a>
-          </article>
-          <article class="card reveal-fade">
-            <p class="card__when">14 October · 11:00 PM</p>
-            <h3>Vivaha</h3>
-            <p class="card__sub">The sacred wedding</p>
-            <p>The auspicious muhurtham, as two families become one.</p>
-            <span class="btn btn--mute">Venue arriving soon</span>
-          </article>
+          <div id="nightEvents"></div>
         </div>
       </section>
 
