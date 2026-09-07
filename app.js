@@ -4,6 +4,25 @@
   var CFG = window.WEDDING || {};
   var REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
 
+  /* Absolute og:url / og:image so link previews (WhatsApp etc.) resolve the art.
+     Crawlers that don't run JS need the absolute URL baked into index.html —
+     see README "Public URL" note. */
+  (function absolutizeMeta() {
+    var dir = "";
+    if (CFG.siteUrl) {
+      dir = String(CFG.siteUrl).replace(/\/?$/, "/");
+    } else if (window.location && location.origin && location.origin !== "null") {
+      dir = (location.origin + location.pathname).replace(/[^/]*$/, "");
+    }
+    if (!dir) return;
+    var img = document.querySelector('meta[property="og:image"]');
+    if (img && !/^https?:/i.test(img.getAttribute("content") || "")) {
+      img.setAttribute("content", dir + (img.getAttribute("content") || "").replace(/^\//, ""));
+    }
+    var url = document.querySelector('meta[property="og:url"]');
+    if (url) url.setAttribute("content", dir);
+  })();
+
   var openBtn = document.getElementById("openInvite");
   if (openBtn) {
     openBtn.addEventListener("click", function (e) {
