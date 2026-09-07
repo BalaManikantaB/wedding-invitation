@@ -1,6 +1,9 @@
 (function () {
   "use strict";
 
+  var CFG = window.WEDDING || {};
+  var REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
   var openBtn = document.getElementById("openInvite");
   if (openBtn) {
     openBtn.addEventListener("click", function (e) {
@@ -12,6 +15,7 @@
   var HEART_COLORS = ["#ff8fab", "#e36b8a", "#ffc2d1", "#d4577a", "#f7a1b8"];
 
   function shower(n) {
+    if (REDUCED) return;
     var root = document.getElementById("petals");
     if (!root) return;
     for (var i = 0; i < n; i++) {
@@ -38,6 +42,14 @@
   var musicBtn = document.getElementById("musicBtn");
   var playing = false;
   if (audio) audio.volume = 0.55;
+
+  if (REDUCED) {
+    var vids = document.querySelectorAll("video");
+    for (var vi = 0; vi < vids.length; vi++) {
+      vids[vi].removeAttribute("autoplay");
+      try { vids[vi].pause(); } catch (e) {}
+    }
+  }
 
   function tryPlay() {
     if (!audio) return;
@@ -128,16 +140,19 @@
   }
 
   if (gate) {
-    gate.addEventListener("pointermove", aimGate, { passive: true });
-    gate.addEventListener("touchmove", aimGate, { passive: true });
-    gate.addEventListener("pointerleave", restGate);
-    gate.addEventListener("touchend", restGate);
+    if (!REDUCED) {
+      gate.addEventListener("pointermove", aimGate, { passive: true });
+      gate.addEventListener("touchmove", aimGate, { passive: true });
+      gate.addEventListener("pointerleave", restGate);
+      gate.addEventListener("touchend", restGate);
+    }
     var grev = gate.querySelectorAll(".reveal, .reveal-fade");
     for (var gi = 0; gi < grev.length; gi++) {
       grev[gi].style.setProperty("--d", (0.15 + gi * 0.09) + "s");
     }
     requestAnimationFrame(function () {
       gate.classList.add("is-ready");
+      if (REDUCED) return;
       gy = 0.38;
       gx = 0;
       gtx = 0;
@@ -191,7 +206,8 @@
     requestAnimationFrame(armReveals);
   };
 
-  var target = new Date("2026-10-14T19:00:00+05:30").getTime();
+  var target = new Date(CFG.countdownTo || "2026-10-14T19:00:00+05:30").getTime();
+  if (isNaN(target)) target = new Date("2026-10-14T19:00:00+05:30").getTime();
   function pad(n) { return String(n).padStart(2, "0"); }
   function tick() {
     var diff = Math.max(0, target - Date.now());
@@ -208,6 +224,52 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  /* config.js → DOM, so README's "personalise" actually works */
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function bindText(attr, value) {
+    if (!value) return;
+    var nodes = document.querySelectorAll('[data-bind="' + attr + '"]');
+    for (var bi = 0; bi < nodes.length; bi++) nodes[bi].textContent = value;
+  }
+  function bindParents(role) {
+    var person = CFG[role];
+    var el = document.querySelector('[data-parents="' + role + '"]');
+    if (!person || !person.parents || !el) return;
+    var parts = String(person.parents).split("&");
+    var clean = function (s) {
+      return esc(String(s).replace(/^\s*(Mr\.|Mrs\.|S\/o|D\/o)\s*/i, "").trim());
+    };
+    var html = (role === "bride" ? "D/o " : "S/o ") + clean(parts[0]);
+    if (parts[1]) html += "<br>&amp; " + clean(parts[1]);
+    el.innerHTML = html;
+  }
+  if (CFG.groom) bindText("groom.first", CFG.groom.first);
+  if (CFG.bride) bindText("bride.first", CFG.bride.first);
+  bindParents("groom");
+  bindParents("bride");
+  var hashEl = document.querySelector(".hash");
+  if (hashEl && CFG.hashtag) hashEl.textContent = "#" + CFG.hashtag;
+
+  if (CFG.whatsapp) {
+    var rsvpPh = document.querySelector(".rsvp .btn--mute");
+    if (rsvpPh) {
+      var wa = document.createElement("a");
+      wa.className = "btn";
+      wa.target = "_blank";
+      wa.rel = "noopener";
+      wa.href = "https://wa.me/" + CFG.whatsapp + "?text=" +
+        encodeURIComponent("Namaste! We would love to join " +
+          ((CFG.groom && CFG.bride) ? CFG.groom.first + " & " + CFG.bride.first : "the wedding") +
+          "'s wedding. Please count us in.");
+      wa.textContent = "RSVP on WhatsApp";
+      rsvpPh.parentNode.replaceChild(wa, rsvpPh);
+      var rsvpNote = document.querySelector(".rsvp p");
+      if (rsvpNote) rsvpNote.textContent = "Tap below to send us a WhatsApp message.";
+    }
+  }
 
   var slots = document.querySelectorAll("[data-photo]");
   for (var i = 0; i < slots.length; i++) {
@@ -277,11 +339,13 @@
     }
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  document.addEventListener("touchmove", onScroll, { passive: true });
-  targets();
-  tickPlx();
+  if (!REDUCED) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    document.addEventListener("touchmove", onScroll, { passive: true });
+    targets();
+    tickPlx();
+  }
 
   /* Our Story — one polaroid per tap, never overlapping */
   var scatter = document.getElementById("scatter");
@@ -377,6 +441,12 @@
     storyOpen.addEventListener("click", function (e) {
       e.preventDefault();
       openScatter();
+    });
+    storyOpen.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        openScatter();
+      }
     });
   }
   if (scatterClose) scatterClose.addEventListener("click", function (e) {

@@ -16,6 +16,10 @@ Then drop real photos into `assets/photos/` — see the README in that folder.
 
 Optional: add `assets/music.mp3` for background music (the play button is already on the page).
 
+Set `whatsapp` to enable the real RSVP button (it replaces the placeholder automatically).
+
+Original flat artwork and unused source renders live in `source-art/` — the site only ships `assets/`, keeping the deploy small.
+
 ## Host for ~1.5 months (until 14 Oct 2026)
 
 This sandbox preview is only for us to look at it now. For family WhatsApp sharing you need a public URL.
