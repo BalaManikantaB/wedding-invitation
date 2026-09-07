@@ -291,7 +291,115 @@
   }
 
   /* Event cards — single source of truth is config.js */
-  function buildEventCard(ev) {
+  /* Tiny rotatable globe with a red pin; tap opens the map */
+  function makeGlobe(canvas, lat, lon, mapUrl) {
+    var ctx = canvas.getContext ? canvas.getContext("2d") : null;
+    if (!ctx) return;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    var SIZE = 76;
+    canvas.width = SIZE * dpr;
+    canvas.height = SIZE * dpr;
+    canvas.style.width = SIZE + "px";
+    canvas.style.height = SIZE + "px";
+    ctx.scale(dpr, dpr);
+    var cx = SIZE / 2, cy = SIZE / 2, R = SIZE / 2 - 2;
+    var RAD = Math.PI / 180;
+    var rotLon = lon, rotLat = lat;
+    var dragging = false, moved = 0, lx = 0, ly = 0;
+
+    function openMap() {
+      if (mapUrl) window.open(mapUrl, "_blank", "noopener");
+    }
+
+    function proj(la, lo) {
+      var d = (lo - rotLon) * RAD, laR = la * RAD, rl = rotLat * RAD;
+      var x = Math.cos(laR) * Math.sin(d);
+      var y = Math.cos(rl) * Math.sin(laR) - Math.sin(rl) * Math.cos(laR) * Math.cos(d);
+      var z = Math.sin(rl) * Math.sin(laR) + Math.cos(rl) * Math.cos(laR) * Math.cos(d);
+      return { x: cx + R * x, y: cy - R * y, z: z };
+    }
+
+    function polyline(pts) {
+      ctx.beginPath();
+      var pen = false;
+      for (var i = 0; i < pts.length; i++) {
+        if (pts[i].z > 0) {
+          if (!pen) { ctx.moveTo(pts[i].x, pts[i].y); pen = true; }
+          else ctx.lineTo(pts[i].x, pts[i].y);
+        } else pen = false;
+      }
+      ctx.stroke();
+    }
+
+    function draw(t) {
+      ctx.clearRect(0, 0, SIZE, SIZE);
+      var g = ctx.createRadialGradient(cx - R * 0.35, cy - R * 0.4, R * 0.2, cx, cy, R);
+      g.addColorStop(0, "#2b8a94");
+      g.addColorStop(1, "#0d3d49");
+      ctx.fillStyle = g;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.fill();
+      ctx.strokeStyle = "rgba(240,212,138,.5)";
+      ctx.lineWidth = 0.7;
+      for (var lo = 0; lo < 360; lo += 30) {
+        var m1 = [];
+        for (var la = -90; la <= 90; la += 6) m1.push(proj(la, lo));
+        polyline(m1);
+      }
+      for (var la2 = -60; la2 <= 60; la2 += 30) {
+        var m2 = [];
+        for (var lo2 = 0; lo2 <= 360; lo2 += 6) m2.push(proj(la2, lo2));
+        polyline(m2);
+      }
+      ctx.strokeStyle = "rgba(196,160,86,.9)";
+      ctx.lineWidth = 1.4;
+      ctx.beginPath(); ctx.arc(cx, cy, R, 0, 7); ctx.stroke();
+      var m = proj(lat, lon);
+      if (m.z > 0) {
+        var pulse = 1 + Math.sin(t / 300) * 0.12;
+        ctx.fillStyle = "#d21f2e";
+        ctx.strokeStyle = "#7a0d16";
+        ctx.lineWidth = 0.8;
+        ctx.beginPath(); ctx.arc(m.x, m.y - 3.5, 3 * pulse, 0, 7); ctx.fill(); ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(m.x - 2.2, m.y - 2.5);
+        ctx.lineTo(m.x, m.y + 2.5);
+        ctx.lineTo(m.x + 2.2, m.y - 2.5);
+        ctx.closePath(); ctx.fill();
+      }
+    }
+
+    function tick(t) {
+      if (!dragging && !REDUCED) rotLon += 0.06;
+      draw(t || 0);
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+
+    canvas.addEventListener("pointerdown", function (e) {
+      dragging = true; moved = 0; lx = e.clientX; ly = e.clientY;
+      try { canvas.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    canvas.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      var dx = e.clientX - lx, dy = e.clientY - ly;
+      lx = e.clientX; ly = e.clientY;
+      moved += Math.abs(dx) + Math.abs(dy);
+      rotLon += dx * 0.5;
+      rotLat = Math.max(-80, Math.min(80, rotLat + dy * 0.4));
+    });
+    canvas.addEventListener("pointerup", function () {
+      dragging = false;
+      if (moved < 6) openMap();
+    });
+    canvas.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        openMap();
+      }
+    });
+  }
+
+  function buildEventCard(ev, isNight) {
     var card = document.createElement("article");
     card.className = "card reveal-fade";
 
@@ -317,7 +425,30 @@
       card.appendChild(note);
     }
 
-    if (ev.map) {
+    if (isNight) {
+      if (ev.map) {
+        var wrap = document.createElement("div");
+        wrap.className = "globe-wrap";
+        var cv = document.createElement("canvas");
+        cv.className = "globe";
+        cv.setAttribute("role", "button");
+        cv.tabIndex = 0;
+        cv.setAttribute("aria-label", "Open map to " + (ev.place || "the venue"));
+        cv.setAttribute("data-map", ev.map);
+        var hint = document.createElement("span");
+        hint.className = "globe-hint";
+        hint.textContent = "drag to spin · tap for map";
+        wrap.appendChild(cv);
+        wrap.appendChild(hint);
+        card.appendChild(wrap);
+        makeGlobe(cv, ev.lat != null ? ev.lat : 16.976, ev.lon != null ? ev.lon : 82.244, ev.map);
+      } else {
+        var s = document.createElement("span");
+        s.className = "btn btn--mute";
+        s.textContent = "Venue arriving soon";
+        card.appendChild(s);
+      }
+    } else if (ev.map) {
       var a = document.createElement("a");
       a.className = "btn";
       a.href = ev.map;
@@ -325,11 +456,6 @@
       a.rel = "noopener";
       a.textContent = "View location" + (ev.place ? " · " + ev.place : "");
       card.appendChild(a);
-    } else {
-      var s = document.createElement("span");
-      s.className = "btn btn--mute";
-      s.textContent = "Venue arriving soon";
-      card.appendChild(s);
     }
     return card;
   }
@@ -342,7 +468,7 @@
       var ev = CFG.events[ei];
       var isNight = /evening|night/i.test(ev.kicker || "");
       var host = (isNight ? night : day) || day || night;
-      if (host) host.appendChild(buildEventCard(ev));
+      if (host) host.appendChild(buildEventCard(ev, isNight));
     }
   }
   renderEvents();

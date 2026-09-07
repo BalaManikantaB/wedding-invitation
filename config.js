@@ -38,8 +38,7 @@ window.WEDDING = {
       date: "12 October 2026",
       time: "10:00 AM",
       place: "Kakinada",
-      note: "Bala’s traditional ceremony with family, in Kakinada.",
-      map: "https://www.google.com/maps/search/?api=1&query=Kakinada%2C%20Andhra%20Pradesh"
+      note: "Bala’s traditional ceremony with family, in Kakinada."
     },
     {
       kicker: "12 October  ·  Morning",
@@ -48,8 +47,7 @@ window.WEDDING = {
       date: "12 October 2026",
       time: "10:00 AM",
       place: "Kaikaluru",
-      note: "Bhavana’s traditional ceremony with family, in Kaikaluru.",
-      map: "https://www.google.com/maps/search/?api=1&query=Kaikaluru%2C%20Andhra%20Pradesh"
+      note: "Bhavana’s traditional ceremony with family, in Kaikaluru."
     },
     {
       kicker: "14 October  ·  Evening",
@@ -59,7 +57,9 @@ window.WEDDING = {
       time: "7:00 PM",
       place: "Sreerastu Convention, Kakinada",
       note: "Join us at Sreerastu Convention, Rama Rao Peta, Kakinada, for dinner, music, and warm wishes.",
-      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
+      lat: 16.976,
+      lon: 82.244
     },
     {
       kicker: "14 October  ·  Night",
@@ -67,9 +67,11 @@ window.WEDDING = {
       subtitle: "The Sacred Wedding",
       date: "14 October 2026",
       time: "11:00 PM",
-      place: "Venue to be shared",
+      place: "Sreerastu Convention, Kakinada",
       note: "The auspicious muhurtham, as two families become one.",
-      map: ""
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
+      lat: 16.976,
+      lon: 82.244
     }
   ]
 };
