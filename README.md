@@ -30,6 +30,6 @@ Easiest free options:
 2. **Cloudflare Pages** — [pages.cloudflare.com](https://pages.cloudflare.com), upload the folder. Very reliable, free.
 3. **Vercel** — drag-and-drop or CLI, free.
 
-After you have the public URL, paste it into `siteUrl` in `config.js`. WhatsApp’s crawler does not run JavaScript, so also paste the absolute image URL into the `og:image` tag in `index.html` (e.g. `https://your-site.netlify.app/assets/og.jpg`) — the shared preview shows the maroon envelope with the couple's names and dates. The page script keeps `og:image`/`og:url` absolute automatically for in-app browsers.
+After you have the public URL, paste it into `siteUrl` in `config.js`. WhatsApp’s crawler does not run JavaScript, so also paste the absolute image URL into the `og:image` tag in `index.html` (e.g. `https://your-site.netlify.app/assets/og.jpg`) — the shared preview shows the traditional cream lagna-patrika card with the couple's names and dates. The page script keeps `og:image`/`og:url` absolute automatically for in-app browsers.
 
 Cost: **₹0**. These free plans are more than enough for a 6-week invite.
