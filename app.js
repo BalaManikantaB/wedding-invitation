@@ -369,23 +369,22 @@
     a.target = "_blank";
     a.rel = "noopener";
     a.setAttribute("aria-label", "Open map to " + (ev.place || "the venue"));
-    var img = document.createElement("img");
-    img.className = "venue__pin";
-    img.src = "assets/venue-pin.png";
-    img.alt = "";
-    img.loading = "lazy";
-    img.decoding = "async";
-    var kicker = document.createElement("span");
-    kicker.className = "venue__kicker";
-    kicker.textContent = "Reception & Vivaha · one venue";
+    a.innerHTML =
+      '<svg class="venue__ico" viewBox="0 0 24 24" aria-hidden="true">' +
+      '<defs><radialGradient id="venuePinG" cx="35%" cy="30%" r="80%">' +
+      '<stop offset="0%" stop-color="#ff6b6b"/>' +
+      '<stop offset="45%" stop-color="#e42222"/>' +
+      '<stop offset="100%" stop-color="#a80f14"/>' +
+      '</radialGradient></defs>' +
+      '<path fill="url(#venuePinG)" fill-rule="evenodd" d="M12 1.5c-4.7 0-8.5 3.8-8.5 8.5 0 6.2 8.5 12.5 8.5 12.5s8.5-6.3 8.5-12.5c0-4.7-3.8-8.5-8.5-8.5zm0 11.6a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6z"/>' +
+      '<ellipse cx="8.6" cy="6.2" rx="2.6" ry="1.7" fill="#fff" opacity=".35" transform="rotate(-28 8.6 6.2)"/>' +
+      '</svg>';
     var place = document.createElement("span");
     place.className = "venue__place";
     place.textContent = ev.place || "";
     var hint = document.createElement("span");
     hint.className = "venue__hint";
-    hint.textContent = "tap the seal for directions";
-    a.appendChild(img);
-    a.appendChild(kicker);
+    hint.textContent = "Reception & Vivaha · tap for directions";
     a.appendChild(place);
     a.appendChild(hint);
     host.appendChild(a);
