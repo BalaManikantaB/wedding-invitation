@@ -256,8 +256,6 @@ a { color: inherit; }
 /* Sticky depth scene — the frame pins briefly while the layers glide past.
    overflow:clip (not hidden) so sticky actually pins — no blank gap after. */
 .depth-scene {
-  height: 170vh;
-  height: 170dvh;
   position: relative;
   overflow: visible;
 }
