@@ -473,7 +473,6 @@ a { color: inherit; }
   position: relative;
   margin: 14px -16px 0;
   aspect-ratio: 9 / 14.7;
-  overflow: hidden;
 }
 .bleed-wrap::after {
   content: "";
