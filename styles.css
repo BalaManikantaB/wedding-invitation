@@ -22,6 +22,7 @@ html, body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
+  overflow-x: clip;
   -webkit-text-size-adjust: 100%;
 }
 html.locked, body.locked { overflow: hidden; height: 100%; height: 100dvh; }
@@ -39,6 +40,7 @@ a { color: inherit; }
   background: #fbf6ec;
   position: relative;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (max-width: 480px) {
@@ -93,8 +95,8 @@ a { color: inherit; }
   position: absolute;
   left: -6%;
   width: 112%;
-  height: 140%;
-  top: -20%;
+  height: 124%;
+  top: -12%;
   object-fit: cover;
   object-position: center;
   will-change: transform;
@@ -196,14 +198,14 @@ a { color: inherit; }
   pointer-events: none;
 }
 
-/* Drake-style window parallax: taller image, full width — no side gaps.
-   Oversized boxes give the layers room to travel far without exposing edges. */
+/* Drake-style window parallax: slightly taller image, full width — no side gaps.
+   Modest 12% overscan: room for the glide, no stretch, most of the art visible. */
 .layer-back {
   left: 0;
   right: 0;
   width: 100%;
-  height: 152%;
-  top: -26%;
+  height: 124%;
+  top: -12%;
   object-fit: cover;
   object-position: center;
   transform-origin: center center;
@@ -212,14 +214,13 @@ a { color: inherit; }
 }
 /* Invite scene — layered parallax: soft bg slow, arch+text mid, garlands fast */
 .shot--invite { background: #f6e7d2; }
-.shot--invite .layer-back { top: -14%; height: 128%; }
-.shot--invite .layer-fore { top: -13%; height: 126%; object-fit: fill; }
+.shot--invite .layer-fore { top: 0; height: 100%; object-fit: fill; }
 .invite-mid {
   position: absolute;
   left: 0;
   right: 0;
-  top: -10%;
-  height: 120%;
+  top: 0;
+  height: 100%;
   z-index: 3;
   will-change: transform;
 }
@@ -234,8 +235,8 @@ a { color: inherit; }
 .layer-fore {
   left: 0;
   width: 100%;
-  height: 152%;
-  top: 35%;
+  height: 132%;
+  top: 45%;
   transform-origin: center center;
   z-index: 4;
   will-change: transform;
@@ -252,12 +253,16 @@ a { color: inherit; }
   will-change: transform;
 }
 
-/* Sticky depth scene — the frame pins while the layers glide past each other.
-   Tall scroll runway (2.3 screens) so the parallax travel is long and evident. */
+/* Sticky depth scene — the frame pins briefly while the layers glide past.
+   overflow:clip (not hidden) so sticky actually pins — no blank gap after. */
 .depth-scene {
-  height: 230vh;
-  height: 230dvh;
+  height: 170vh;
+  height: 170dvh;
   position: relative;
+  overflow: visible;
+}
+@supports (overflow: clip) {
+  .depth-scene { overflow-x: clip; }
 }
 .depth-pin {
   position: sticky;
@@ -339,20 +344,86 @@ a { color: inherit; }
   transform: translateX(-50%);
 }
 
-/* Sized to the arch opening measured in invite-frame.png (x 24.7–75.4%, y 32.1–72.5%) */
-.invite-panel {
+/* The heart of the invitation — a luminous cream card floating in the
+   temple archway: Vinayaka medallion, blessing, and names, all gloriously readable. */
+.invite-card {
   position: absolute;
   z-index: 5;
-  top: 33%;
-  left: 26.5%;
-  width: 47%;
-  height: 38.5%;
+  top: 50%;
+  left: 10.5%;
+  right: 10.5%;
+  transform: translateY(-52%);
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-evenly;
   text-align: center;
-  padding: 1% 2%;
+  padding: 18px 16px 16px;
+  background: linear-gradient(175deg, #fffdf7 0%, #faf0d8 55%, #f3e2b8 100%);
+  border: 1px solid rgba(196, 160, 86, .65);
+  border-radius: 20px;
+  box-shadow:
+    0 0 0 4px rgba(251, 246, 236, .55),
+    0 0 0 5px rgba(196, 160, 86, .5),
+    0 22px 50px rgba(90, 40, 20, .35),
+    inset 0 1px 0 #fff;
+}
+.invite-card__ganesha {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 8px;
+  box-shadow: 0 0 0 2px #f0d48a, 0 0 0 4px var(--maroon), 0 8px 18px rgba(90, 40, 20, .35);
+}
+.invite-card .bless {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--soft);
+  max-width: 100%;
+}
+.invite-card .invite-word {
+  font-size: 42px;
+  line-height: 1.05;
+  margin: 5px 0 1px;
+}
+.invite-card .pair--line {
+  font-size: 19px;
+  letter-spacing: .14em;
+  margin: 7px 0 0;
+  white-space: nowrap;
+}
+.invite-card .pair--line i {
+  display: inline;
+  font-size: 24px;
+  margin: 0 2px;
+}
+.invite-card .ornament {
+  width: 52%;
+  margin: 7px auto;
+  font-size: 10px;
+}
+.invite-card .family {
+  font-size: 11.5px;
+  line-height: 1.4;
+  margin: 1px 0;
+}
+.invite-date {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: #9a7422;
+  margin-top: 9px;
+}
+@media (max-height: 700px) {
+  .invite-card { padding: 13px 14px 12px; }
+  .invite-card__ganesha { width: 44px; height: 44px; margin-bottom: 6px; }
+  .invite-card .bless { font-size: 11.5px; }
+  .invite-card .invite-word { font-size: 35px; margin: 3px 0 0; }
+  .invite-card .pair--line { font-size: 17px; margin-top: 5px; }
+  .invite-card .ornament { margin: 5px auto; }
+  .invite-date { margin-top: 6px; }
 }
 .bless {
   font-family: var(--serif);

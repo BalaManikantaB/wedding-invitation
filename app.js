@@ -452,12 +452,12 @@
       var progress = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
       var amp = parseFloat(el.getAttribute("data-plx")) || 0;
       var raw = (0.5 - progress) * amp * 2;
-      if (el.classList.contains("layer-back") || el.classList.contains("layer-fore")) {
-        /* Layer boxes overshoot their scenes (~26%), so allow generous travel */
+      if (el.classList.contains("layer-back")) {
+        /* Back boxes overshoot 12% — budget 11% so opaque art never gaps */
         var refH = rect.height;
         var pin = el.closest(".depth-pin");
         if (pin) refH = pin.getBoundingClientRect().height || refH;
-        var budget = Math.max(48, refH * 0.2);
+        var budget = Math.max(40, refH * 0.11);
         raw = clamp(raw, -budget, budget);
       }
       el._target = raw;

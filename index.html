@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.jpg" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=19" />
+  <link rel="stylesheet" href="styles.css?v=20" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -65,22 +65,24 @@
         </div>
       </section>
 
-      <!-- 2. Invite 9:16 — layered parallax: soft bg slow, arch+text mid, garlands fast -->
+      <!-- 2. Invite — temple entrance, Vinayaka, and the invitation card -->
       <section class="shot shot--invite parallax-scene">
-        <img class="layer layer-back" data-plx="56" src="assets/invite-bg.jpg" alt="" loading="lazy" decoding="async" />
-        <div class="layer invite-mid" data-plx="-28">
-          <img class="invite-mid__frame" src="assets/invite-frame.png" alt="Ornate wedding arch with Lord Ganesha" loading="lazy" decoding="async" />
-          <div class="invite-panel">
-            <p class="bless reveal">With the blessings of God<br>and our beloved parents,<br>we cordially</p>
+        <img class="layer layer-back" data-plx="48" src="assets/invite-bg.jpg" alt="" loading="lazy" decoding="async" />
+        <div class="layer invite-mid" data-plx="-24">
+          <img class="invite-mid__frame" src="assets/invite-frame.png" alt="Temple entrance arch with Lord Vinayaka" loading="lazy" decoding="async" />
+          <div class="invite-card">
+            <img class="invite-card__ganesha reveal" src="assets/ganesha.jpg" alt="Lord Vinayaka" loading="lazy" decoding="async" />
+            <p class="bless reveal">With the divine blessings of God<br>and our beloved parents,</p>
             <p class="script invite-word reveal">Invite</p>
             <p class="bless reveal">you to the wedding of</p>
-            <p class="pair reveal"><span data-bind="groom.first">Bala</span> <i>&amp;</i> <span data-bind="bride.first">Bhavana</span></p>
+            <p class="pair pair--line reveal"><span data-bind="groom.first">Bala</span> <i>&amp;</i> <span data-bind="bride.first">Bhavana</span></p>
             <span class="ornament reveal" aria-hidden="true">✦</span>
             <p class="family reveal" data-parents="groom">S/o Naga Venkata Satyanarayana<br>&amp; Venkata Durga</p>
             <p class="family reveal" data-parents="bride">D/o Vara Prasad<br>&amp; Naga Lakshmi</p>
+            <p class="invite-date reveal">12 &amp; 14 · October 2026</p>
           </div>
         </div>
-        <img class="layer layer-fore" data-plx="-86" src="assets/invite-fore.png" alt="" loading="lazy" decoding="async" />
+        <img class="layer layer-fore" data-plx="-80" src="assets/invite-fore.png" alt="" loading="lazy" decoding="async" />
       </section>
 
       <!-- 3. Events over illustrated couple — cards rendered from config.js -->
@@ -177,6 +179,6 @@
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
   <script src="config.js"></script>
-  <script src="app.js?v=17"></script>
+  <script src="app.js?v=18"></script>
 </body>
 </html>
