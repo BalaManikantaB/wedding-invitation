@@ -213,7 +213,6 @@ a { color: inherit; }
   will-change: transform;
 }
 /* Invite scene — layered parallax: soft bg slow, arch+text mid, garlands fast */
-.shot--invite { background: #fdf9ed; }
 .layer-fore {
   left: 0;
   width: 100%;
@@ -324,77 +323,114 @@ a { color: inherit; }
   transform: translateX(-50%);
 }
 
-/* Invitation words floating on the divine art — Ganesh above, wedding below.
-   Soft halo glow behind every line keeps the text evident and readable. */
+/* Minimal invite — soft divine glow, drifting light orbs, luminous centered type. */
+.shot--invite { background: #f6e9d6; }
+.orb {
+  position: absolute;
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  will-change: transform;
+}
+.orb--gold {
+  width: 78%;
+  aspect-ratio: 1;
+  left: -24%;
+  bottom: -14%;
+  background: radial-gradient(circle, rgba(240, 198, 118, .55) 0%, rgba(240, 198, 118, 0) 68%);
+  animation: orbDrift1 9s ease-in-out infinite;
+}
+.orb--rose {
+  width: 64%;
+  aspect-ratio: 1;
+  right: -20%;
+  top: -10%;
+  background: radial-gradient(circle, rgba(244, 178, 188, .5) 0%, rgba(244, 178, 188, 0) 68%);
+  animation: orbDrift2 11s ease-in-out infinite;
+}
+/* translate-property breathing composes with the JS parallax transform */
+@keyframes orbDrift1 {
+  0%, 100% { translate: 0 0; }
+  50% { translate: 16px -20px; }
+}
+@keyframes orbDrift2 {
+  0%, 100% { translate: 0 0; }
+  50% { translate: -14px 18px; }
+}
 .invite-copy {
   position: absolute;
   z-index: 5;
-  top: 30.5%;
-  left: 11%;
-  right: 11%;
+  top: 0;
+  bottom: 0;
+  left: 10%;
+  right: 10%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   text-align: center;
   will-change: transform;
 }
+.invite-ganesha {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-bottom: 12px;
+  box-shadow: 0 0 0 1.5px #e8c47a, 0 0 0 3.5px rgba(122, 31, 43, .85), 0 10px 22px rgba(90, 40, 20, .3);
+}
 .invite-copy .bless {
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-size: 13px;
+  line-height: 1.6;
+  letter-spacing: .04em;
   color: #6b4a2e;
   max-width: 100%;
-  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 18px rgba(255, 253, 247, .95);
+}
+.invite-copy .ornament--narrow {
+  width: 38%;
+  margin: 10px auto;
+  font-size: 10px;
 }
 .invite-copy .invite-word {
-  font-size: 42px;
-  line-height: 1.05;
-  margin: 4px 0 1px;
-  text-shadow: 0 2px 0 rgba(255, 253, 247, .9), 0 0 22px rgba(255, 253, 247, .95);
+  font-size: 56px;
+  line-height: 1;
+  margin: 2px 0;
+  text-shadow: 0 2px 0 rgba(255, 253, 247, .9), 0 0 26px rgba(255, 253, 247, .95);
 }
 .invite-copy .pair--line {
-  font-size: 20px;
-  letter-spacing: .14em;
-  margin: 7px 0 0;
+  font-size: 22px;
+  letter-spacing: .16em;
+  margin: 8px 0 0;
   white-space: nowrap;
-  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 18px rgba(255, 253, 247, .95);
 }
 .invite-copy .pair--line i {
   display: inline;
-  font-size: 24px;
+  font-size: 26px;
   margin: 0 2px;
 }
-.invite-copy .ornament {
-  width: 52%;
-  margin: 6px auto;
-  font-size: 10px;
-}
 .invite-copy .family {
-  font-size: 12px;
-  line-height: 1.4;
-  margin: 1px 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  margin: 2px 0;
   color: #6b4a2e;
-  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 14px rgba(255, 253, 247, .95);
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
 }
 .invite-copy .invite-date {
-  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 14px rgba(255, 253, 247, .95);
+  font-size: 11.5px;
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
 }
 @media (max-height: 700px) {
-  .invite-copy { top: 29.5%; }
-  .invite-copy .bless { font-size: 11.5px; }
-  .invite-copy .invite-word { font-size: 36px; margin: 2px 0 0; }
-  .invite-copy .pair--line { font-size: 18px; margin-top: 5px; }
-  .invite-copy .ornament { margin: 4px auto; }
-  .invite-copy .family { font-size: 11px; }
-  .invite-date { margin-top: 6px; }
+  .invite-ganesha { width: 40px; height: 40px; margin-bottom: 8px; }
+  .invite-copy .bless { font-size: 12px; }
+  .invite-copy .ornament--narrow { margin: 7px auto; }
+  .invite-copy .invite-word { font-size: 46px; }
+  .invite-copy .pair--line { font-size: 19px; }
+  .invite-copy .family { font-size: 11.5px; }
 }
-.invite-date {
-  font-family: var(--display);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .24em;
-  text-transform: uppercase;
-  color: #9a7422;
-  margin-top: 9px;
+@media (prefers-reduced-motion: reduce) {
+  .orb--gold, .orb--rose { animation: none; }
 }
 .bless {
   font-family: var(--serif);
