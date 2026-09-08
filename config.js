@@ -18,8 +18,6 @@ window.WEDDING = {
 
   hashtag: "BalaWedsBhavana",
 
-  /* WhatsApp RSVP — leave empty to keep as placeholder */
-  whatsapp: "",
 
   siteUrl: "",
 

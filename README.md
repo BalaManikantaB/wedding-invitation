@@ -1,6 +1,6 @@
 # Wedding invitation website
 
-A mobile-first, long-scroll invitation in the same spirit as the Artful Invites reel — original temple art, Telugu wedding flow, photo placeholders, countdown, and WhatsApp RSVP.
+A mobile-first, long-scroll invitation in the same spirit as the Artful Invites reel — original temple art, Telugu wedding flow, photo placeholders and countdown.
 
 ## Personalise (2 minutes)
 
@@ -9,14 +9,11 @@ Open `config.js` and set:
 - Couple names
 - Parent / grandparent names
 - Instagram hashtag
-- WhatsApp number (`9198XXXXXXXX`)
 - Reception & marriage venues (when you have them)
 
 Then drop real photos into `assets/photos/` — see the README in that folder.
 
 Optional: add `assets/music.mp3` for background music (the play button is already on the page).
-
-Set `whatsapp` to enable the real RSVP button (it replaces the placeholder automatically).
 
 Original flat artwork and unused source renders live in `source-art/` — the site only ships `assets/`, keeping the deploy small.
 

@@ -272,24 +272,6 @@
   var hashEl = document.querySelector(".hash");
   if (hashEl && CFG.hashtag) hashEl.textContent = "#" + CFG.hashtag;
 
-  if (CFG.whatsapp) {
-    var rsvpPh = document.querySelector(".rsvp .btn--mute");
-    if (rsvpPh) {
-      var wa = document.createElement("a");
-      wa.className = "btn";
-      wa.target = "_blank";
-      wa.rel = "noopener";
-      wa.href = "https://wa.me/" + CFG.whatsapp + "?text=" +
-        encodeURIComponent("Namaste! We would love to join " +
-          ((CFG.groom && CFG.bride) ? CFG.groom.first + " & " + CFG.bride.first : "the wedding") +
-          "'s wedding. Please count us in.");
-      wa.textContent = "RSVP on WhatsApp";
-      rsvpPh.parentNode.replaceChild(wa, rsvpPh);
-      var rsvpNote = document.querySelector(".rsvp p");
-      if (rsvpNote) rsvpNote.textContent = "Tap below to send us a WhatsApp message.";
-    }
-  }
-
   /* Event cards — single source of truth is config.js */
 
   var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
