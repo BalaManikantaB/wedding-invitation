@@ -213,25 +213,7 @@ a { color: inherit; }
   will-change: transform;
 }
 /* Invite scene — layered parallax: soft bg slow, arch+text mid, garlands fast */
-.shot--invite { background: #f6e7d2; }
-.shot--invite .layer-fore { top: 0; height: 100%; object-fit: fill; }
-.invite-mid {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  height: 100%;
-  z-index: 3;
-  will-change: transform;
-}
-.invite-mid__frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  pointer-events: none;
-}
+.shot--invite { background: #fdf9ed; }
 .layer-fore {
   left: 0;
   width: 100%;
@@ -342,68 +324,68 @@ a { color: inherit; }
   transform: translateX(-50%);
 }
 
-/* The heart of the invitation — a luminous cream card floating in the
-   temple archway: Vinayaka medallion, blessing, and names, all gloriously readable. */
-.invite-card {
+/* Invitation words floating on the divine art — Ganesh above, wedding below.
+   Soft halo glow behind every line keeps the text evident and readable. */
+.invite-copy {
   position: absolute;
   z-index: 5;
-  top: 50%;
-  left: 10.5%;
-  right: 10.5%;
-  transform: translateY(-52%);
+  top: 30.5%;
+  left: 11%;
+  right: 11%;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 18px 16px 16px;
-  background: linear-gradient(175deg, #fffdf7 0%, #faf0d8 55%, #f3e2b8 100%);
-  border: 1px solid rgba(196, 160, 86, .65);
-  border-radius: 20px;
-  box-shadow:
-    0 0 0 4px rgba(251, 246, 236, .55),
-    0 0 0 5px rgba(196, 160, 86, .5),
-    0 22px 50px rgba(90, 40, 20, .35),
-    inset 0 1px 0 #fff;
+  will-change: transform;
 }
-.invite-card__ganesha {
-  width: 56px;
-  height: 56px;
-  object-fit: cover;
-  border-radius: 50%;
-  margin-bottom: 8px;
-  box-shadow: 0 0 0 2px #f0d48a, 0 0 0 4px var(--maroon), 0 8px 18px rgba(90, 40, 20, .35);
-}
-.invite-card .bless {
+.invite-copy .bless {
   font-size: 12.5px;
   line-height: 1.5;
-  color: var(--soft);
+  color: #6b4a2e;
   max-width: 100%;
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
 }
-.invite-card .invite-word {
+.invite-copy .invite-word {
   font-size: 42px;
   line-height: 1.05;
-  margin: 5px 0 1px;
+  margin: 4px 0 1px;
+  text-shadow: 0 2px 0 rgba(255, 253, 247, .9), 0 0 22px rgba(255, 253, 247, .95);
 }
-.invite-card .pair--line {
-  font-size: 19px;
+.invite-copy .pair--line {
+  font-size: 20px;
   letter-spacing: .14em;
   margin: 7px 0 0;
   white-space: nowrap;
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
 }
-.invite-card .pair--line i {
+.invite-copy .pair--line i {
   display: inline;
   font-size: 24px;
   margin: 0 2px;
 }
-.invite-card .ornament {
+.invite-copy .ornament {
   width: 52%;
-  margin: 7px auto;
+  margin: 6px auto;
   font-size: 10px;
 }
-.invite-card .family {
-  font-size: 11.5px;
+.invite-copy .family {
+  font-size: 12px;
   line-height: 1.4;
   margin: 1px 0;
+  color: #6b4a2e;
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 14px rgba(255, 253, 247, .95);
+}
+.invite-copy .invite-date {
+  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 14px rgba(255, 253, 247, .95);
+}
+@media (max-height: 700px) {
+  .invite-copy { top: 29.5%; }
+  .invite-copy .bless { font-size: 11.5px; }
+  .invite-copy .invite-word { font-size: 36px; margin: 2px 0 0; }
+  .invite-copy .pair--line { font-size: 18px; margin-top: 5px; }
+  .invite-copy .ornament { margin: 4px auto; }
+  .invite-copy .family { font-size: 11px; }
+  .invite-date { margin-top: 6px; }
 }
 .invite-date {
   font-family: var(--display);
@@ -413,15 +395,6 @@ a { color: inherit; }
   text-transform: uppercase;
   color: #9a7422;
   margin-top: 9px;
-}
-@media (max-height: 700px) {
-  .invite-card { padding: 13px 14px 12px; }
-  .invite-card__ganesha { width: 44px; height: 44px; margin-bottom: 6px; }
-  .invite-card .bless { font-size: 11.5px; }
-  .invite-card .invite-word { font-size: 35px; margin: 3px 0 0; }
-  .invite-card .pair--line { font-size: 17px; margin-top: 5px; }
-  .invite-card .ornament { margin: 5px auto; }
-  .invite-date { margin-top: 6px; }
 }
 .bless {
   font-family: var(--serif);
