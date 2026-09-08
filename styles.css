@@ -9,7 +9,6 @@
   --display: "Cinzel", Georgia, serif;
   --script: "Great Vibes", "Segoe Script", cursive;
   --sans: "Outfit", system-ui, sans-serif;
-  --telugu: "Noto Sans Telugu", sans-serif;
   --ease: cubic-bezier(.22, 1, .36, 1);
 }
 
@@ -129,7 +128,7 @@ a { color: inherit; }
   will-change: transform;
   z-index: 3;
 }
-.gate__om { font-family: var(--serif); letter-spacing: .14em; font-size: 13px; margin-bottom: 10px; }
+.gate__blessing { font-family: var(--serif); letter-spacing: .14em; font-size: 13px; margin-bottom: 10px; }
 .gate h1 {
   font-family: var(--display);
   font-weight: 500;
@@ -301,7 +300,7 @@ a { color: inherit; }
   letter-spacing: .28em;
   font-size: 16px;
 }
-.telugu { font-family: var(--telugu); margin-top: 6px; font-size: 14px; }
+.hero-sub { font-family: var(--serif); font-style: italic; margin-top: 6px; font-size: 14px; }
 .cue {
   display: block;
   width: 16px;
@@ -325,7 +324,6 @@ a { color: inherit; }
 
 /* Invite — cream mandala backdrop, banana trees, marigold toranam, luminous type. */
 .shot--invite { background: #f8f2e5; }
-.invite-banana,
 .invite-toranam {
   position: absolute;
   left: 0;
@@ -336,7 +334,6 @@ a { color: inherit; }
   pointer-events: none;
   will-change: transform;
 }
-.invite-banana { z-index: 3; }
 .invite-toranam { z-index: 6; margin-top: -40px; }
 .invite-copy {
   position: absolute;
@@ -378,20 +375,19 @@ a { color: inherit; }
   white-space: nowrap;
   text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 18px rgba(255, 253, 247, .95);
 }
-.invite-copy .pair--line i {
-  display: inline;
-  font-size: 26px;
-  margin: 0 2px;
+.invite-copy > i {
+  font-family: var(--script);
+  font-style: normal;
+  color: var(--maroon);
+  font-size: 24px;
+  line-height: 1;
+  margin: 4px 0;
 }
 .invite-copy .family {
   font-size: 12.5px;
   line-height: 1.5;
   margin: 2px 0;
   color: #6b4a2e;
-  text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
-}
-.invite-copy .invite-date {
-  font-size: 11.5px;
   text-shadow: 0 1px 0 rgba(255, 253, 247, .9), 0 0 16px rgba(255, 253, 247, .95);
 }
 @media (max-height: 700px) {
@@ -414,13 +410,6 @@ a { color: inherit; }
   width: 72px;
   height: auto;
   filter: drop-shadow(0 8px 14px rgba(90, 50, 20, .28));
-}
-.in-view .kalasam-float img {
-  
-}
-@keyframes kalasamSway {
-  0%, 100% { transform: translateY(0) rotate(-1.4deg); }
-  50% { transform: translateY(-5px) rotate(1.4deg); }
 }
 @media (max-height: 700px) {
   .kalasam-float { margin-top: 7px; }
@@ -459,16 +448,6 @@ a { color: inherit; }
   margin: 0;
   text-transform: uppercase;
 }
-.pair i {
-  font-family: var(--script);
-  font-style: normal;
-  letter-spacing: 0;
-  color: var(--maroon);
-  display: block;
-  font-size: 20px;
-  line-height: 1;
-  margin: 1px 0 2px;
-}
 .family {
   font-family: var(--serif);
   font-size: 10px;
@@ -477,17 +456,13 @@ a { color: inherit; }
   margin: 0;
 }
 
-.panel { padding: 28px 18px 22px; }
-.panel.cream { background: var(--cream); }
-.panel h2, .events-wrap h2 {
+.events-wrap h2 {
   font-family: var(--serif);
   font-size: 30px;
   font-weight: 500;
   text-align: center;
   margin: 6px 0 14px;
 }
-.hint { text-align: center; font-size: 12px; color: var(--soft); margin: -8px 0 16px; }
-
 .events-wrap {
   background: linear-gradient(180deg, #eaf6fd 0%, #d7eef8 40%, #cfe9f6 100%);
   padding: 28px 16px 0;
@@ -671,12 +646,6 @@ a { color: inherit; }
   margin: 0 0 14px;
   border: 1px dashed rgba(196,160,86,.55);
 }
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-.grid .ph { margin: 0; }
 .ph img {
   position: absolute;
   inset: 0;
@@ -819,6 +788,7 @@ a { color: inherit; }
 }
 .count div {
   background: rgba(255,255,255,.78);
+  border: 1px solid rgba(196,160,86,.28);
   border-radius: 16px;
   padding: 12px 4px 8px;
 }
@@ -884,10 +854,6 @@ a { color: inherit; }
   opacity: .7;
 }
 .gold-orn { color: var(--gold); }
-
-.count div {
-  border: 1px solid rgba(196,160,86,.28);
-}
 
 .petals { pointer-events: none; position: fixed; inset: 0; z-index: 110; overflow: hidden; }
 .petal {

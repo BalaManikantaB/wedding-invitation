@@ -1,5 +1,5 @@
 /* Self-hosted, subsetted fonts — same-origin woff2, no third-party round trips.
-   latin subsets for the display/serif/script/sans faces, telugu subset for Telugu text. */
+   latin subsets for the display/serif/script/sans faces. */
 
 @font-face {
   font-family: "Cinzel";
@@ -46,24 +46,10 @@
 }
 @font-face {
   font-family: "Cormorant Garamond";
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-  src: url("assets/fonts/cormorant-garamond-latin-700-normal.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Cormorant Garamond";
   font-style: italic;
   font-weight: 400;
   font-display: swap;
   src: url("assets/fonts/cormorant-garamond-latin-400-italic.woff2") format("woff2");
-}
-@font-face {
-  font-family: "Cormorant Garamond";
-  font-style: italic;
-  font-weight: 500;
-  font-display: swap;
-  src: url("assets/fonts/cormorant-garamond-latin-500-italic.woff2") format("woff2");
 }
 
 @font-face {
@@ -96,10 +82,3 @@
   src: url("assets/fonts/outfit-latin-600-normal.woff2") format("woff2");
 }
 
-@font-face {
-  font-family: "Noto Sans Telugu";
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url("assets/fonts/noto-sans-telugu-telugu-500-normal.woff2") format("woff2");
-}

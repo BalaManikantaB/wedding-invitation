@@ -61,6 +61,7 @@
   var musicBtn = document.getElementById("musicBtn");
   var playing = false;
   if (audio) audio.volume = 0.55;
+  if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
 
   if (REDUCED) {
     var vids = document.querySelectorAll("video");
@@ -217,8 +218,11 @@
   }
 
   var originalOpen = window.openInvitation;
+  var opened = false;
   window.openInvitation = function () {
     if (typeof originalOpen === "function") originalOpen();
+    if (opened) return;
+    opened = true;
     shower(24);
     tryPlay();
     stopGatePlx();
@@ -271,6 +275,8 @@
   bindParents("bride");
   var hashEl = document.querySelector(".hash");
   if (hashEl && CFG.hashtag) hashEl.textContent = "#" + CFG.hashtag;
+  var storyQ = document.querySelector(".story-copy blockquote");
+  if (storyQ && CFG.story) storyQ.textContent = CFG.story;
 
   /* Event cards — single source of truth is config.js */
 

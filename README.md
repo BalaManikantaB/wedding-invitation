@@ -7,7 +7,7 @@ A mobile-first, long-scroll invitation in the same spirit as the Artful Invites 
 Open `config.js` and set:
 
 - Couple names
-- Parent / grandparent names
+- Parent names
 - Instagram hashtag
 - Reception & marriage venues (when you have them)
 

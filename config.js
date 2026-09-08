@@ -5,15 +5,11 @@
 window.WEDDING = {
   groom: {
     first: "Bala",
-    last: "",
     parents: "Mr. Naga Venkata Satyanarayana & Mrs. Venkata Durga",
-    grandparents: ""
   },
   bride: {
     first: "Bhavana",
-    last: "",
-    parents: "Mr. Vara Prasad & Mrs. Naga Lakshmi",
-    grandparents: ""
+    parents: "Mr. Eshwara Prasad & Mrs. Naga Lakshmi",
   },
 
   hashtag: "BalaWedsBhavana",
@@ -25,8 +21,7 @@ window.WEDDING = {
 
   countdownTo: "2026-10-14T19:00:00+05:30",
 
-  story:
-    "Some souls are destined to find each other. What began as a quiet knowing has grown into a promise — of laughter, of home, of a lifetime walked side by side. With the blessings of our elders and the love of everyone who has shaped us, we invite you to witness the beginning of our forever.",
+  story: "Some souls are destined to find each other. With the blessings of our elders, Bala and Bhavana invite you to witness the beginning of their forever.",
 
   events: [
     {
@@ -55,9 +50,7 @@ window.WEDDING = {
       time: "7:00 PM",
       place: "Sreerastu Convention, Kakinada",
       note: "Join us at Sreerastu Convention, Rama Rao Peta, Kakinada, for dinner, music, and warm wishes.",
-      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
-      lat: 16.976,
-      lon: 82.244
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
     },
     {
       kicker: "14 October  ·  Night",
@@ -67,9 +60,7 @@ window.WEDDING = {
       time: "11:00 PM",
       place: "Sreerastu Convention, Kakinada",
       note: "The auspicious muhurtham, as two families become one.",
-      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
-      lat: 16.976,
-      lon: 82.244
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
     }
   ]
 };
