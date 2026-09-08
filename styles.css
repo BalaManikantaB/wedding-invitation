@@ -794,27 +794,52 @@ a { color: inherit; }
   }
 }
 
-/* Tiny rotatable globe on night event cards */
-.globe-wrap {
+/* Shared venue seal — one ornamental directions link for Reception & Vivaha */
+.venue {
+  position: relative;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 3px;
-  margin-top: 2px;
+  margin: 2px auto 6px;
+  text-decoration: none;
+  width: max-content;
+  max-width: 92%;
+  text-align: center;
 }
-.globe {
-  cursor: grab;
-  touch-action: none;
-  border-radius: 50%;
-  box-shadow: 0 6px 16px rgba(13, 61, 73, .35);
+.venue__pin {
+  width: 118px;
+  filter: drop-shadow(0 12px 26px rgba(0, 0, 0, .5));
+  animation: venuePulse 2.6s ease-in-out infinite;
+  transform-origin: 50% 88%;
 }
-.globe:active { cursor: grabbing; }
-.globe:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-.globe-hint {
+@keyframes venuePulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+.venue__kicker {
+  font-family: var(--display);
   font-size: 9px;
-  letter-spacing: .16em;
+  letter-spacing: .3em;
   text-transform: uppercase;
-  color: var(--soft);
+  color: var(--gold);
+}
+.venue__place {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: #f7ead0;
+}
+.venue__hint {
+  font-size: 9px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(247, 234, 208, .65);
+}
+.venue:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; border-radius: 12px; }
+@media (prefers-reduced-motion: reduce) {
+  .venue__pin { animation: none; }
 }
 .reveal,
 .reveal-fade {
