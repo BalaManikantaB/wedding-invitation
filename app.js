@@ -292,6 +292,17 @@
 
   /* Event cards — single source of truth is config.js */
 
+  var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+    '<path d="M12 1.8c-4.5 0-8.2 3.6-8.2 8.1 0 5.9 8.2 12.3 8.2 12.3s8.2-6.4 8.2-12.3c0-4.5-3.7-8.1-8.2-8.1zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>';
+
+  function locationRow(place) {
+    var row = document.createElement("p");
+    row.className = "loc-row";
+    row.innerHTML = PIN_SVG;
+    row.appendChild(document.createTextNode(place));
+    return row;
+  }
+
   function buildEventCard(ev, isNight) {
     var card = document.createElement("article");
     card.className = "card reveal-fade";
@@ -319,7 +330,9 @@
     }
 
     if (isNight) {
-      /* Night events with a map share the ornamental venue seal below the cards */
+      /* Night events share one big venue button below the cards —
+         each card still shows its place so the location is evident. */
+      if (ev.place) card.appendChild(locationRow(ev.place));
       if (!ev.map) {
         var s = document.createElement("span");
         s.className = "btn btn--mute";
@@ -328,12 +341,18 @@
       }
     } else if (ev.map) {
       var a = document.createElement("a");
-      a.className = "btn";
+      a.className = "btn btn--loc";
       a.href = ev.map;
       a.target = "_blank";
       a.rel = "noopener";
-      a.textContent = "View location" + (ev.place ? " · " + ev.place : "");
+      a.setAttribute("aria-label", "View location" + (ev.place ? " — " + ev.place : ""));
+      a.innerHTML = PIN_SVG;
+      var label = document.createElement("span");
+      label.textContent = "View location" + (ev.place ? " · " + ev.place : "");
+      a.appendChild(label);
       card.appendChild(a);
+    } else if (ev.place) {
+      card.appendChild(locationRow(ev.place));
     }
     return card;
   }
@@ -351,7 +370,7 @@
   }
   renderEvents();
 
-  /* One shared ornamental "seal" link when the night events share a venue */
+  /* One shared golden venue button when the night events share a venue */
   function renderVenueLink() {
     var host = document.getElementById("venueLink");
     if (!host || !CFG.events) return;
@@ -364,30 +383,37 @@
     }
     if (!ev) return;
     var a = document.createElement("a");
-    a.className = "venue reveal-fade";
+    a.className = "venue-btn reveal-fade";
     a.href = ev.map;
     a.target = "_blank";
     a.rel = "noopener";
-    a.setAttribute("aria-label", "Open map to " + (ev.place || "the venue"));
-    a.innerHTML =
-      '<svg class="venue__ico" viewBox="0 0 24 24" aria-hidden="true">' +
-      '<defs><radialGradient id="venuePinG" cx="35%" cy="30%" r="80%">' +
-      '<stop offset="0%" stop-color="#ff6b6b"/>' +
-      '<stop offset="45%" stop-color="#e42222"/>' +
-      '<stop offset="100%" stop-color="#a80f14"/>' +
-      '</radialGradient></defs>' +
-      '<path fill="url(#venuePinG)" fill-rule="evenodd" d="M12 1.5c-4.7 0-8.5 3.8-8.5 8.5 0 6.2 8.5 12.5 8.5 12.5s8.5-6.3 8.5-12.5c0-4.7-3.8-8.5-8.5-8.5zm0 11.6a3.3 3.3 0 1 1 0-6.6 3.3 3.3 0 0 1 0 6.6z"/>' +
-      '<ellipse cx="8.6" cy="6.2" rx="2.6" ry="1.7" fill="#fff" opacity=".35" transform="rotate(-28 8.6 6.2)"/>' +
-      '</svg>';
+    a.setAttribute("aria-label", "View location \u2014 " + (ev.place || "the venue"));
+    var pin = document.createElement("span");
+    pin.className = "venue-btn__pin";
+    pin.innerHTML = PIN_SVG;
+    var body = document.createElement("span");
+    body.className = "venue-btn__body";
+    var cta = document.createElement("span");
+    cta.className = "venue-btn__cta";
+    cta.textContent = "View Location";
     var place = document.createElement("span");
-    place.className = "venue__place";
-    place.textContent = ev.place || "";
-    var hint = document.createElement("span");
-    hint.className = "venue__hint";
-    hint.textContent = "Reception & Vivaha · tap for directions";
-    a.appendChild(place);
-    a.appendChild(hint);
+    place.className = "venue-btn__place";
+    place.textContent = ev.place || "Tap for directions";
+    body.appendChild(cta);
+    body.appendChild(place);
+    var go = document.createElement("span");
+    go.className = "venue-btn__go";
+    go.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+    a.appendChild(pin);
+    a.appendChild(body);
+    a.appendChild(go);
     host.appendChild(a);
+    var note = document.createElement("p");
+    note.className = "venue-note reveal-fade";
+    note.textContent = "Reception & Vivaha \u00b7 tap for directions";
+    host.appendChild(note);
   }
   renderVenueLink();
 
@@ -409,7 +435,7 @@
   /* Drake-style window parallax: lerp, vertical only, settles when you stop */
   var plxNodes = document.querySelectorAll("[data-plx]");
   var running = false;
-  var EASE = 0.14;
+  var EASE = 0.085;
 
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
@@ -420,11 +446,18 @@
       var scene = el.closest(".parallax-scene") || el.parentElement;
       if (!scene) continue;
       var rect = scene.getBoundingClientRect();
+      if (!rect.height) continue;
+      /* Skip fully off-screen scenes — but keep their last pose, don't snap */
+      if (rect.bottom < -vh * 0.25 || rect.top > vh * 1.25) continue;
       var progress = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
       var amp = parseFloat(el.getAttribute("data-plx")) || 0;
       var raw = (0.5 - progress) * amp * 2;
       if (el.classList.contains("layer-back") || el.classList.contains("layer-fore")) {
-        var budget = Math.max(20, rect.height * 0.12);
+        /* Layer boxes overshoot their scenes (~26%), so allow generous travel */
+        var refH = rect.height;
+        var pin = el.closest(".depth-pin");
+        if (pin) refH = pin.getBoundingClientRect().height || refH;
+        var budget = Math.max(48, refH * 0.2);
         raw = clamp(raw, -budget, budget);
       }
       el._target = raw;
@@ -463,6 +496,10 @@
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("resize", onScroll, { passive: true });
     document.addEventListener("touchmove", onScroll, { passive: true });
+    window.addEventListener("load", onScroll);
+    /* Re-aim after late assets (video, fonts) settle layout */
+    setTimeout(onScroll, 600);
+    setTimeout(onScroll, 2000);
     targets();
     tickPlx();
   }

@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.jpg" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=18" />
+  <link rel="stylesheet" href="styles.css?v=19" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -31,10 +31,10 @@
 
   <div class="device">
     <section class="gate" id="gate">
-      <img class="gate__bg" data-gate-plx="-28" src="assets/gate.jpg" alt="" />
+      <img class="gate__bg" data-gate-plx="-46" src="assets/gate.jpg" alt="" />
       <div class="gate__veil"></div>
       <div class="gate__card">
-        <img class="gate__ganesha reveal-fade" data-gate-plx="18" src="assets/ganesha.jpg" alt="Lord Ganesha" />
+        <img class="gate__ganesha reveal-fade" data-gate-plx="30" src="assets/ganesha.jpg" alt="Lord Ganesha" />
         <p class="gate__om reveal">|| ॐ श्री गणेशाय नमः ||</p>
         <p class="kicker reveal">The wedding of</p>
         <h1 class="reveal"><span data-bind="groom.first">Bala</span> <i>&amp;</i> <span data-bind="bride.first">Bhavana</span></h1>
@@ -49,16 +49,16 @@
     <main class="stage">
       <!-- 1. Hero 9:16 — temple back, trees front, text floats -->
       <section class="shot parallax-scene">
-        <img class="layer layer-back" data-plx="36" src="assets/temple.jpg" alt="Temple gopuram" fetchpriority="high" />
+        <img class="layer layer-back" data-plx="68" src="assets/temple.jpg" alt="Temple gopuram" fetchpriority="high" />
         <div class="shot__veil shot__veil--hero"></div>
-        <div class="shot__copy shot__copy--top layer" data-plx="-22">
+        <div class="shot__copy shot__copy--top layer" data-plx="-46">
           <p class="hero-name reveal" data-bind="groom.first">Bala</p>
           <p class="hero-weds reveal">weds</p>
           <p class="hero-name reveal" data-bind="bride.first">Bhavana</p>
           <p class="kicker light reveal">are getting married</p>
         </div>
-        <img class="layer layer-fore" data-plx="-48" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
-        <div class="shot__copy shot__copy--bottom layer" data-plx="-16">
+        <img class="layer layer-fore" data-plx="-92" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
+        <div class="shot__copy shot__copy--bottom layer" data-plx="-34">
           <p class="hero-date reveal">14 · 10 · 2026</p>
           <p class="telugu reveal">శుభ ముహూర్తం</p>
           <span class="cue reveal"></span>
@@ -67,8 +67,8 @@
 
       <!-- 2. Invite 9:16 — layered parallax: soft bg slow, arch+text mid, garlands fast -->
       <section class="shot shot--invite parallax-scene">
-        <img class="layer layer-back" data-plx="26" src="assets/invite-bg.jpg" alt="" loading="lazy" decoding="async" />
-        <div class="layer invite-mid" data-plx="-10">
+        <img class="layer layer-back" data-plx="56" src="assets/invite-bg.jpg" alt="" loading="lazy" decoding="async" />
+        <div class="layer invite-mid" data-plx="-28">
           <img class="invite-mid__frame" src="assets/invite-frame.png" alt="Ornate wedding arch with Lord Ganesha" loading="lazy" decoding="async" />
           <div class="invite-panel">
             <p class="bless reveal">With the blessings of God<br>and our beloved parents,<br>we cordially</p>
@@ -80,7 +80,7 @@
             <p class="family reveal" data-parents="bride">D/o Vara Prasad<br>&amp; Naga Lakshmi</p>
           </div>
         </div>
-        <img class="layer layer-fore" data-plx="-42" src="assets/invite-fore.png" alt="" loading="lazy" decoding="async" />
+        <img class="layer layer-fore" data-plx="-86" src="assets/invite-fore.png" alt="" loading="lazy" decoding="async" />
       </section>
 
       <!-- 3. Events over illustrated couple — cards rendered from config.js -->
@@ -89,10 +89,10 @@
         <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
         <h2 class="reveal">The celebrations</h2>
 
-        <div id="dayEvents"></div>
+        <div id="dayEvents" class="plx-drift" data-plx="-20"></div>
 
         <div class="bleed-wrap">
-          <video class="bleed" autoplay muted loop playsinline>
+          <video class="bleed layer" data-plx="34" autoplay muted loop playsinline>
             <source src="assets/art-event.mp4" type="video/mp4" />
           </video>
         </div>
@@ -101,18 +101,18 @@
       <!-- 4. Sticky depth scene — Drake-style layered parallax -->
       <section class="depth-scene parallax-scene">
         <div class="depth-pin">
-          <img class="layer layer-back" data-plx="24" src="assets/temple.jpg" alt="Temple" loading="lazy" decoding="async" />
+          <img class="layer layer-back" data-plx="52" src="assets/temple.jpg" alt="Temple" loading="lazy" decoding="async" />
           <div class="shot__veil shot__veil--hero"></div>
-          <img class="layer layer-couple" data-plx="-36" src="assets/couple.png" alt="Bala and Bhavana" loading="lazy" decoding="async" />
-          <img class="layer layer-fore" data-plx="-52" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
+          <img class="layer layer-couple" data-plx="-72" src="assets/couple.png" alt="Bala and Bhavana" loading="lazy" decoding="async" />
+          <img class="layer layer-fore" data-plx="-108" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
         </div>
       </section>
 
       <!-- 5. Reception / Vivaha over night temple -->
       <section class="shot shot--tall parallax-scene">
-        <img class="layer layer-back" data-plx="28" src="assets/night.jpg" alt="Temple at night" loading="lazy" decoding="async" />
+        <img class="layer layer-back" data-plx="64" src="assets/night.jpg" alt="Temple at night" loading="lazy" decoding="async" />
         <div class="shot__veil shot__veil--night"></div>
-        <div class="night-cards">
+        <div class="night-cards layer" data-plx="-30">
           <div id="nightEvents"></div>
           <div id="venueLink"></div>
         </div>
@@ -120,9 +120,9 @@
 
       <!-- 6. Story (tap for polaroids) -->
       <section class="shot parallax-scene" id="ourStory">
-        <img class="layer layer-back" data-plx="32" src="assets/story-bg.jpg" alt="" loading="lazy" decoding="async" />
+        <img class="layer layer-back" data-plx="66" src="assets/story-bg.jpg" alt="" loading="lazy" decoding="async" />
         <div class="shot__veil shot__veil--story"></div>
-        <div class="story-copy" id="storyOpen" role="button" tabindex="0">
+        <div class="story-copy layer" data-plx="-28" id="storyOpen" role="button" tabindex="0">
           <p class="kicker light reveal">Meet the bride &amp; groom</p>
           <h2 class="script cream-text reveal">Our Story</h2>
           <blockquote class="reveal">
@@ -141,8 +141,8 @@
 
       <!-- 7. Hashtag, countdown & RSVP -->
       <section class="shot closing parallax-scene">
-        <img class="layer layer-back" data-plx="8" src="assets/paper.jpg" alt="" loading="lazy" decoding="async" />
-        <div class="closing__inner">
+        <img class="layer layer-back" data-plx="36" src="assets/paper.jpg" alt="" loading="lazy" decoding="async" />
+        <div class="closing__inner layer" data-plx="-24">
           <p class="kicker gold reveal">Instagram</p>
           <p class="script hash reveal">#BalaWedsBhavana</p>
           <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
@@ -177,6 +177,6 @@
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
   <script src="config.js"></script>
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=17"></script>
 </body>
 </html>
