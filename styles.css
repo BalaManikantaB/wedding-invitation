@@ -337,11 +337,11 @@ a { color: inherit; }
   will-change: transform;
 }
 .invite-banana { z-index: 3; }
-.invite-toranam { z-index: 6; margin-top: -30px; }
+.invite-toranam { z-index: 6; margin-top: -40px; }
 .invite-copy {
   position: absolute;
   z-index: 5;
-  top: 8%;
+  top: 12%;
   bottom: 0;
   left: 10%;
   right: 10%;
@@ -416,8 +416,7 @@ a { color: inherit; }
   filter: drop-shadow(0 8px 14px rgba(90, 50, 20, .28));
 }
 .in-view .kalasam-float img {
-  animation: fadeIn .75s var(--ease) forwards, kalasamSway 5.2s ease-in-out 1s infinite;
-  animation-delay: var(--d, 0s), 1s;
+  
 }
 @keyframes kalasamSway {
   0%, 100% { transform: translateY(0) rotate(-1.4deg); }
