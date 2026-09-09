@@ -205,7 +205,6 @@ a { color: inherit; }
   width: 100%;
   height: 124%;
   top: -12%;
-  object-fit: cover;
   object-position: center;
   transform-origin: center center;
   z-index: 0;
@@ -415,7 +414,7 @@ a { color: inherit; }
   left: 0;
   right: 0;
   bottom: 1.5%;
-  height: 35%;
+  height: 50%;
   display: flex;
   align-items: flex-end;
   justify-content: center;
@@ -458,8 +457,8 @@ a { color: inherit; }
     height: 69.1667px;
     margin-top: 7px;
   }
-  .divine-wedding-float { bottom: 1.5%; height: 32%; }
-  .divine-wedding-float img { width: 40%; }
+  .divine-wedding-float { bottom: -2%; height: 32%; }
+  .divine-wedding-float img { width: 50%; }
 }
 .bless {
   font-family: var(--serif);
