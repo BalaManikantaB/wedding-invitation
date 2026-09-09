@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.jpg" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=27" />
+  <link rel="stylesheet" href="styles.css?v=28" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -65,7 +65,7 @@
         </div>
       </section>
 
-      <!-- 2. Invite — toranam, cream mandala, kalasam: layered parallax -->
+      <!-- 2. Invite — toranam, cream mandala, and a divine wedding tableau. -->
       <section class="shot shot--invite parallax-scene">
         <img class="layer layer-back" data-plx="36" src="assets/invite-cream.jpg" alt="" loading="lazy" decoding="async" />
         <div class="invite-copy layer" data-plx="-20">
@@ -79,9 +79,11 @@
           <p class="pair pair--line reveal"><span data-bind="bride.first">Bhavana</span></p>
           <p class="family reveal" data-parents="bride">D/o Eshwara Prasad<br>&amp; Naga Lakshmi</p>
           <span class="ornament ornament--narrow reveal" aria-hidden="true">✦</span>
-          <div class="layer kalasam-float" data-plx="-24" aria-hidden="true">
-            <img class="reveal-fade" src="assets/kalasam.png" alt="" loading="lazy" decoding="async" />
-          </div>
+          <!-- Retains the former kalasam footprint, so the invitation copy does not shift. -->
+          <div class="divine-wedding-reserve" aria-hidden="true"></div>
+        </div>
+        <div class="layer divine-wedding-float" data-plx="-24" aria-hidden="true">
+          <img class="reveal-fade" src="assets/divine-wedding.png" alt="" loading="lazy" decoding="async" />
         </div>
         <img class="layer invite-toranam" data-plx="-64" src="assets/invite-toranam.png" alt="" loading="lazy" decoding="async" />
       </section>

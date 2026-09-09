@@ -398,22 +398,68 @@ a { color: inherit; }
   .invite-copy .family { font-size: 11.5px; }
 }
 
-/* Mini kalasam below the invite text — sits in the text flow but carries its
-   own parallax drift (compounds with .invite-copy) plus a gentle idle sway. */
-.kalasam-float {
+/* Divine wedding tableau — the transparent source is bottom-anchored so its
+   ceremonial scene begins exactly beneath the final ornament.  The reserve
+   keeps the original kalasam footprint in the copy's flex flow, preserving
+   every existing line of invitation text and its vertical alignment. */
+.divine-wedding-reserve {
+  flex: 0 0 83px;
+  width: 72px;
+  height: 83px;
   margin-top: 10px;
+  pointer-events: none;
+}
+.divine-wedding-float {
+  position: absolute;
+  z-index: 4;
+  left: 0;
+  right: 0;
+  bottom: 1.5%;
+  height: 35%;
   display: flex;
+  align-items: flex-end;
   justify-content: center;
+  pointer-events: none;
+  isolation: isolate;
   will-change: transform;
 }
-.kalasam-float img {
-  width: 72px;
+.divine-wedding-float::before {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 1%;
+  width: 78%;
+  height: 20%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(184, 127, 46, .22) 0%, rgba(211, 164, 76, .12) 35%, rgba(251, 246, 236, 0) 72%);
+  filter: blur(7px);
+}
+.divine-wedding-float::after {
+  content: "";
+  position: absolute;
+  z-index: 0;
+  bottom: 3%;
+  width: 42%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(177, 117, 33, .18), rgba(255, 244, 207, .88), rgba(177, 117, 33, .18), transparent);
+}
+.divine-wedding-float img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: 44%;
   height: auto;
-  filter: drop-shadow(0 8px 14px rgba(90, 50, 20, .28));
+  filter: drop-shadow(0 10px 13px rgba(91, 48, 16, .2)) drop-shadow(0 2px 2px rgba(255, 247, 222, .76));
 }
 @media (max-height: 700px) {
-  .kalasam-float { margin-top: 7px; }
-  .kalasam-float img { width: 60px; }
+  .divine-wedding-reserve {
+    flex-basis: 69.1667px;
+    width: 60px;
+    height: 69.1667px;
+    margin-top: 7px;
+  }
+  .divine-wedding-float { bottom: 1.5%; height: 32%; }
+  .divine-wedding-float img { width: 40%; }
 }
 .bless {
   font-family: var(--serif);
