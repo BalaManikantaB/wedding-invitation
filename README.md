@@ -1,6 +1,28 @@
-# Wedding invitation website
+# Wedding invitation website — Bala weds Bhavana
 
-A mobile-first, long-scroll invitation in the same spirit as the Artful Invites reel — original temple art, Telugu wedding flow, photo placeholders and countdown.
+A mobile-first, long-scroll invitation — original temple art, Telugu wedding flow, photo placeholders and countdown.
+
+**Live URLs (clean, no xxx):**
+- GitHub Pages: `https://BalaManikantaB.github.io/wedding-invitation/` (permanent, ₹0)
+- Netlify: `https://bala-weds-bhavana.netlify.app` (after you rename, ₹0)
+
+## Deploy NOW - Clean URLs (No Random Letters)
+
+### GitHub Pages - 2 minutes
+
+1. Go to https://github.com/BalaManikantaB/wedding-invitation/settings/pages
+2. Source: **Deploy from a branch** > Branch: **main** / **root** > Save
+3. Live in 1-2 min at `https://BalaManikantaB.github.io/wedding-invitation/`
+
+Or with Actions (see `DEPLOY_CLEAN_URLS.md` for workflow file).
+
+### Netlify - 1 minute - Clean Name
+
+1. https://app.netlify.com/drop → Drag entire folder
+2. Site settings > Change site name → `bala-weds-bhavana` (or `balawedsbhavana`)
+3. Live at `https://bala-weds-bhavana.netlify.app` — no xxx!
+
+Full guide: `DEPLOY_CLEAN_URLS.md` and `HOSTING.md`
 
 ## Personalise (2 minutes)
 
@@ -9,24 +31,21 @@ Open `config.js` and set:
 - Couple names
 - Parent names
 - Instagram hashtag
-- Reception & marriage venues (when you have them)
+- `siteUrl` already set to GitHub Pages clean URL
 
 Then drop real photos into `assets/photos/` — see the README in that folder.
 
-Optional: add `assets/music.mp3` for background music (the play button is already on the page).
+Optional: `assets/music.mp3` for background music (play button already on page).
 
-Original flat artwork and unused source renders live in `source-art/` — the site only ships `assets/`, keeping the deploy small.
+## Hosting Cost for 2 Months
 
-## Host for ~1.5 months (until 14 Oct 2026)
+**₹0 total.** GitHub Pages + Netlify free forever, 100GB+ bandwidth, SSL included. This site is only 6.5MB, no backend.
 
-This sandbox preview is only for us to look at it now. For family WhatsApp sharing you need a public URL.
+For WhatsApp preview, `og:image` and `og:url` are already absolute (`https://BalaManikantaB.github.io/wedding-invitation/assets/og.jpg`). If you use Netlify clean URL, update those 2 lines in `index.html` and `siteUrl` in `config.js`.
 
-Easiest free options:
+## Files for Hosting
 
-1. **Netlify Drop** — go to [app.netlify.com/drop](https://app.netlify.com/drop), drag the whole `wedding-invite` folder. You get a link like `https://something.netlify.app`. Free Netlify account keeps it live as long as you need.
-2. **Cloudflare Pages** — [pages.cloudflare.com](https://pages.cloudflare.com), upload the folder. Very reliable, free.
-3. **Vercel** — drag-and-drop or CLI, free.
-
-After you have the public URL, paste it into `siteUrl` in `config.js`. WhatsApp’s crawler does not run JavaScript, so also paste the absolute image URL into the `og:image` tag in `index.html` (e.g. `https://your-site.netlify.app/assets/og.jpg`) — the shared preview shows the traditional cream lagna-patrika card with the couple's names and dates. The page script keeps `og:image`/`og:url` absolute automatically for in-app browsers.
-
-Cost: **₹0**. These free plans are more than enough for a 6-week invite.
+- `netlify.toml` - caching headers
+- `vercel.json` - Vercel config
+- `DEPLOY_CLEAN_URLS.md` - step-by-step clean URLs
+- `HOSTING.md` - full analysis
