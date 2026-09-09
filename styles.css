@@ -210,6 +210,10 @@ a { color: inherit; }
   z-index: 0;
   will-change: transform;
 }
+
+.layer-temple {
+  object-fit: cover;
+}
 /* Invite scene — layered parallax: soft bg slow, arch+text mid, garlands fast */
 .layer-fore {
   left: 0;
@@ -499,7 +503,7 @@ a { color: inherit; }
   50% { transform: translateY(4px); opacity: 1; }
 }
 @media (max-height: 700px) {
-  .depth-scene { height: 150vh; height: 150svh; }
+  .depth-scene { height: auto; }
   .depth-copy { top: 28px; }
   .depth-copy__sub { font-size: 12px; }
   .depth-couple { height: 74%; }
@@ -977,7 +981,7 @@ a { color: inherit; }
 .ph__empty b { font-family: var(--serif); font-size: 20px; color: var(--ink); font-weight: 500; }
 .ph__empty span { font-size: 12px; }
 .ph--frame {
-  width: min(62%, 220px);
+  width: min(80%, 250px);
   aspect-ratio: 3 / 4;
   border: 8px solid #d7b15a;
   box-shadow: 0 16px 36px rgba(0,0,0,.3);
