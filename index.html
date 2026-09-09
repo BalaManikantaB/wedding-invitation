@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.jpg" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=28" />
+  <link rel="stylesheet" href="styles.css?v=29" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -103,13 +103,29 @@
         </div>
       </section>
 
-      <!-- 4. Sticky depth scene — Drake-style layered parallax -->
-      <section class="depth-scene parallax-scene">
+      <!-- 4. Sacred portrait — a cinematic, multi-plane temple parallax -->
+      <section class="depth-scene parallax-scene" aria-label="A sacred moment for Bala and Bhavana">
         <div class="depth-pin">
-          <img class="layer layer-back" data-plx="52" src="assets/temple.jpg" alt="Temple" loading="lazy" decoding="async" />
-          <div class="shot__veil shot__veil--hero"></div>
-          <img class="layer layer-couple" data-plx="-72" src="assets/couple.png" alt="Bala and Bhavana" loading="lazy" decoding="async" />
-          <img class="layer layer-fore" data-plx="-108" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
+          <div class="depth-sky" aria-hidden="true"></div>
+          <img class="layer layer-back depth-temple" data-plx="34" src="assets/temple.jpg" alt="Temple gopuram" loading="lazy" decoding="async" />
+          <div class="layer depth-sunwash" data-plx="12" aria-hidden="true"></div>
+          <div class="layer depth-halo" data-plx="-4" aria-hidden="true"></div>
+
+          <div class="layer depth-copy" data-plx="-18">
+            <p class="depth-copy__eyebrow reveal">A sacred beginning</p>
+            <span class="depth-copy__rule reveal" aria-hidden="true"><i></i>✦<i></i></span>
+            <h2 class="depth-copy__names reveal">
+              <span data-bind="groom.first">Bala</span><em>&amp;</em><span data-bind="bride.first">Bhavana</span>
+            </h2>
+            <p class="depth-copy__sub reveal">Together, in a promise for forever</p>
+          </div>
+
+          <div class="layer depth-aura" data-plx="-30" aria-hidden="true"></div>
+          <img class="layer depth-couple" data-plx="-48" src="assets/couple.png" alt="Bala and Bhavana" loading="lazy" decoding="async" />
+          <div class="depth-fireflies" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <img class="layer depth-foliage" data-plx="-78" src="assets/trees.png" alt="" loading="lazy" decoding="async" />
+          <div class="depth-vignette" aria-hidden="true"></div>
+          <p class="depth-scroll" aria-hidden="true">Scroll to celebrate <span>↓</span></p>
         </div>
       </section>
 

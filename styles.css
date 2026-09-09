@@ -232,11 +232,14 @@ a { color: inherit; }
   will-change: transform;
 }
 
-/* Sticky depth scene — the frame pins briefly while the layers glide past.
-   overflow:clip (not hidden) so sticky actually pins — no blank gap after. */
+/* Sacred portrait — a long, pinned temple scene with distinct planes that
+   travel at their own pace: temple, light, couple, then botanical foreground. */
 .depth-scene {
   position: relative;
+  height: 165vh;
+  height: 165svh;
   overflow: visible;
+  background: #17373d;
 }
 @supports (overflow: clip) {
   .depth-scene { overflow-x: clip; }
@@ -245,9 +248,266 @@ a { color: inherit; }
   position: sticky;
   top: 0;
   height: 100vh;
+  height: 100svh;
   height: 100dvh;
   overflow: hidden;
-  background: #c5e4ea;
+  isolation: isolate;
+  background: #b8dce2;
+}
+.depth-sky {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background:
+    radial-gradient(ellipse at 50% 21%, rgba(255, 247, 211, .8) 0%, rgba(255, 247, 211, .23) 31%, transparent 61%),
+    linear-gradient(180deg, #bddfe7 0%, #dce8d3 62%, #759c8d 100%);
+}
+.depth-temple {
+  left: -7%;
+  right: auto;
+  top: -8%;
+  width: 114%;
+  height: 116%;
+  object-fit: cover;
+  object-position: center 34%;
+  z-index: 1;
+  filter: saturate(.88) contrast(1.04) brightness(.93);
+}
+.depth-sunwash {
+  position: absolute;
+  z-index: 2;
+  top: -14%;
+  left: -14%;
+  width: 128%;
+  height: 76%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 39%, rgba(255, 245, 202, .62) 0%, rgba(255, 235, 170, .26) 25%, rgba(255, 237, 190, 0) 61%),
+    linear-gradient(112deg, rgba(255, 250, 225, .16) 10%, transparent 38%, rgba(255, 255, 239, .13) 65%, transparent 84%);
+  mix-blend-mode: screen;
+}
+.depth-halo {
+  position: absolute;
+  z-index: 3;
+  top: 31%;
+  left: 12%;
+  right: 12%;
+  aspect-ratio: 1;
+  border: 1px solid rgba(255, 239, 181, .36);
+  border-radius: 50%;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at center, rgba(255, 239, 182, .13) 0%, rgba(250, 221, 141, .05) 42%, transparent 70%),
+    repeating-radial-gradient(circle at center, transparent 0 19%, rgba(255, 242, 195, .12) 19.3% 19.7%, transparent 20% 28%);
+  box-shadow: 0 0 0 12px rgba(255, 249, 222, .025), 0 0 42px rgba(255, 223, 151, .16);
+}
+.depth-halo::before,
+.depth-halo::after {
+  content: "";
+  position: absolute;
+  border: 1px solid rgba(255, 239, 181, .18);
+  border-radius: 50%;
+}
+.depth-halo::before { inset: 7%; }
+.depth-halo::after { inset: 18%; border-style: dashed; }
+.depth-copy {
+  position: absolute;
+  z-index: 9;
+  top: clamp(34px, 7.5vh, 72px);
+  left: 18px;
+  right: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff7d9;
+  text-align: center;
+  text-shadow: 0 3px 18px rgba(36, 30, 14, .58), 0 1px 0 rgba(66, 38, 13, .48);
+  isolation: isolate;
+  will-change: transform;
+}
+.depth-copy::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: -16px;
+  right: 6%;
+  bottom: -14px;
+  left: 6%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(21, 57, 55, .28), rgba(21, 57, 55, 0) 72%);
+  filter: blur(8px);
+}
+.depth-copy__eyebrow {
+  font-family: var(--display);
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: #f9d990;
+}
+.depth-copy__rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  width: min(58%, 240px);
+  margin: 7px auto 8px;
+  color: #f8d889;
+  font-size: 11px;
+  line-height: 1;
+}
+.depth-copy__rule i {
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 231, 160, .88));
+}
+.depth-copy__rule i:last-child { transform: scaleX(-1); }
+.depth-copy__names {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  max-width: 100%;
+  font-family: var(--display);
+  font-size: clamp(20px, 6vw, 28px);
+  font-weight: 500;
+  letter-spacing: .07em;
+  line-height: 1.15;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff5d4;
+}
+.depth-copy__names em {
+  font-family: var(--script);
+  font-size: 1.25em;
+  font-style: normal;
+  font-weight: 400;
+  letter-spacing: 0;
+  color: #f3ce78;
+}
+.depth-copy__sub {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: .03em;
+  color: rgba(255, 247, 220, .95);
+}
+.depth-aura {
+  position: absolute;
+  z-index: 4;
+  right: 2%;
+  bottom: -5%;
+  left: 2%;
+  height: 58%;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse at 50% 68%, rgba(255, 219, 135, .45) 0%, rgba(255, 214, 127, .18) 27%, rgba(237, 233, 195, 0) 65%),
+    linear-gradient(180deg, transparent 15%, rgba(15, 52, 50, .2) 100%);
+  filter: blur(3px);
+}
+.depth-couple {
+  position: absolute;
+  z-index: 6;
+  left: -5.25%;
+  right: auto;
+  bottom: -2.5%;
+  width: 100%;
+  height: 77%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: saturate(.9) contrast(1.04) drop-shadow(0 20px 21px rgba(11, 38, 36, .35)) drop-shadow(0 2px 1px rgba(255, 247, 211, .45));
+  will-change: transform;
+}
+.depth-foliage {
+  position: absolute;
+  z-index: 8;
+  bottom: -7%;
+  left: -9%;
+  width: 118%;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 18%, #000 35%, #000 100%);
+  mask-image: linear-gradient(to bottom, transparent 0%, transparent 18%, #000 35%, #000 100%);
+  filter: saturate(.92) contrast(1.04) drop-shadow(0 10px 20px rgba(16, 49, 39, .24));
+  will-change: transform;
+}
+.depth-fireflies {
+  position: absolute;
+  z-index: 7;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.depth-fireflies i {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #fff3ba;
+  box-shadow: 0 0 0 2px rgba(255, 219, 119, .08), 0 0 13px 4px rgba(255, 221, 120, .34);
+  opacity: 0;
+  animation: fireflyFloat 5.5s ease-in-out infinite;
+}
+.depth-fireflies i:nth-child(1) { top: 40%; left: 18%; animation-delay: -.7s; }
+.depth-fireflies i:nth-child(2) { top: 52%; left: 78%; width: 3px; height: 3px; animation-delay: -2.2s; }
+.depth-fireflies i:nth-child(3) { top: 61%; left: 26%; width: 3px; height: 3px; animation-delay: -3.8s; }
+.depth-fireflies i:nth-child(4) { top: 47%; left: 68%; animation-delay: -1.4s; }
+.depth-fireflies i:nth-child(5) { top: 70%; left: 53%; width: 3px; height: 3px; animation-delay: -4.5s; }
+.depth-fireflies i:nth-child(6) { top: 37%; left: 87%; width: 2px; height: 2px; animation-delay: -2.9s; }
+.depth-vignette {
+  position: absolute;
+  z-index: 10;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(6, 35, 38, .18) 0%, transparent 19%, transparent 57%, rgba(8, 38, 37, .32) 100%),
+    linear-gradient(90deg, rgba(5, 33, 35, .18), transparent 20% 80%, rgba(5, 33, 35, .18));
+  box-shadow: inset 0 0 56px rgba(10, 41, 39, .22);
+}
+.depth-scroll {
+  position: absolute;
+  z-index: 11;
+  right: 0;
+  bottom: max(14px, env(safe-area-inset-bottom));
+  left: 0;
+  pointer-events: none;
+  color: rgba(255, 244, 202, .82);
+  font-family: var(--display);
+  font-size: 8px;
+  letter-spacing: .22em;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(5, 30, 29, .7);
+  text-transform: uppercase;
+}
+.depth-scroll span {
+  display: inline-block;
+  margin-left: 4px;
+  color: #f7d47b;
+  font-size: 12px;
+  animation: depthArrow 1.8s ease-in-out infinite;
+}
+@keyframes fireflyFloat {
+  0%, 100% { opacity: 0; transform: translate3d(0, 7px, 0) scale(.7); }
+  35%, 65% { opacity: .88; }
+  50% { transform: translate3d(10px, -12px, 0) scale(1); }
+}
+@keyframes depthArrow {
+  0%, 100% { transform: translateY(-1px); opacity: .65; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+@media (max-height: 700px) {
+  .depth-scene { height: 150vh; height: 150svh; }
+  .depth-copy { top: 28px; }
+  .depth-copy__sub { font-size: 12px; }
+  .depth-couple { height: 74%; }
+  .depth-foliage { width: 112%; left: -6%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .depth-fireflies i,
+  .depth-scroll span { animation: none; }
 }
 
 .shot__veil {

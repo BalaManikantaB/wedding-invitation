@@ -196,7 +196,7 @@
   function armReveals() {
     if (revealArmed) return;
     revealArmed = true;
-    var scenes = document.querySelectorAll(".shot, .events-wrap");
+    var scenes = document.querySelectorAll(".shot, .events-wrap, .depth-scene");
     if (!("IntersectionObserver" in window)) {
       for (var s = 0; s < scenes.length; s++) markInView(scenes[s]);
       return;
