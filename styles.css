@@ -240,8 +240,7 @@ a { color: inherit; }
    travel at their own pace: temple, light, couple, then botanical foreground. */
 .depth-scene {
   position: relative;
-  height: 165vh;
-  height: 165svh;
+  height: auto;
   overflow: visible;
   background: #17373d;
 }
