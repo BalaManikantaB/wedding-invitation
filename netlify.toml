@@ -7,6 +7,22 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# User-replaceable media must NOT be cached "immutable" for a year.
+# These are the files the owner swaps out (drop real photos into
+# assets/photos/, replace music.mp3). Once a browser/CDN cached an old —
+# or missing — copy of e.g. assets/photos/story.jpg as immutable, the
+# photo stays broken for visitors after every redeploy.
+# Netlify lets the more-specific path rule override the /assets/* rule.
+[[headers]]
+  for = "/assets/photos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/assets/music.mp3"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
 [[headers]]
   for = "/*.html"
   [headers.values]

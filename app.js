@@ -495,11 +495,12 @@
   /* Our Story — one polaroid per tap, never overlapping */
   var scatter = document.getElementById("scatter");
   var stage = document.getElementById("scatterStage");
-  var storyOpen = document.getElementById("storyOpen");
+  var storyOpen = document.getElementById("storyOpen") ||
+                  document.querySelector(".story-copy[role=\"button\"]");
   var scatterClose = document.getElementById("scatterClose");
   var scatterHint = document.getElementById("scatterHint");
   var photoFiles = [
-    "assets/photos/story.jpg",
+    "assets/photos/story.jpg?v=2",
     "assets/photos/story-2.jpg",
     "assets/photos/story-3.jpg",
     "assets/photos/story-4.jpg"

@@ -996,7 +996,7 @@ a { color: inherit; }
   color: #f3d9a4;
   letter-spacing: .04em;
 }
-#storyOpen { cursor: pointer; }
+#storyOpen, .story-copy[role="button"] { cursor: pointer; }
 
 .scatter {
   position: fixed;
