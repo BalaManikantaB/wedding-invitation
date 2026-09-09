@@ -5,30 +5,23 @@
 window.WEDDING = {
   groom: {
     first: "Bala",
-    last: "",
     parents: "Mr. Naga Venkata Satyanarayana & Mrs. Venkata Durga",
-    grandparents: ""
   },
   bride: {
     first: "Bhavana",
-    last: "",
-    parents: "Mr. Vara Prasad & Mrs. Naga Lakshmi",
-    grandparents: ""
+    parents: "Mr. Eshwara Prasad & Mrs. Naga Lakshmi",
   },
 
   hashtag: "BalaWedsBhavana",
 
-  /* WhatsApp RSVP — leave empty to keep as placeholder */
-  whatsapp: "",
-
-  siteUrl: "",
+  // Clean URL - GitHub Pages (no xxx) - will also work for Netlify if you change it
+  siteUrl: "https://BalaManikantaB.github.io/wedding-invitation/",
 
   music: "assets/music.mp3",
 
   countdownTo: "2026-10-14T19:00:00+05:30",
 
-  story:
-    "Some souls are destined to find each other. What began as a quiet knowing has grown into a promise — of laughter, of home, of a lifetime walked side by side. With the blessings of our elders and the love of everyone who has shaped us, we invite you to witness the beginning of our forever.",
+  story: "Some souls are destined to find each other. With the blessings of our elders, Bala and Bhavana invite you to witness the beginning of their forever.",
 
   events: [
     {
@@ -38,8 +31,7 @@ window.WEDDING = {
       date: "12 October 2026",
       time: "10:00 AM",
       place: "Kakinada",
-      note: "Bala’s traditional ceremony with family, in Kakinada.",
-      map: "https://www.google.com/maps/search/?api=1&query=Kakinada%2C%20Andhra%20Pradesh"
+      note: "Bala’s traditional ceremony with family, in Kakinada."
     },
     {
       kicker: "12 October  ·  Morning",
@@ -48,8 +40,7 @@ window.WEDDING = {
       date: "12 October 2026",
       time: "10:00 AM",
       place: "Kaikaluru",
-      note: "Bhavana’s traditional ceremony with family, in Kaikaluru.",
-      map: "https://www.google.com/maps/search/?api=1&query=Kaikaluru%2C%20Andhra%20Pradesh"
+      note: "Bhavana’s traditional ceremony with family, in Kaikaluru."
     },
     {
       kicker: "14 October  ·  Evening",
@@ -67,9 +58,9 @@ window.WEDDING = {
       subtitle: "The Sacred Wedding",
       date: "14 October 2026",
       time: "11:00 PM",
-      place: "Venue to be shared",
+      place: "Sreerastu Convention, Kakinada",
       note: "The auspicious muhurtham, as two families become one.",
-      map: ""
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
     }
   ]
 };

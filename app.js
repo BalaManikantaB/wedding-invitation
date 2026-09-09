@@ -1,6 +1,28 @@
 (function () {
   "use strict";
 
+  var CFG = window.WEDDING || {};
+  var REDUCED = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+
+  /* Absolute og:url / og:image so link previews (WhatsApp etc.) resolve the art.
+     Crawlers that don't run JS need the absolute URL baked into index.html —
+     see README "Public URL" note. */
+  (function absolutizeMeta() {
+    var dir = "";
+    if (CFG.siteUrl) {
+      dir = String(CFG.siteUrl).replace(/\/?$/, "/");
+    } else if (window.location && location.origin && location.origin !== "null") {
+      dir = (location.origin + location.pathname).replace(/[^/]*$/, "");
+    }
+    if (!dir) return;
+    var img = document.querySelector('meta[property="og:image"]');
+    if (img && !/^https?:/i.test(img.getAttribute("content") || "")) {
+      img.setAttribute("content", dir + (img.getAttribute("content") || "").replace(/^\//, ""));
+    }
+    var url = document.querySelector('meta[property="og:url"]');
+    if (url) url.setAttribute("content", dir);
+  })();
+
   var openBtn = document.getElementById("openInvite");
   if (openBtn) {
     openBtn.addEventListener("click", function (e) {
@@ -12,6 +34,7 @@
   var HEART_COLORS = ["#ff8fab", "#e36b8a", "#ffc2d1", "#d4577a", "#f7a1b8"];
 
   function shower(n) {
+    if (REDUCED) return;
     var root = document.getElementById("petals");
     if (!root) return;
     for (var i = 0; i < n; i++) {
@@ -38,6 +61,15 @@
   var musicBtn = document.getElementById("musicBtn");
   var playing = false;
   if (audio) audio.volume = 0.55;
+  if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
+
+  if (REDUCED) {
+    var vids = document.querySelectorAll("video");
+    for (var vi = 0; vi < vids.length; vi++) {
+      vids[vi].removeAttribute("autoplay");
+      try { vids[vi].pause(); } catch (e) {}
+    }
+  }
 
   function tryPlay() {
     if (!audio) return;
@@ -128,16 +160,19 @@
   }
 
   if (gate) {
-    gate.addEventListener("pointermove", aimGate, { passive: true });
-    gate.addEventListener("touchmove", aimGate, { passive: true });
-    gate.addEventListener("pointerleave", restGate);
-    gate.addEventListener("touchend", restGate);
+    if (!REDUCED) {
+      gate.addEventListener("pointermove", aimGate, { passive: true });
+      gate.addEventListener("touchmove", aimGate, { passive: true });
+      gate.addEventListener("pointerleave", restGate);
+      gate.addEventListener("touchend", restGate);
+    }
     var grev = gate.querySelectorAll(".reveal, .reveal-fade");
     for (var gi = 0; gi < grev.length; gi++) {
       grev[gi].style.setProperty("--d", (0.15 + gi * 0.09) + "s");
     }
     requestAnimationFrame(function () {
       gate.classList.add("is-ready");
+      if (REDUCED) return;
       gy = 0.38;
       gx = 0;
       gtx = 0;
@@ -183,15 +218,19 @@
   }
 
   var originalOpen = window.openInvitation;
+  var opened = false;
   window.openInvitation = function () {
     if (typeof originalOpen === "function") originalOpen();
+    if (opened) return;
+    opened = true;
     shower(24);
     tryPlay();
     stopGatePlx();
     requestAnimationFrame(armReveals);
   };
 
-  var target = new Date("2026-10-14T19:00:00+05:30").getTime();
+  var target = new Date(CFG.countdownTo || "2026-10-14T19:00:00+05:30").getTime();
+  if (isNaN(target)) target = new Date("2026-10-14T19:00:00+05:30").getTime();
   function pad(n) { return String(n).padStart(2, "0"); }
   function tick() {
     var diff = Math.max(0, target - Date.now());
@@ -208,6 +247,163 @@
   }
   tick();
   setInterval(tick, 1000);
+
+  /* config.js → DOM, so README's "personalise" actually works */
+  function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+  function bindText(attr, value) {
+    if (!value) return;
+    var nodes = document.querySelectorAll('[data-bind="' + attr + '"]');
+    for (var bi = 0; bi < nodes.length; bi++) nodes[bi].textContent = value;
+  }
+  function bindParents(role) {
+    var person = CFG[role];
+    var el = document.querySelector('[data-parents="' + role + '"]');
+    if (!person || !person.parents || !el) return;
+    var parts = String(person.parents).split("&");
+    var clean = function (s) {
+      return esc(String(s).replace(/^\s*(Mr\.|Mrs\.|S\/o|D\/o)\s*/i, "").trim());
+    };
+    var html = (role === "bride" ? "D/o " : "S/o ") + clean(parts[0]);
+    if (parts[1]) html += "<br>&amp; " + clean(parts[1]);
+    el.innerHTML = html;
+  }
+  if (CFG.groom) bindText("groom.first", CFG.groom.first);
+  if (CFG.bride) bindText("bride.first", CFG.bride.first);
+  bindParents("groom");
+  bindParents("bride");
+  var hashEl = document.querySelector(".hash");
+  if (hashEl && CFG.hashtag) hashEl.textContent = "#" + CFG.hashtag;
+  var storyQ = document.querySelector(".story-copy blockquote");
+  if (storyQ && CFG.story) storyQ.textContent = CFG.story;
+
+  /* Event cards — single source of truth is config.js */
+
+  var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+    '<path d="M12 1.8c-4.5 0-8.2 3.6-8.2 8.1 0 5.9 8.2 12.3 8.2 12.3s8.2-6.4 8.2-12.3c0-4.5-3.7-8.1-8.2-8.1zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>';
+
+  function locationRow(place) {
+    var row = document.createElement("p");
+    row.className = "loc-row";
+    row.innerHTML = PIN_SVG;
+    row.appendChild(document.createTextNode(place));
+    return row;
+  }
+
+  function buildEventCard(ev, isNight) {
+    var card = document.createElement("article");
+    card.className = "card reveal-fade";
+
+    var when = document.createElement("p");
+    when.className = "card__when";
+    when.textContent =
+      ((ev.date || "").replace(/\s*\d{4}\s*$/, "") + (ev.time ? " · " + ev.time : "")).trim();
+    card.appendChild(when);
+
+    var h = document.createElement("h3");
+    h.textContent = ev.title || "";
+    card.appendChild(h);
+
+    if (ev.subtitle) {
+      var sub = document.createElement("p");
+      sub.className = "card__sub";
+      sub.textContent = ev.subtitle;
+      card.appendChild(sub);
+    }
+    if (ev.note) {
+      var note = document.createElement("p");
+      note.textContent = ev.note;
+      card.appendChild(note);
+    }
+
+    if (isNight) {
+      /* Night events share one big venue button below the cards —
+         each card still shows its place so the location is evident. */
+      if (ev.place) card.appendChild(locationRow(ev.place));
+      if (!ev.map) {
+        var s = document.createElement("span");
+        s.className = "btn btn--mute";
+        s.textContent = "Venue arriving soon";
+        card.appendChild(s);
+      }
+    } else if (ev.map) {
+      var a = document.createElement("a");
+      a.className = "btn btn--loc";
+      a.href = ev.map;
+      a.target = "_blank";
+      a.rel = "noopener";
+      a.setAttribute("aria-label", "View location" + (ev.place ? " — " + ev.place : ""));
+      a.innerHTML = PIN_SVG;
+      var label = document.createElement("span");
+      label.textContent = "View location" + (ev.place ? " · " + ev.place : "");
+      a.appendChild(label);
+      card.appendChild(a);
+    } else if (ev.place) {
+      card.appendChild(locationRow(ev.place));
+    }
+    return card;
+  }
+
+  function renderEvents() {
+    var day = document.getElementById("dayEvents");
+    var night = document.getElementById("nightEvents");
+    if ((!day && !night) || !CFG.events || !CFG.events.length) return;
+    for (var ei = 0; ei < CFG.events.length; ei++) {
+      var ev = CFG.events[ei];
+      var isNight = /evening|night/i.test(ev.kicker || "");
+      var host = (isNight ? night : day) || day || night;
+      if (host) host.appendChild(buildEventCard(ev, isNight));
+    }
+  }
+  renderEvents();
+
+  /* One shared golden venue button when the night events share a venue */
+  function renderVenueLink() {
+    var host = document.getElementById("venueLink");
+    if (!host || !CFG.events) return;
+    var ev = null;
+    for (var vi2 = 0; vi2 < CFG.events.length; vi2++) {
+      if (/evening|night/i.test(CFG.events[vi2].kicker || "") && CFG.events[vi2].map) {
+        ev = CFG.events[vi2];
+        break;
+      }
+    }
+    if (!ev) return;
+    var a = document.createElement("a");
+    a.className = "venue-btn reveal-fade";
+    a.href = ev.map;
+    a.target = "_blank";
+    a.rel = "noopener";
+    a.setAttribute("aria-label", "View location \u2014 " + (ev.place || "the venue"));
+    var pin = document.createElement("span");
+    pin.className = "venue-btn__pin";
+    pin.innerHTML = PIN_SVG;
+    var body = document.createElement("span");
+    body.className = "venue-btn__body";
+    var cta = document.createElement("span");
+    cta.className = "venue-btn__cta";
+    cta.textContent = "View Location";
+    var place = document.createElement("span");
+    place.className = "venue-btn__place";
+    place.textContent = ev.place || "Tap for directions";
+    body.appendChild(cta);
+    body.appendChild(place);
+    var go = document.createElement("span");
+    go.className = "venue-btn__go";
+    go.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+      'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+    a.appendChild(pin);
+    a.appendChild(body);
+    a.appendChild(go);
+    host.appendChild(a);
+    var note = document.createElement("p");
+    note.className = "venue-note reveal-fade";
+    note.textContent = "Reception & Vivaha \u00b7 tap for directions";
+    host.appendChild(note);
+  }
+  renderVenueLink();
 
   var slots = document.querySelectorAll("[data-photo]");
   for (var i = 0; i < slots.length; i++) {
@@ -227,7 +423,7 @@
   /* Drake-style window parallax: lerp, vertical only, settles when you stop */
   var plxNodes = document.querySelectorAll("[data-plx]");
   var running = false;
-  var EASE = 0.14;
+  var EASE = 0.085;
 
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
 
@@ -238,11 +434,18 @@
       var scene = el.closest(".parallax-scene") || el.parentElement;
       if (!scene) continue;
       var rect = scene.getBoundingClientRect();
+      if (!rect.height) continue;
+      /* Skip fully off-screen scenes — but keep their last pose, don't snap */
+      if (rect.bottom < -vh * 0.25 || rect.top > vh * 1.25) continue;
       var progress = clamp((vh - rect.top) / (vh + rect.height), 0, 1);
       var amp = parseFloat(el.getAttribute("data-plx")) || 0;
       var raw = (0.5 - progress) * amp * 2;
-      if (el.classList.contains("layer-back") || el.classList.contains("layer-fore")) {
-        var budget = Math.max(20, rect.height * 0.12);
+      if (el.classList.contains("layer-back")) {
+        /* Back boxes overshoot 12% — budget 11% so opaque art never gaps */
+        var refH = rect.height;
+        var pin = el.closest(".depth-pin");
+        if (pin) refH = pin.getBoundingClientRect().height || refH;
+        var budget = Math.max(40, refH * 0.11);
         raw = clamp(raw, -budget, budget);
       }
       el._target = raw;
@@ -277,11 +480,17 @@
     }
   }
 
-  window.addEventListener("scroll", onScroll, { passive: true });
-  window.addEventListener("resize", onScroll, { passive: true });
-  document.addEventListener("touchmove", onScroll, { passive: true });
-  targets();
-  tickPlx();
+  if (!REDUCED) {
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    document.addEventListener("touchmove", onScroll, { passive: true });
+    window.addEventListener("load", onScroll);
+    /* Re-aim after late assets (video, fonts) settle layout */
+    setTimeout(onScroll, 600);
+    setTimeout(onScroll, 2000);
+    targets();
+    tickPlx();
+  }
 
   /* Our Story — one polaroid per tap, never overlapping */
   var scatter = document.getElementById("scatter");
@@ -377,6 +586,12 @@
     storyOpen.addEventListener("click", function (e) {
       e.preventDefault();
       openScatter();
+    });
+    storyOpen.addEventListener("keydown", function (e) {
+      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
+        e.preventDefault();
+        openScatter();
+      }
     });
   }
   if (scatterClose) scatterClose.addEventListener("click", function (e) {
