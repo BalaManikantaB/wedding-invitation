@@ -704,8 +704,8 @@ a { color: inherit; }
   background:
     /* Keep the temple illustration luminous; the darker values are reserved
        for the letterforms and the foliage-covered edges. */
-    radial-gradient(ellipse 82% 30% at 50% 21%, rgba(10, 34, 42, .27) 0%, rgba(10, 34, 42, .11) 48%, transparent 78%),
-    linear-gradient(180deg, rgba(8, 25, 33, .24) 0%, rgba(8, 25, 33, .04) 35%, rgba(8, 25, 33, 0) 60%, rgba(13, 27, 27, .27) 100%);
+    radial-gradient(ellipse 82% 30% at 50% 21%, rgba(10, 34, 42, .15) 0%, rgba(10, 34, 42, .05) 48%, transparent 78%),
+    linear-gradient(180deg, rgba(8, 25, 33, .12) 0%, rgba(8, 25, 33, .02) 35%, rgba(8, 25, 33, 0) 60%, rgba(13, 27, 27, .20) 100%);
 }
 .shot__veil--night {
   background: linear-gradient(180deg, rgba(8,6,20,.2), rgba(8,6,20,.55));
@@ -771,15 +771,16 @@ a { color: inherit; }
   padding: 20px 16px 18px;
   border: 1px solid rgba(249, 223, 160, .45);
   border-radius: 24px;
+  /* A near-invisible frame keeps the typography anchored without covering
+     the hand-drawn gopuram behind it. */
   background:
-    /* Glass-light rather than an opaque panel: the gopuram remains visible
-       underneath the type while the warm text keyline keeps it legible. */
-    linear-gradient(180deg, rgba(11, 36, 42, .31), rgba(11, 36, 42, .12)),
-    rgba(9, 28, 34, .06);
+    radial-gradient(ellipse at center, rgba(11, 36, 42, .12), transparent 74%),
+    rgba(9, 28, 34, .015);
+  border-color: rgba(249, 223, 160, .30);
   box-shadow:
-    0 18px 42px rgba(4, 18, 22, .15),
-    inset 0 1px 0 rgba(255, 248, 218, .16),
-    inset 0 -1px 0 rgba(255, 225, 152, .08);
+    0 12px 30px rgba(4, 18, 22, .08),
+    inset 0 1px 0 rgba(255, 248, 218, .13),
+    inset 0 -1px 0 rgba(255, 225, 152, .06);
   /* Do not blur the temple behind the lockup. */
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
@@ -875,8 +876,8 @@ a { color: inherit; }
   padding: 12px 18px 11px;
   border: 1px solid rgba(245, 219, 153, .4);
   border-radius: 999px;
-  background: rgba(12, 31, 31, .44);
-  box-shadow: 0 12px 30px rgba(4, 16, 17, .2), inset 0 1px 0 rgba(255, 247, 220, .12);
+  background: rgba(12, 31, 31, .26);
+  box-shadow: 0 10px 24px rgba(4, 16, 17, .12), inset 0 1px 0 rgba(255, 247, 220, .12);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
