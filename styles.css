@@ -940,44 +940,105 @@ a { color: inherit; }
   margin: 0;
 }
 
-.events-wrap h2 {
+/* ============================================================
+   THE CELEBRATIONS — a warm cream screen: an elegant header, a
+   framed portrait film (poster-first, fades in as it plays), then
+   the two ceremony cards rendered from config.js.
+   ============================================================ */
+.events {
+  position: relative;
+  background:
+    radial-gradient(ellipse 95% 44% at 50% -3%, rgba(196, 160, 86, .17), transparent 62%),
+    radial-gradient(ellipse 72% 36% at 50% 106%, rgba(196, 160, 86, .12), transparent 60%),
+    linear-gradient(180deg, #fdf9f0 0%, #f9f1de 52%, #f4e8d1 100%);
+  padding: 58px 18px 46px;
+  text-align: center;
+}
+.events__head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.events__title {
+  font-family: var(--script);
+  font-weight: 400;
+  font-size: clamp(42px, 12vw, 54px);
+  line-height: 1.04;
+  color: var(--maroon);
+  margin: 4px 0 8px;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .7), 0 12px 30px rgba(122, 31, 43, .14);
+}
+.events__sub {
   font-family: var(--serif);
-  font-size: 30px;
-  font-weight: 500;
-  text-align: center;
-  margin: 6px 0 14px;
+  font-style: italic;
+  font-size: 14.5px;
+  letter-spacing: .04em;
+  color: var(--soft);
 }
-.events-wrap {
-  background: linear-gradient(180deg, #eaf6fd 0%, #d7eef8 40%, #cfe9f6 100%);
-  padding: 28px 16px 0;
-  overflow: hidden;
-  text-align: center;
-}
-.bleed-wrap {
-  position: relative;
-  margin: 14px -16px 0;
-  aspect-ratio: 9 / 14.7;
-}
-.bleed-wrap::after {
-  content: "";
-  position: absolute;
-  left: 16%;
-  right: 16%;
-  bottom: 7%;
-  height: 36px;
-  background: radial-gradient(ellipse at center, rgba(43, 26, 18, .16), transparent 72%);
-  pointer-events: none;
-}
-.bleed {
-  display: block;
+
+/* Framed film — an instant poster layer, a double gold hairline and a
+   soft shadow turn the looping video into a keepsake. */
+.events-media {
+  margin: 28px auto 0;
+  max-width: 336px;
   width: 100%;
-  height: auto;
-  margin-top: -28px;
-  position: relative;
-  z-index: 1;
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 100%);
-  mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 100%);
 }
+.events-media__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border-radius: 22px;
+  overflow: hidden;
+  background: #efe4d0;
+  border: 1px solid rgba(196, 160, 86, .5);
+  box-shadow:
+    0 0 0 6px rgba(255, 255, 255, .6),
+    0 0 0 7px rgba(196, 160, 86, .24),
+    0 26px 64px rgba(74, 38, 20, .20);
+}
+.events-media__poster,
+.events-media__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.events-media__video { z-index: 1; }
+.events-media__poster {
+  z-index: 2;
+  transition: opacity .7s var(--ease);
+}
+.events-media__frame.is-playing .events-media__poster { opacity: 0; }
+.events-media__loader {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  transition: opacity .45s var(--ease);
+}
+.events-media__loader span {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 2px solid rgba(122, 31, 43, .14);
+  border-top-color: var(--maroon);
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, .65);
+  animation: loaderSpin .9s linear infinite;
+}
+.events-media__frame.is-playing .events-media__loader { opacity: 0; }
+@keyframes loaderSpin { to { transform: rotate(360deg); } }
+.events-media__caption {
+  margin-top: 15px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: .05em;
+  color: var(--soft);
+}
+.events__cards { margin-top: 32px; }
 
 /* Content groups that drift against their backgrounds for full-page parallax */
 #dayEvents,
@@ -985,34 +1046,84 @@ a { color: inherit; }
 .story-copy,
 .closing__inner {
 }
-.plx-drift { position: relative; }
 
 .card {
-  background: linear-gradient(180deg, #fffdf8, #f7edd8);
-  border-radius: 20px;
-  padding: 16px 16px 14px;
-  margin: 0 auto 12px;
+  position: relative;
+  background: linear-gradient(180deg, #fffef8, #f9f0db);
+  border-radius: 18px;
+  padding: 18px 18px 16px;
+  margin: 0 auto 14px;
   max-width: 100%;
   text-align: left;
-  border: 1px solid rgba(196,160,86,.38);
-  box-shadow: 0 16px 40px rgba(20,10,8,.16), inset 0 1px 0 rgba(255,255,255,.7);
+  border: 1px solid rgba(196, 160, 86, .4);
+  box-shadow: 0 18px 44px rgba(74, 38, 20, .12), inset 0 1px 0 rgba(255, 255, 255, .85);
+  overflow: hidden;
+}
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
 }
 .card__when {
   font-size: 10px;
-  letter-spacing: .18em;
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--maroon);
   font-weight: 600;
 }
-.card h3 {
+.card h3,
+.card__title {
   font-family: var(--serif);
-  font-size: 26px;
+  font-size: 27px;
   font-weight: 600;
-  line-height: 1.1;
-  margin: 4px 0 2px;
+  line-height: 1.08;
+  margin: 5px 0 2px;
+  color: var(--ink);
 }
-.card__sub { font-family: var(--serif); font-style: italic; color: var(--soft); margin-bottom: 8px; }
-.card p { font-size: 13px; color: var(--soft); line-height: 1.45; margin-bottom: 12px; }
+.card__sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15px;
+  color: var(--soft);
+  margin-bottom: 10px;
+}
+.card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 2px 0 10px;
+}
+.card__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: var(--maroon);
+  background: rgba(196, 160, 86, .13);
+  border: 1px solid rgba(196, 160, 86, .34);
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.card__chip svg {
+  width: 13px;
+  height: 13px;
+  color: var(--gold);
+  flex-shrink: 0;
+}
+.card__note {
+  font-size: 13px;
+  color: var(--soft);
+  line-height: 1.5;
+  margin: 0 0 12px;
+}
 .btn {
   display: inline-flex;
   align-items: center;
@@ -1071,25 +1182,6 @@ a { color: inherit; }
   0%, 55% { left: -70%; }
   100% { left: 140%; }
 }
-/* Location line on cards without a map link — place is always evident */
-.loc-row {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  margin: 4px 0 2px;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 14px;
-  color: var(--maroon);
-}
-.loc-row svg {
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
-  color: #d63329;
-  filter: drop-shadow(0 1px 1px rgba(0,0,0,.2));
-}
-
 .night-cards {
   position: relative;
   z-index: 5;

@@ -63,23 +63,34 @@
   if (audio) audio.volume = 0.55;
   if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
 
-  /* Video: preload="none" means 0 bytes are downloaded until the section is
-     actually in view — it never competes with the images on first load. */
-  var bleedVideo = document.querySelector("video.bleed");
-  if (bleedVideo && "IntersectionObserver" in window && !REDUCED) {
-    var vObserver = new IntersectionObserver(function (entries) {
-      for (var e = 0; e < entries.length; e++) {
-        if (entries[e].isIntersecting) {
-          var p = bleedVideo.play();
-          if (p && p.catch) p.catch(function () {});
-        } else {
-          try { bleedVideo.pause(); } catch (err) {}
+  /* Celebration film — preload="auto" + a same-frame poster layer means the
+     frame is alive instantly, then the video fades in over the poster the
+     moment it can play.  It only pauses when it leaves the viewport. */
+  var film = document.querySelector(".events-media__video");
+  var filmFrame = film ? film.closest(".events-media__frame") : null;
+
+  function filmReady() {
+    if (filmFrame) filmFrame.classList.add("is-playing");
+  }
+  if (film) {
+    if (film.readyState >= 3) filmReady();
+    film.addEventListener("canplay", filmReady);
+    film.addEventListener("playing", filmReady);
+    var fp = film.play();
+    if (fp && fp.catch) fp.catch(function () {});
+    if ("IntersectionObserver" in window && !REDUCED) {
+      var vObserver = new IntersectionObserver(function (entries) {
+        for (var e = 0; e < entries.length; e++) {
+          if (entries[e].isIntersecting) {
+            var p = film.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            try { film.pause(); } catch (err) {}
+          }
         }
-      }
-    }, { threshold: 0.25 });
-    vObserver.observe(bleedVideo);
-  } else if (bleedVideo) {
-    try { bleedVideo.pause(); } catch (e2) {}
+      }, { threshold: 0.3 });
+      vObserver.observe(film);
+    }
   }
 
   function tryPlay() {
@@ -207,7 +218,7 @@
   function armReveals() {
     if (revealArmed) return;
     revealArmed = true;
-    var scenes = document.querySelectorAll(".shot, .events-wrap, .depth-scene");
+    var scenes = document.querySelectorAll(".shot, .events, .depth-scene");
     if (!("IntersectionObserver" in window)) {
       for (var s = 0; s < scenes.length; s++) markInView(scenes[s]);
       return;
@@ -294,13 +305,8 @@
   var PIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
     '<path d="M12 1.8c-4.5 0-8.2 3.6-8.2 8.1 0 5.9 8.2 12.3 8.2 12.3s8.2-6.4 8.2-12.3c0-4.5-3.7-8.1-8.2-8.1zm0 11a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/></svg>';
 
-  function locationRow(place) {
-    var row = document.createElement("p");
-    row.className = "loc-row";
-    row.innerHTML = PIN_SVG;
-    row.appendChild(document.createTextNode(place));
-    return row;
-  }
+  var CLOCK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 1.9"/></svg>';
 
   function buildEventCard(ev, isNight) {
     var card = document.createElement("article");
@@ -308,11 +314,12 @@
 
     var when = document.createElement("p");
     when.className = "card__when";
-    when.textContent =
+    when.textContent = ev.kicker ||
       ((ev.date || "").replace(/\s*\d{4}\s*$/, "") + (ev.time ? " · " + ev.time : "")).trim();
     card.appendChild(when);
 
     var h = document.createElement("h3");
+    h.className = "card__title";
     h.textContent = ev.title || "";
     card.appendChild(h);
 
@@ -322,16 +329,35 @@
       sub.textContent = ev.subtitle;
       card.appendChild(sub);
     }
+
+    var meta = document.createElement("div");
+    meta.className = "card__meta";
+    if (ev.time) {
+      var chipTime = document.createElement("span");
+      chipTime.className = "card__chip";
+      chipTime.innerHTML = CLOCK_SVG;
+      chipTime.appendChild(document.createTextNode(ev.time));
+      meta.appendChild(chipTime);
+    }
+    if (ev.place) {
+      var chipPlace = document.createElement("span");
+      chipPlace.className = "card__chip";
+      chipPlace.innerHTML = PIN_SVG;
+      chipPlace.appendChild(document.createTextNode(ev.place));
+      meta.appendChild(chipPlace);
+    }
+    if (meta.childNodes.length) card.appendChild(meta);
+
     if (ev.note) {
       var note = document.createElement("p");
+      note.className = "card__note";
       note.textContent = ev.note;
       card.appendChild(note);
     }
 
     if (isNight) {
       /* Night events share one big venue button below the cards —
-         each card still shows its place so the location is evident. */
-      if (ev.place) card.appendChild(locationRow(ev.place));
+         the chip row already carries the place for each ceremony. */
       if (!ev.map) {
         var s = document.createElement("span");
         s.className = "btn btn--mute";
@@ -350,8 +376,6 @@
       label.textContent = "View location" + (ev.place ? " · " + ev.place : "");
       a.appendChild(label);
       card.appendChild(a);
-    } else if (ev.place) {
-      card.appendChild(locationRow(ev.place));
     }
     return card;
   }
