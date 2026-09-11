@@ -433,10 +433,6 @@
     a.appendChild(body);
     a.appendChild(go);
     host.appendChild(a);
-    var dinner = document.createElement("p");
-    dinner.className = "venue-note venue-note--dinner reveal-fade";
-    dinner.textContent = "Dinner will be served at the same wedding venue";
-    host.appendChild(dinner);
 
     var note = document.createElement("p");
     note.className = "venue-note reveal-fade";
