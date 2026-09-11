@@ -66,7 +66,8 @@ a { color: inherit; }
 
 .stage { background: var(--cream); width: 100%; }
 
-/* Gate */
+/* Gate — "golden threshold": cinematic dusk veil, centred invitation lockup,
+   thin certificate frame, gilded Ganesha seal, glass-gold CTA. */
 .gate {
   position: fixed;
   top: 0;
@@ -101,12 +102,42 @@ a { color: inherit; }
   will-change: transform;
   z-index: 0;
 }
+/* Cinematic dusk — warm blessing light behind the seal, soft darkening
+   behind the type, deepened base so the CTA floats on shadow. */
 .gate__veil {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(18,10,8,.08) 0%, rgba(18,10,8,.42) 100%);
+  background:
+    radial-gradient(ellipse 85% 48% at 50% 30%, rgba(255, 199, 112, .22), transparent 64%),
+    radial-gradient(ellipse 130% 62% at 50% 50%, rgba(16, 7, 5, .34), transparent 74%),
+    linear-gradient(180deg, rgba(16, 8, 6, .34) 0%, rgba(16, 8, 6, .10) 30%, rgba(16, 8, 6, .14) 55%, rgba(16, 8, 6, .58) 100%);
+}
+/* Thin certificate frame with a gilded diamond on the top rail */
+.gate__frame {
+  position: absolute;
+  inset: 14px;
+  z-index: 2;
+  pointer-events: none;
+  border: 1px solid rgba(240, 212, 138, .42);
+}
+.gate__frame::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(240, 212, 138, .18);
+}
+.gate__frame::after {
+  content: "";
+  position: absolute;
+  top: -4.5px;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: linear-gradient(135deg, #ffe9b8, #d4a94f);
+  transform: translateX(-50%) rotate(45deg);
+  box-shadow: 0 0 10px rgba(240, 212, 138, .75);
 }
 .gate__card {
   position: relative;
@@ -115,54 +146,207 @@ a { color: inherit; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   text-align: center;
-  padding: 24px 22px calc(36px + env(safe-area-inset-bottom));
+  padding: 70px 24px 150px;
   color: #fff8e8;
 }
-.gate__ganesha {
-  width: 118px;
-  border-radius: 18px;
-  margin-bottom: 10px;
-  box-shadow: 0 16px 40px rgba(0,0,0,.35), 0 0 0 3px rgba(240, 212, 138, .55);
+/* Ganesha in a gilded seal — breathing light, slow mandala ring */
+.gate__seal {
+  position: relative;
+  width: 122px;
+  height: 122px;
+  margin: 0 auto 16px;
   will-change: transform;
   z-index: 3;
 }
-.gate__blessing { font-family: var(--serif); letter-spacing: .14em; font-size: 13px; margin-bottom: 10px; }
+.gate__seal::before {
+  content: "";
+  position: absolute;
+  inset: -36px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(255, 199, 112, .34) 0%, rgba(255, 199, 112, .12) 46%, transparent 70%);
+  animation: sealBreathe 4.6s ease-in-out infinite;
+}
+.gate__seal::after {
+  content: "";
+  position: absolute;
+  inset: -9px;
+  border-radius: 50%;
+  pointer-events: none;
+  border: 1px dashed rgba(240, 212, 138, .45);
+  animation: sealSpin 48s linear infinite;
+}
+.gate__ganesha {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 8%;
+  border-radius: 50%;
+  border: 1px solid rgba(246, 222, 166, .9);
+  box-shadow:
+    0 0 0 4px rgba(22, 10, 7, .34),
+    0 0 0 5px rgba(240, 212, 138, .55),
+    0 14px 40px rgba(15, 6, 4, .5),
+    0 0 34px rgba(255, 190, 95, .35);
+}
+@keyframes sealBreathe {
+  0%, 100% { opacity: .8; transform: scale(.97); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+@keyframes sealSpin {
+  to { transform: rotate(360deg); }
+}
+.gate__blessing {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 15.5px;
+  letter-spacing: .06em;
+  color: rgba(250, 229, 194, .95);
+  margin-bottom: 14px;
+  text-shadow: 0 1px 10px rgba(35, 14, 8, .55);
+}
+.gate__rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 150px;
+  margin: 0 auto 12px;
+  color: #f0d48a;
+  font-size: 9px;
+  line-height: 1;
+  text-shadow: 0 0 10px rgba(240, 212, 138, .55);
+}
+.gate__rule::before,
+.gate__rule::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, transparent, rgba(240, 212, 138, .85));
+}
+.gate__rule::after { transform: scaleX(-1); }
+.gate .kicker {
+  color: #f3cf8f;
+  margin-bottom: 4px;
+  text-shadow: 0 1px 8px rgba(40, 16, 8, .6);
+}
 .gate h1 {
   font-family: var(--display);
-  font-weight: 500;
-  font-size: 34px;
-  letter-spacing: .14em;
+  font-weight: 600;
+  font-size: 38px;
+  letter-spacing: .16em;
+  line-height: 1.22;
   text-transform: uppercase;
+  color: #fff8e8;
+  text-shadow: 0 2px 18px rgba(35, 14, 8, .65), 0 1px 2px rgba(35, 14, 8, .4);
 }
 .gate h1 i {
   font-family: var(--script);
   font-style: normal;
   display: block;
-  font-size: 28px;
+  font-size: 26px;
   letter-spacing: 0;
   text-transform: none;
   color: #f0d48a;
+  margin: 2px 0;
+  text-shadow: 0 1px 10px rgba(35, 14, 8, .5);
 }
-.gate__date { font-family: var(--serif); font-style: italic; margin: 10px 0 22px; opacity: .95; }
+.gate__date {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .30em;
+  text-transform: uppercase;
+  color: #f3d9a4;
+  text-shadow: 0 1px 10px rgba(35, 14, 8, .6);
+}
+.gate__date::before,
+.gate__date::after {
+  content: "";
+  width: 34px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(243, 217, 164, .8));
+}
+.gate__date::after { transform: scaleX(-1); }
+/* CTA anchored at the base of the frame */
+.gate__cta {
+  position: absolute;
+  z-index: 3;
+  left: 0;
+  right: 0;
+  bottom: calc(42px + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  padding: 0 24px;
+}
 .gate__btn {
   position: relative;
   z-index: 5;
+  overflow: hidden;
   pointer-events: auto;
-  background: linear-gradient(180deg, #8d2432, var(--deep));
-  color: #fff8e8;
-  padding: 16px 32px;
-  border-radius: 999px;
-  letter-spacing: .22em;
+  font-family: var(--display);
   font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .30em;
   text-transform: uppercase;
-  border: 1px solid rgba(240, 212, 138, .55);
-  box-shadow: 0 14px 32px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.18);
-  min-height: 48px;
+  color: #ffe9b8;
+  background: linear-gradient(180deg, rgba(52, 22, 16, .52), rgba(26, 10, 8, .62));
+  border: 1px solid rgba(240, 212, 138, .85);
+  padding: 17px 42px 15px;
+  border-radius: 999px;
+  min-height: 52px;
+  box-shadow: 0 10px 30px rgba(10, 4, 3, .45), 0 0 24px rgba(255, 190, 95, .16), inset 0 1px 0 rgba(255, 244, 214, .14);
+  transition: transform .25s var(--ease);
+  animation: gateGlow 3.2s ease-in-out infinite;
+}
+.gate__btn::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -70%;
+  width: 45%;
+  background: linear-gradient(100deg, transparent, rgba(255, 244, 214, .3), transparent);
+  transform: skewX(-20deg);
+  animation: btnShine 4.2s ease-in-out infinite;
+  pointer-events: none;
 }
 .gate__btn:active { transform: scale(.98); }
-.gate__hint { margin-top: 12px; font-size: 12px; opacity: .8; }
+@keyframes gateGlow {
+  0%, 100% { box-shadow: 0 10px 30px rgba(10,4,3,.45), 0 0 18px rgba(255,190,95,.14), inset 0 1px 0 rgba(255,244,214,.14); }
+  50% { box-shadow: 0 10px 34px rgba(10,4,3,.5), 0 0 34px rgba(255,190,95,.34), inset 0 1px 0 rgba(255,244,214,.2); }
+}
+.gate__hint {
+  font-family: var(--display);
+  font-size: 9px;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: rgba(255, 240, 214, .72);
+  text-shadow: 0 1px 8px rgba(35, 14, 8, .5);
+}
+@media (max-height: 700px) {
+  .gate__seal { width: 104px; height: 104px; margin-bottom: 12px; }
+  .gate__card { padding: 52px 22px 128px; }
+  .gate h1 { font-size: 32px; }
+  .gate__blessing { font-size: 14px; margin-bottom: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .gate__seal::before,
+  .gate__seal::after,
+  .gate__btn,
+  .gate__btn::after { animation: none; }
+}
 
 .kicker {
   font-family: var(--display);
