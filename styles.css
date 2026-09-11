@@ -1620,4 +1620,8 @@ a { color: inherit; }
     transform: none;
     animation: none !important;
   }
+  .events-media__loader span {
+    animation: none;
+    border-top-color: rgba(122, 31, 43, .14);
+  }
 }
