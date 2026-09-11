@@ -699,7 +699,13 @@ a { color: inherit; }
   pointer-events: none;
 }
 .shot__veil--hero {
-  background: linear-gradient(180deg, rgba(8,12,22,.18) 0%, rgba(8,12,22,0) 38%, rgba(8,12,22,.28) 100%);
+  /* A quiet, cool veil creates a clean reading zone without hiding the
+     hand-drawn gopuram or the warm light at its base. */
+  background:
+    /* Keep the temple illustration luminous; the darker values are reserved
+       for the letterforms and the foliage-covered edges. */
+    radial-gradient(ellipse 82% 30% at 50% 21%, rgba(10, 34, 42, .15) 0%, rgba(10, 34, 42, .05) 48%, transparent 78%),
+    linear-gradient(180deg, rgba(8, 25, 33, .12) 0%, rgba(8, 25, 33, .02) 35%, rgba(8, 25, 33, 0) 60%, rgba(13, 27, 27, .20) 100%);
 }
 .shot__veil--night {
   background: linear-gradient(180deg, rgba(8,6,20,.2), rgba(8,6,20,.55));
@@ -717,39 +723,205 @@ a { color: inherit; }
   color: #fff;
   padding: 0 20px;
 }
-.shot__copy--top { top: 8%; }
-.shot__copy--bottom { bottom: 7%; }
+.shot__copy--top {
+  top: 11%;
+  display: flex;
+  justify-content: center;
+}
+.shot__copy--bottom {
+  bottom: 4.5%;
+  display: flex;
+  justify-content: center;
+}
 
-.hero-name {
+/* The hero deliberately uses a restrained glass-and-gold lockup: it keeps the
+   temple visible, while the contrast stays dependable on small screens and in
+   bright sunlight. */
+.hero-topline {
+  position: absolute;
+  z-index: 5;
+  top: max(22px, env(safe-area-inset-top));
+  left: 22px;
+  right: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: rgba(255, 239, 193, .9);
   font-family: var(--display);
-  font-size: 38px;
-  letter-spacing: .18em;
-  font-weight: 500;
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .28em;
+  line-height: 1;
   text-transform: uppercase;
-  text-shadow: 0 8px 28px rgba(0,0,0,.4);
+  text-shadow: 0 2px 10px rgba(4, 18, 23, .65);
+  white-space: nowrap;
 }
-@media (max-width: 480px) {
-  .hero-name { font-size: clamp(30px, 9.5vw, 42px); }
+.hero-topline__line {
+  display: block;
+  width: clamp(18px, 9vw, 38px);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 222, 145, .82));
 }
-.hero-weds {
+.hero-topline__line:last-child { transform: scaleX(-1); }
+
+.hero-lockup {
+  position: relative;
+  width: min(100%, 286px);
+  padding: 20px 16px 18px;
+  border: 1px solid rgba(249, 223, 160, .45);
+  border-radius: 24px;
+  /* A near-invisible frame keeps the typography anchored without covering
+     the hand-drawn gopuram behind it. */
+  background:
+    radial-gradient(ellipse at center, rgba(11, 36, 42, .12), transparent 74%),
+    rgba(9, 28, 34, .015);
+  border-color: rgba(249, 223, 160, .30);
+  box-shadow:
+    0 12px 30px rgba(4, 18, 22, .08),
+    inset 0 1px 0 rgba(255, 248, 218, .13),
+    inset 0 -1px 0 rgba(255, 225, 152, .06);
+  /* Do not blur the temple behind the lockup. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+.hero-lockup::before,
+.hero-lockup::after {
+  content: "";
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(243, 207, 121, .4), transparent);
+}
+.hero-lockup::before { top: 8px; }
+.hero-lockup::after { bottom: 8px; }
+.hero-eyebrow {
+  font-family: var(--serif);
+  font-size: 13px;
+  font-style: italic;
+  letter-spacing: .08em;
+  line-height: 1.2;
+  color: rgba(255, 242, 211, .96);
+  text-shadow: 0 2px 12px rgba(0,0,0,.7);
+}
+.hero-rule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: min(82%, 218px);
+  margin: 10px auto 11px;
+  color: #f0cb78;
+  font-size: 9px;
+  line-height: 1;
+}
+.hero-rule i {
+  display: block;
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(241, 208, 132, .82));
+}
+.hero-rule i:last-of-type { transform: scaleX(-1); }
+.hero-rule b {
+  font-size: 9px;
+  font-weight: 400;
+  text-shadow: 0 0 10px rgba(240, 203, 120, .55);
+}
+.hero-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 1;
+  color: #fffaf0;
+  margin: 0;
+}
+.hero-name {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(32px, 9.8vw, 43px);
+  letter-spacing: .19em;
+  font-weight: 600;
+  line-height: 1.14;
+  text-transform: uppercase;
+  color: #fffaf0;
+  /* A soft keyline holds the letterforms over detailed artwork. */
+  text-shadow:
+    0 2px 0 rgba(11, 42, 45, .72),
+    0 4px 18px rgba(2, 16, 20, .72);
+  padding-left: .19em;
+}
+.hero-ampersand {
   font-family: var(--script);
-  font-size: 30px;
-  margin: 2px 0 4px;
+  font-size: 29px;
+  font-weight: 400;
+  line-height: .88;
+  margin: 5px 0 6px;
+  color: #f3d386;
+  text-shadow: 0 2px 12px rgba(3, 18, 21, .8), 0 0 18px rgba(238, 193, 100, .25);
+}
+.hero-kicker {
+  margin-top: 11px;
+  font-family: var(--display);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: .28em;
+  line-height: 1.3;
+  text-transform: uppercase;
+  color: rgba(255, 238, 194, .94);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .75);
+}
+
+.hero-date-lockup {
+  min-width: min(100%, 236px);
+  padding: 12px 18px 11px;
+  border: 1px solid rgba(245, 219, 153, .4);
+  border-radius: 999px;
+  background: rgba(12, 31, 31, .26);
+  box-shadow: 0 10px 24px rgba(4, 16, 17, .12), inset 0 1px 0 rgba(255, 247, 220, .12);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
 }
 .hero-date {
-  font-family: var(--serif);
-  letter-spacing: .28em;
-  font-size: 16px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: .27em;
+  line-height: 1.2;
+  padding-left: .27em;
+  color: #fff5d8;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .75);
 }
-.hero-sub { font-family: var(--serif); font-style: italic; margin-top: 6px; font-size: 14px; }
+.hero-sub {
+  margin-top: 6px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: .03em;
+  color: rgba(255, 244, 215, .96);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, .75);
+}
+.hero-scroll {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  color: rgba(255, 245, 215, .9);
+  font-family: var(--display);
+  font-size: 7px;
+  letter-spacing: .26em;
+  line-height: 1;
+  text-transform: uppercase;
+  text-shadow: 0 2px 9px rgba(0,0,0,.75);
+}
 .cue {
   display: block;
   width: 16px;
   height: 26px;
-  border: 1.5px solid rgba(255,255,255,.8);
+  border: 1.5px solid rgba(255, 240, 201, .9);
   border-radius: 10px;
-  margin: 14px auto 0;
+  margin: 0 auto 7px;
   position: relative;
+  box-shadow: 0 0 0 3px rgba(255, 227, 158, .08), 0 4px 14px rgba(0,0,0,.28);
 }
 .cue::after {
   content: "";
@@ -758,9 +930,32 @@ a { color: inherit; }
   top: 5px;
   width: 3px;
   height: 6px;
-  background: #fff;
+  background: #fff3c8;
   border-radius: 2px;
   transform: translateX(-50%);
+  animation: heroScrollDot 1.8s ease-in-out infinite;
+}
+@keyframes heroScrollDot {
+  0%, 100% { transform: translate(-50%, 0); opacity: .5; }
+  50% { transform: translate(-50%, 6px); opacity: 1; }
+}
+
+@media (max-width: 360px) {
+  .hero-lockup { width: min(100%, 270px); padding-right: 13px; padding-left: 13px; }
+  .hero-name { font-size: clamp(29px, 9.4vw, 39px); }
+  .hero-date-lockup { min-width: 218px; }
+}
+
+@media (max-height: 700px) {
+  .shot__copy--top { top: 9%; }
+  .hero-lockup { padding-top: 16px; padding-bottom: 15px; }
+  .hero-rule { margin-top: 7px; margin-bottom: 8px; }
+  .hero-kicker { margin-top: 8px; }
+  .hero-scroll { margin-top: 7px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cue::after { animation: none; }
 }
 
 /* Invite — cream mandala backdrop, banana trees, marigold toranam, luminous type. */
@@ -1341,6 +1536,45 @@ a { color: inherit; }
   padding: 8px;
 }
 
+.closing__visual {
+  position: absolute;
+  z-index: 4;
+  right: 0;
+  bottom: 1.5%;
+  left: 0;
+  height: 42%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  pointer-events: none;
+}
+.closing__visual-glow {
+  position: absolute;
+  right: 18%;
+  bottom: 2%;
+  left: 18%;
+  height: 18%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(169, 113, 33, .22), rgba(169, 113, 33, 0) 72%);
+  filter: blur(8px);
+}
+.closing__visual img {
+  position: relative;
+  z-index: 1;
+  display: block;
+  width: min(100%, 390px);
+  height: 100%;
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 12px 14px rgba(96, 57, 17, .14));
+}
+@media (max-height: 700px) {
+  .closing__visual {
+    bottom: 3%;
+    height: 35%;
+  }
+}
+
 .closing__inner {
   position: relative;
   z-index: 5;
@@ -1371,7 +1605,16 @@ a { color: inherit; }
   font-family: var(--script);
   font-size: 26px;
   color: var(--deep);
-  margin: 8px 0 16px;
+  margin: 8px 0 12px;
+}
+.closing-message {
+  max-width: 270px;
+  font-family: var(--serif);
+  font-size: 13.5px;
+  font-style: italic;
+  line-height: 1.4;
+  letter-spacing: .02em;
+  color: var(--soft);
 }
 .footer {
   margin-top: 18px;
@@ -1585,6 +1828,13 @@ a { color: inherit; }
   text-transform: uppercase;
   color: rgba(247, 234, 208, .85);
   text-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+.venue-note--dinner {
+  margin-top: 14px;
+  color: #ffe9b8;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .16em;
 }
 .venue-btn:focus-visible { outline: 2px solid #ffe9b8; outline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) {
