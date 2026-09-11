@@ -14,8 +14,8 @@ window.WEDDING = {
 
   hashtag: "BalaWedsBhavana",
 
-  // Clean URL - GitHub Pages (no xxx) - will also work for Netlify if you change it
-  siteUrl: "https://BalaManikantaB.github.io/wedding-invitation/",
+  // Live site URL (Netlify) - used for absolute og:url / og:image
+  siteUrl: "https://bala-weds-bhavana.netlify.app/",
 
   music: "assets/music.mp3",
 

@@ -5,7 +5,7 @@
 Your website is **100% static**:
 
 - Only `index.html` + `styles.css` + `fonts.css` + `app.js` + `config.js`
-- `assets/` folder with images, video, music (total ~5.2 MB)
+- `assets/` folder with images (WebP), video, music (total ~12 MB; images alone ~2 MB)
 - **No backend, no database, no npm, no build step, no server**
 - All fonts self-hosted (no Google Fonts API call)
 - Works on any static host - GitHub Pages, Netlify, Cloudflare, Vercel
@@ -82,26 +82,14 @@ Without custom domain: **₹0 total**.
 
 ---
 
-## WhatsApp Preview Fix (Important)
+## WhatsApp Preview Fix (Done)
 
-WhatsApp crawler doesn't run JavaScript. Currently `og:image` is relative (`assets/og.jpg`). The JS in `app.js` fixes it for browsers, but WhatsApp needs it absolute in HTML.
+WhatsApp crawler doesn't run JavaScript, so `og:image` must be absolute in the HTML. This is already done for the live Netlify site:
 
-After you get your live URL, do this:
+- `config.js` → `siteUrl: "https://bala-weds-bhavana.netlify.app/"`
+- `index.html` → `og:image` = `https://bala-weds-bhavana.netlify.app/assets/og-social.jpg` (a 1200×630 JPEG, ~100 KB — sized for link previews) and `og:url` = `https://bala-weds-bhavana.netlify.app/`
 
-1. Open `config.js` and set:
-   ```js
-   siteUrl: "https://your-site.netlify.app/"
-   ```
-2. Open `index.html` line 11 and change:
-   ```html
-   <meta property="og:image" content="https://your-site.netlify.app/assets/og.jpg" />
-   <meta property="og:url" content="https://your-site.netlify.app/" />
-   ```
-3. Re-deploy (push or re-drag).
-
-Then when you share on WhatsApp, it will show the beautiful `og.jpg` cream invitation card preview.
-
-I can automate this for you once you pick a host - just tell me the final URL.
+If you move hosts, update those same 3 spots and re-deploy.
 
 ---
 
