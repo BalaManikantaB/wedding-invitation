@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.webp" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=32" />
+  <link rel="stylesheet" href="styles.css?v=34" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -94,19 +94,27 @@
         <img class="layer invite-toranam" data-plx="-64" src="assets/invite-toranam.webp" alt="" loading="lazy" decoding="async" />
       </section>
 
-      <!-- 3. Events over illustrated couple — cards rendered from config.js -->
-      <section class="events-wrap parallax-scene">
-        <p class="kicker gold reveal">On the following events</p>
-        <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
-        <h2 class="reveal">The celebrations</h2>
+      <!-- 3. The Celebrations — a framed portrait film, then the two ceremonies -->
+      <section class="events parallax-scene" id="celebrations">
+        <header class="events__head">
+          <p class="kicker reveal">On the following events</p>
+          <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
+          <h2 class="events__title reveal">The Celebrations</h2>
+          <p class="events__sub reveal">Two ceremonies · one joyful journey</p>
+        </header>
 
-        <div id="dayEvents" class="plx-drift" data-plx="-20"></div>
+        <figure class="events-media" data-plx="-12">
+          <div class="events-media__frame reveal-fade">
+            <img class="events-media__poster" src="assets/art-event-poster.webp" alt="" aria-hidden="true" fetchpriority="high" decoding="async" />
+            <video class="events-media__video" muted loop playsinline autoplay preload="auto" poster="assets/art-event-poster.webp">
+              <source src="assets/art-event-v2.mp4" type="video/mp4" />
+            </video>
+            <div class="events-media__loader" aria-hidden="true"><span></span></div>
+          </div>
+          <figcaption class="events-media__caption reveal-fade">A glimpse of our celebrations</figcaption>
+        </figure>
 
-        <div class="bleed-wrap">
-          <video class="bleed layer" data-plx="20" muted loop playsinline preload="none">
-            <source src="assets/art-event.mp4" type="video/mp4" />
-          </video>
-        </div>
+        <div id="dayEvents" class="events__cards" data-plx="-20"></div>
       </section>
 
       <!-- 4. Sacred portrait — a cinematic, multi-plane temple parallax -->
@@ -198,6 +206,6 @@
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
   <script src="config.js"></script>
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>
