@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <title>Bala weds Bhavana</title>
-  <meta name="description" content="You're invited! Bala weds Bhavana — 12 &amp; 14 October 2026, Kakinada &amp; Kaikaluru. Tap to open your wedding invitation." />
+  <meta name="description" content="You're invited! Bala weds Bhavana — 14 October 2026, Kakinada. Tap to open your wedding invitation." />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="💌 You're Invited — Bala weds Bhavana" />
   <meta property="og:description" content="We joyfully invite you to our wedding ceremony. Kindly join us on our special day. October 14th 2026. Please save the date!" />
@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.webp" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=31" />
+  <link rel="stylesheet" href="styles.css?v=32" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -42,7 +42,8 @@
         <span class="gate__rule reveal" aria-hidden="true">&#10022;</span>
         <p class="kicker reveal">The wedding of</p>
         <h1 class="reveal"><span data-bind="groom.first">Bala</span> <i>&amp;</i> <span data-bind="bride.first">Bhavana</span></h1>
-        <p class="gate__date reveal">12 &amp; 14 October 2026</p>
+        <p class="gate__date reveal">14 October 2026</p>
+        <p class="gate__place reveal">Kakinada</p>
       </div>
       <div class="gate__cta">
         <button class="gate__btn reveal" id="openInvite" type="button" onclick="openInvitation()">
@@ -94,19 +95,28 @@
         <img class="layer invite-toranam" data-plx="-64" src="assets/invite-toranam.webp" alt="" loading="lazy" decoding="async" />
       </section>
 
-      <!-- 3. Events over illustrated couple — cards rendered from config.js -->
+      <!-- 3. The celebrations — gilded arch film, then the ceremony programme -->
       <section class="events-wrap parallax-scene">
-        <p class="kicker gold reveal">On the following events</p>
-        <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
-        <h2 class="reveal">The celebrations</h2>
+        <header class="events-head">
+          <p class="kicker gold reveal">The festivities</p>
+          <span class="ornament gold-orn reveal" aria-hidden="true">✦</span>
+          <h2 class="reveal">The celebrations</h2>
+        </header>
 
-        <div id="dayEvents" class="plx-drift" data-plx="-20"></div>
+        <figure class="arch reveal-fade">
+          <div class="arch__mat">
+            <video class="arch__video" muted loop playsinline preload="none" poster="assets/art-event-poster.webp">
+              <source src="assets/art-event.mp4?v=2" type="video/mp4" />
+            </video>
+          </div>
+          <figcaption class="arch__cap reveal">
+            <span class="arch__cap-rule" aria-hidden="true"></span>
+            A glimpse of the celebration
+            <span class="arch__cap-rule arch__cap-rule--end" aria-hidden="true"></span>
+          </figcaption>
+        </figure>
 
-        <div class="bleed-wrap">
-          <video class="bleed layer" data-plx="20" muted loop playsinline preload="none">
-            <source src="assets/art-event.mp4" type="video/mp4" />
-          </video>
-        </div>
+        <div id="dayEvents" class="programme plx-drift" data-plx="-14"></div>
       </section>
 
       <!-- 4. Sacred portrait — a cinematic, multi-plane temple parallax -->
@@ -198,6 +208,6 @@
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
   <script src="config.js"></script>
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
 </body>
 </html>

@@ -63,23 +63,38 @@
   if (audio) audio.volume = 0.55;
   if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
 
-  /* Video: preload="none" means 0 bytes are downloaded until the section is
-     actually in view — it never competes with the images on first load. */
-  var bleedVideo = document.querySelector("video.bleed");
-  if (bleedVideo && "IntersectionObserver" in window && !REDUCED) {
-    var vObserver = new IntersectionObserver(function (entries) {
-      for (var e = 0; e < entries.length; e++) {
-        if (entries[e].isIntersecting) {
-          var p = bleedVideo.play();
-          if (p && p.catch) p.catch(function () {});
-        } else {
-          try { bleedVideo.pause(); } catch (err) {}
+  /* Video — the poster paints the arch instantly; bytes only begin to flow
+     one screen before the film arrives (faststart file → progressive play),
+     so it never competes with the first paint yet is ready on arrival. */
+  var film = document.querySelector(".arch__video, video.bleed");
+  if (film) {
+    var primeFilm = function () {
+      try { film.preload = "auto"; film.load(); } catch (e) {}
+    };
+    if (!REDUCED && "IntersectionObserver" in window) {
+      var warm = new IntersectionObserver(function (entries) {
+        for (var w = 0; w < entries.length; w++) {
+          if (entries[w].isIntersecting) { primeFilm(); warm.disconnect(); }
         }
-      }
-    }, { threshold: 0.25 });
-    vObserver.observe(bleedVideo);
-  } else if (bleedVideo) {
-    try { bleedVideo.pause(); } catch (e2) {}
+      }, { rootMargin: "130% 0px 130% 0px" });
+      warm.observe(film);
+
+      var vObserver = new IntersectionObserver(function (entries) {
+        for (var e = 0; e < entries.length; e++) {
+          if (entries[e].isIntersecting) {
+            var p = film.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            try { film.pause(); } catch (err) {}
+          }
+        }
+      }, { threshold: 0.25 });
+      vObserver.observe(film);
+    } else if (!REDUCED) {
+      primeFilm();
+    } else {
+      try { film.pause(); } catch (e2) {}
+    }
   }
 
   function tryPlay() {
@@ -302,16 +317,66 @@
     return row;
   }
 
+  var MONTH_NAMES = ["January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"];
+  var WEEK_DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+  function parseEventDate(s) {
+    if (!s) return null;
+    var d = new Date(s);
+    if (!isNaN(d.getTime())) return d;
+    var m = String(s).match(/(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})/);
+    if (m) {
+      var name = m[2].charAt(0).toUpperCase() + m[2].slice(1).toLowerCase();
+      var mi = MONTH_NAMES.indexOf(name);
+      if (mi > -1) return new Date(+m[3], mi, +m[1]);
+    }
+    return null;
+  }
+
   function buildEventCard(ev, isNight) {
     var card = document.createElement("article");
-    card.className = "card reveal-fade";
 
+    if (!isNight) {
+      /* Day programme card — a date rail (day · month) beside the details */
+      card.className = "card card--day reveal-fade";
+      var d = parseEventDate(ev.date);
+      var rail = document.createElement("div");
+      rail.className = "card__rail";
+      var dayNum = document.createElement("b");
+      dayNum.textContent = d ? String(d.getDate()) : "✦";
+      rail.appendChild(dayNum);
+      var mon = document.createElement("span");
+      mon.textContent = d ? MONTH_NAMES[d.getMonth()].slice(0, 3) : "";
+      rail.appendChild(mon);
+      card.appendChild(rail);
+
+      var body = document.createElement("div");
+      body.className = "card__body";
+
+      var whenDay = document.createElement("p");
+      whenDay.className = "card__when";
+      whenDay.textContent = d
+        ? (WEEK_DAYS[d.getDay()] + (ev.time ? " · " + ev.time : ""))
+        : ((ev.date || "") + (ev.time ? " · " + ev.time : "")).trim();
+      body.appendChild(whenDay);
+
+      appendCardDetails(body, ev, false);
+      card.appendChild(body);
+      return card;
+    }
+
+    card.className = "card reveal-fade";
     var when = document.createElement("p");
     when.className = "card__when";
     when.textContent =
       ((ev.date || "").replace(/\s*\d{4}\s*$/, "") + (ev.time ? " · " + ev.time : "")).trim();
     card.appendChild(when);
+    appendCardDetails(card, ev, true);
+    return card;
+  }
 
+  function appendCardDetails(card, ev, isNight) {
     var h = document.createElement("h3");
     h.textContent = ev.title || "";
     card.appendChild(h);
