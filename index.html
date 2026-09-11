@@ -15,7 +15,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.webp" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=34" />
+  <link rel="stylesheet" href="styles.css?v=35" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -54,20 +54,33 @@
 
     <main class="stage">
       <!-- 1. Hero 9:16 — temple back, trees front, text floats -->
-      <section class="shot parallax-scene">
+      <section class="shot shot--hero parallax-scene" aria-labelledby="hero-title">
         <img class="layer layer-back layer-temple" data-plx="68" src="assets/temple.webp" alt="Temple gopuram" fetchpriority="high" />
         <div class="shot__veil shot__veil--hero"></div>
+        <div class="hero-topline layer" data-plx="-24" aria-hidden="true">
+          <span class="hero-topline__line"></span>
+          <span>Wedding invitation</span>
+          <span class="hero-topline__line"></span>
+        </div>
         <div class="shot__copy shot__copy--top layer" data-plx="-46">
-          <p class="hero-name reveal" data-bind="groom.first">Bala</p>
-          <p class="hero-weds reveal">weds</p>
-          <p class="hero-name reveal" data-bind="bride.first">Bhavana</p>
-          <p class="kicker light reveal">are getting married</p>
+          <div class="hero-lockup">
+            <p class="hero-eyebrow reveal">With the blessings of our elders</p>
+            <span class="hero-rule reveal" aria-hidden="true"><i></i><b>✦</b><i></i></span>
+            <h1 class="hero-title" id="hero-title">
+              <span class="hero-name reveal" data-bind="groom.first">Bala</span>
+              <span class="hero-weds reveal">weds</span>
+              <span class="hero-name reveal" data-bind="bride.first">Bhavana</span>
+            </h1>
+            <p class="hero-kicker reveal">are getting married</p>
+          </div>
         </div>
         <img class="layer layer-fore" data-plx="-92" src="assets/trees.webp" alt="" loading="lazy" decoding="async" />
         <div class="shot__copy shot__copy--bottom layer" data-plx="-34">
-          <p class="hero-date reveal">14 · 10 · 2026</p>
-          <p class="hero-sub reveal">An auspicious beginning</p>
-          <span class="cue reveal"></span>
+          <div class="hero-date-lockup">
+            <p class="hero-date reveal">14 · 10 · 2026</p>
+            <p class="hero-sub reveal">An auspicious beginning</p>
+          </div>
+          <p class="hero-scroll reveal"><span class="cue" aria-hidden="true"></span>Scroll to explore</p>
         </div>
       </section>
 
