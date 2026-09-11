@@ -208,7 +208,6 @@ a { color: inherit; }
   object-position: center;
   transform-origin: center center;
   z-index: 0;
-  will-change: transform;
 }
 
 .layer-temple {
@@ -222,7 +221,6 @@ a { color: inherit; }
   top: 45%;
   transform-origin: center center;
   z-index: 4;
-  will-change: transform;
 }
 .layer-couple {
   left: 0;
@@ -233,7 +231,6 @@ a { color: inherit; }
   object-fit: contain;
   object-position: bottom center;
   z-index: 3;
-  will-change: transform;
 }
 
 /* Sacred portrait — a long, pinned temple scene with distinct planes that
@@ -274,7 +271,7 @@ a { color: inherit; }
   object-fit: cover;
   object-position: center 34%;
   z-index: 1;
-  filter: saturate(.88) contrast(1.04) brightness(.93);
+  /* color grade is baked into assets/temple.webp */
 }
 .depth-sunwash {
   position: absolute;
@@ -326,7 +323,6 @@ a { color: inherit; }
   text-align: center;
   text-shadow: 0 3px 18px rgba(36, 30, 14, .58), 0 1px 0 rgba(66, 38, 13, .48);
   isolation: isolate;
-  will-change: transform;
 }
 .depth-copy::before {
   content: "";
@@ -420,8 +416,7 @@ a { color: inherit; }
   height: 77%;
   object-fit: contain;
   object-position: center bottom;
-  filter: saturate(.9) contrast(1.04) drop-shadow(0 20px 21px rgba(11, 38, 36, .35)) drop-shadow(0 2px 1px rgba(255, 247, 211, .45));
-  will-change: transform;
+  filter: drop-shadow(0 12px 16px rgba(11, 38, 36, .3));
 }
 .depth-foliage {
   position: absolute;
@@ -434,8 +429,7 @@ a { color: inherit; }
   pointer-events: none;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, transparent 18%, #000 35%, #000 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, transparent 18%, #000 35%, #000 100%);
-  filter: saturate(.92) contrast(1.04) drop-shadow(0 10px 20px rgba(16, 49, 39, .24));
-  will-change: transform;
+  /* color grade is baked into assets/trees.webp */
 }
 .depth-fireflies {
   position: absolute;
@@ -594,7 +588,6 @@ a { color: inherit; }
   height: 100%;
   object-fit: fill;
   pointer-events: none;
-  will-change: transform;
 }
 .invite-toranam { z-index: 6; margin-top: -40px; }
 .invite-copy {
@@ -609,7 +602,6 @@ a { color: inherit; }
   align-items: center;
   justify-content: center;
   text-align: center;
-  will-change: transform;
 }
 .invite-copy .bless {
   font-size: 13px;
@@ -683,7 +675,6 @@ a { color: inherit; }
   justify-content: center;
   pointer-events: none;
   isolation: isolate;
-  will-change: transform;
 }
 .divine-wedding-float::before {
   content: "";
@@ -711,7 +702,7 @@ a { color: inherit; }
   display: block;
   width: 50%;
   height: 70%;
-  filter: drop-shadow(0 10px 13px rgba(91, 48, 16, .2)) drop-shadow(0 2px 2px rgba(255, 247, 222, .76));
+  filter: drop-shadow(0 8px 12px rgba(91, 48, 16, .22));
 }
 @media (max-height: 700px) {
   .divine-wedding-reserve {
@@ -799,7 +790,6 @@ a { color: inherit; }
   margin-top: -28px;
   position: relative;
   z-index: 1;
-  will-change: transform;
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 100%);
   mask-image: linear-gradient(to bottom, transparent 0%, #000 10%, #000 100%);
 }
@@ -809,7 +799,6 @@ a { color: inherit; }
 .night-cards,
 .story-copy,
 .closing__inner {
-  will-change: transform;
 }
 .plx-drift { position: relative; }
 
@@ -1002,8 +991,7 @@ a { color: inherit; }
   position: fixed;
   inset: 0;
   z-index: 120;
-  background: rgba(28, 12, 16, .78);
-  backdrop-filter: blur(6px);
+  background: rgba(28, 12, 16, .92);
 }
 .scatter[hidden] { display: none !important; }
 .scatter__close {

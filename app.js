@@ -63,12 +63,23 @@
   if (audio) audio.volume = 0.55;
   if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
 
-  if (REDUCED) {
-    var vids = document.querySelectorAll("video");
-    for (var vi = 0; vi < vids.length; vi++) {
-      vids[vi].removeAttribute("autoplay");
-      try { vids[vi].pause(); } catch (e) {}
-    }
+  /* Video: preload="none" means 0 bytes are downloaded until the section is
+     actually in view — it never competes with the images on first load. */
+  var bleedVideo = document.querySelector("video.bleed");
+  if (bleedVideo && "IntersectionObserver" in window && !REDUCED) {
+    var vObserver = new IntersectionObserver(function (entries) {
+      for (var e = 0; e < entries.length; e++) {
+        if (entries[e].isIntersecting) {
+          var p = bleedVideo.play();
+          if (p && p.catch) p.catch(function () {});
+        } else {
+          try { bleedVideo.pause(); } catch (err) {}
+        }
+      }
+    }, { threshold: 0.25 });
+    vObserver.observe(bleedVideo);
+  } else if (bleedVideo) {
+    try { bleedVideo.pause(); } catch (e2) {}
   }
 
   function tryPlay() {
@@ -499,10 +510,10 @@
   var scatterClose = document.getElementById("scatterClose");
   var scatterHint = document.getElementById("scatterHint");
   var photoFiles = [
-    "assets/photos/story.jpg",
-    "assets/photos/story-2.jpg",
-    "assets/photos/story-3.jpg",
-    "assets/photos/story-4.jpg"
+    "assets/photos/story.webp",
+    "assets/photos/story-2.webp",
+    "assets/photos/story-3.webp",
+    "assets/photos/story-4.webp"
   ];
   var shown = 0;
   var quadOrder = [];

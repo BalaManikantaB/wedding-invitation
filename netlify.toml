@@ -13,6 +13,12 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
+  for = "/*.{css,js}"
+  [headers.values]
+    # Served with ?v= query versioning in index.html, so long cache is safe
+    Cache-Control = "public, max-age=2592000, must-revalidate"
+
+[[headers]]
   for = "/*"
   [headers.values]
     X-Frame-Options = "DENY"

@@ -41,7 +41,20 @@ Optional: `assets/music.mp3` for background music (play button already on page).
 
 **₹0 total.** GitHub Pages + Netlify free forever, 100GB+ bandwidth, SSL included. This site is only 6.5MB, no backend.
 
-For WhatsApp preview, `og:image` and `og:url` are already absolute (`https://BalaManikantaB.github.io/wedding-invitation/assets/og.jpg`). If you use Netlify clean URL, update those 2 lines in `index.html` and `siteUrl` in `config.js`.
+For WhatsApp preview, `og:image` and `og:url` are already absolute and point at the live Netlify site (`https://bala-weds-bhavana.netlify.app/assets/og-social.jpg`). If you change the domain, update those 2 lines in `index.html` and `siteUrl` in `config.js`.
+
+## Image performance (keep it fast)
+
+All images are **pre-optimised WebP** sized to the phone frame (2× the ~430px width). Netlify serves them byte-for-byte and does **not** re-encode images, so if you ever swap in new photos, re-compress them the same way before committing:
+
+```bash
+# photo (JPEG/PNG in) -> WebP, width-capped, with the site's colour grade baked in
+convert in.jpg -resize 1536x -modulate 93,88,100 -level 2%,98% -quality 80 out.webp
+```
+
+- Hero/temple ≤ 1536px wide, other full-bleed ≤ ~800–1000px, small icons ≤ 240px.
+- **Rename files** when you re-encode (e.g. `temple.webp`); `/assets/*` is cached `immutable` for 1 year, so an in-place same-name swap would keep serving the old file to returning visitors.
+- Don't add `filter: saturate/contrast/brightness` back onto the parallax layers — bake the grade into the image instead (live filters on big moving textures are the main cause of scroll lag).
 
 ## Files for Hosting
 
