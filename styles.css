@@ -53,15 +53,6 @@ a { color: inherit; }
     max-width: 390px;
     box-shadow: 0 0 0 10px #1a100c, 0 24px 80px rgba(0,0,0,.45);
   }
-  .music { left: calc(50% - 195px + 14px); }
-  .scatter,
-  .petals {
-    left: 50%;
-    right: auto;
-    width: 390px;
-    max-width: 390px;
-    transform: translateX(-50%);
-  }
 }
 
 .stage { background: var(--cream); width: 100%; }
@@ -78,6 +69,21 @@ a { color: inherit; }
   height: 100dvh;
   z-index: 100;
   overflow: hidden;
+  /* Opaque base whose bands are the measured row-averages of the visible crop
+     of gate.webp. The gate art is the overlay's only opaque layer, so until it
+     decodes this base is what visitors see — without it the hero temple
+     flashes through. Matching the art's luminance profile keeps the swap-in
+     imperceptible on slow connections. */
+  background-color: #a17f51;
+  background-image: linear-gradient(180deg,
+    #d2b3a5 0%,
+    #c7a48a 8%,
+    #ae8352 25%,
+    #927c3e 42%,
+    #7f623b 58%,
+    #a27f45 75%,
+    #a1744d 92%,
+    #9e7150 100%);
   transition: opacity .7s var(--ease), visibility .7s;
 }
 @media (max-width: 480px) {
@@ -91,6 +97,12 @@ a { color: inherit; }
   visibility: hidden;
   pointer-events: none;
 }
+/* The gate keeps running infinite glow/spin animations while hidden after
+   entry — stop them so an invisible screen costs zero frames. */
+.gate.is-open .gate__seal::before,
+.gate.is-open .gate__seal::after,
+.gate.is-open .gate__btn,
+.gate.is-open .gate__btn::after { animation: none; }
 .gate__bg {
   position: absolute;
   left: -6%;
@@ -1224,6 +1236,7 @@ a { color: inherit; }
   animation: loaderSpin .9s linear infinite;
 }
 .events-media__frame.is-playing .events-media__loader { opacity: 0; }
+.events-media__frame.is-playing .events-media__loader span { animation: none; }
 @keyframes loaderSpin { to { transform: rotate(360deg); } }
 .events-media__caption {
   margin-top: 15px;
@@ -1373,14 +1386,171 @@ a { color: inherit; }
   animation: btnShine 3.6s ease-in-out infinite;
   pointer-events: none;
 }
+/* Transform-driven sweep: animating `left` re-laid-out the button every frame.
+   45%-wide pseudo-element travelling 210% of the parent = 467% of itself. */
 @keyframes btnShine {
-  0%, 55% { left: -70%; }
-  100% { left: 140%; }
+  0%, 55% { transform: translateX(0) skewX(-20deg); }
+  100% { transform: translateX(467%) skewX(-20deg); }
 }
 .night-cards {
   position: relative;
   z-index: 5;
-  padding: 18vh 16px 28px;
+  padding: 14vh 18px 30px;
+}
+
+/* ---- The heart of the invitation ----
+   Night screen hierarchy: one centred, gold-framed lacquer plaque for the
+   main ceremony; every other night event recedes into a quiet glass strip.
+   Same information as before, clearer weight. */
+.night-cards .card--main {
+  background:
+    radial-gradient(120% 58% at 50% 0%, rgba(196, 160, 86, .16), transparent 62%),
+    linear-gradient(180deg, #40101a, #2a0a12 55%, #20060d);
+  border: 1px solid rgba(240, 212, 138, .5);
+  border-radius: 20px;
+  padding: 30px 22px 24px;
+  margin: 0 auto 12px;
+  text-align: center;
+  color: #f7ead0;
+  box-shadow:
+    0 26px 60px rgba(0, 0, 0, .52),
+    inset 0 0 0 1px rgba(240, 212, 138, .14),
+    inset 0 0 52px rgba(196, 160, 86, .1);
+}
+/* Inner certificate rail, in place of the day cards' gold top hairline */
+.night-cards .card--main::before {
+  top: 7px;
+  left: 7px;
+  right: 7px;
+  bottom: 7px;
+  width: auto;
+  height: auto;
+  transform: none;
+  background: none;
+  border: 1px solid rgba(240, 212, 138, .26);
+}
+.main__badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .34em;
+  text-transform: uppercase;
+  color: #e9c87e;
+}
+.main__badge::before,
+.main__badge::after {
+  content: "";
+  height: 1px;
+  width: 34px;
+  background: linear-gradient(90deg, transparent, rgba(233, 200, 126, .8));
+}
+.main__badge::after { transform: scaleX(-1); }
+.main__title {
+  font-family: var(--display);
+  font-size: 33px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin: 12px 0 3px;
+  background: linear-gradient(180deg, #ffefc4, #e6c078 68%, #c99b4e);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #e6c078;
+}
+.main__sub {
+  font-size: 16px;
+  color: rgba(247, 234, 208, .85);
+  margin-bottom: 0;
+}
+.main__rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  margin: 12px auto 13px;
+  color: #d4a94f;
+  font-size: 11px;
+}
+.main__rule::before,
+.main__rule::after {
+  content: "";
+  height: 1px;
+  width: 52px;
+  background: linear-gradient(90deg, transparent, rgba(212, 169, 79, .75));
+}
+.main__rule::after { transform: scaleX(-1); }
+.main__when {
+  font-family: var(--display);
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: #f3d9a4;
+}
+.main__place {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: rgba(247, 234, 208, .88);
+}
+.main__place svg {
+  width: 13px;
+  height: 13px;
+  fill: #d4a94f;
+  flex: none;
+}
+.night-cards .card--main .card__note {
+  margin: 13px 0 0;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 13.5px;
+  color: rgba(247, 234, 208, .72);
+}
+/* Secondary night events — a single quiet line under glass */
+.night-cards .card--quiet {
+  background: rgba(24, 9, 14, .46);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(240, 212, 138, .26);
+  border-radius: 14px;
+  padding: 12px 16px 13px;
+  margin: 0 auto 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .28);
+}
+.night-cards .card--quiet::before { display: none; }
+.quiet__when {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: .26em;
+  text-transform: uppercase;
+  color: rgba(233, 200, 126, .9);
+}
+.quiet__line {
+  margin-top: 4px;
+  font-size: 12px;
+  color: rgba(247, 234, 208, .85);
+}
+.quiet__line b {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: #fbf3df;
+}
+.quiet__note {
+  margin-top: 5px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: rgba(247, 234, 208, .6);
 }
 
 .story-copy {
@@ -1448,92 +1618,6 @@ a { color: inherit; }
   background: #efe4d0;
   pointer-events: none;
   flex-shrink: 0;
-}
-.story-tap {
-  margin-top: 16px;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 14px;
-  color: #f3d9a4;
-  letter-spacing: .04em;
-}
-#storyOpen { cursor: pointer; }
-
-.scatter {
-  position: fixed;
-  inset: 0;
-  z-index: 120;
-  background: rgba(28, 12, 16, .92);
-}
-.scatter[hidden] { display: none !important; }
-.scatter__close {
-  position: absolute;
-  top: 14px;
-  right: 16px;
-  z-index: 2;
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #fff8e8;
-  color: var(--maroon);
-  font-size: 28px;
-  line-height: 1;
-}
-.scatter__stage {
-  position: absolute;
-  inset: 56px 10px 48px;
-}
-.scatter__hint {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 16px;
-  z-index: 2;
-  text-align: center;
-  font-family: var(--serif);
-  font-style: italic;
-  font-size: 14px;
-  color: #f3d9a4;
-  pointer-events: none;
-}
-.scatter__card {
-  position: absolute;
-  width: 42%;
-  aspect-ratio: 3 / 4;
-  background: #fffdf6;
-  padding: 7px 7px 26px;
-  box-shadow: 0 18px 40px rgba(0,0,0,.35);
-  border-radius: 3px;
-  transform: rotate(var(--rot, 0deg));
-  animation: polaroidIn .55s var(--ease) both;
-}
-@keyframes polaroidIn {
-  from {
-    opacity: 0;
-    transform: translateY(22px) scale(.78) rotate(var(--rot, 0deg));
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1) rotate(var(--rot, 0deg));
-  }
-}
-.scatter__card img,
-.scatter__ph {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-  background: #efe4d0;
-}
-.scatter__ph {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--serif);
-  color: var(--soft);
-  font-size: 13px;
-  text-align: center;
-  padding: 8px;
 }
 
 .closing__visual {
@@ -1704,7 +1788,7 @@ a { color: inherit; }
   }
 }
 
-/* Shared venue button — one big golden button for Reception & Vivaha.
+/* Shared venue button — one big golden button for the night events.
    Champagne-gold card that glows against the night temple backdrop. */
 #venueLink { text-align: center; padding: 4px 0 8px; }
 .venue-btn {
@@ -1874,4 +1958,98 @@ a { color: inherit; }
     animation: none;
     border-top-color: rgba(122, 31, 43, .14);
   }
+}
+
+/* Desktop phone-frame: pin the fixed overlays to the vertical column.
+   These overrides MUST live after the base rules above — the bases set
+   `inset: 0` / `left: 14px`, and at equal specificity the later rule wins;
+   kept earlier in the file they were silently reverted, snapping the
+   petals, lightbox and music button to the viewport's left edge. */
+@media (min-width: 481px) {
+  .music { left: calc(50% - 195px + 14px); }
+  .petals {
+    left: 50%;
+    right: auto;
+    width: 390px;
+    max-width: 390px;
+    transform: translateX(-50%);
+  }
+}
+
+/* ---- Invite screen — classical refinement ----
+   Same composition, quieter luxury: a double gold-hairline certificate
+   frame, a soft altar-glow lifting the copy off the mandala, richer name
+   typography with gold hairlines, and a gold-foil ampersand.
+   No new content — only finish. */
+.shot--invite::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 92% 58% at 50% 40%, rgba(255, 253, 248, .78), rgba(255, 253, 248, 0) 62%),
+    radial-gradient(ellipse 130% 96% at 50% 50%, transparent 58%, rgba(146, 101, 44, .12) 100%);
+}
+.invite-frame {
+  position: absolute;
+  z-index: 3;
+  inset: 16px;
+  pointer-events: none;
+  border: 1px solid rgba(176, 127, 47, .4);
+}
+.invite-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(176, 127, 47, .22);
+}
+.invite-toranam { filter: drop-shadow(0 6px 10px rgba(91, 48, 16, .16)); }
+.invite-copy .bless {
+  font-size: 13.5px;
+  letter-spacing: .05em;
+  color: #7a5233;
+}
+.invite-copy .ornament--narrow {
+  width: 46%;
+  margin: 12px auto;
+  color: #b8860b;
+}
+.invite-copy .invite-word { font-size: 62px; }
+.invite-copy .pair--line {
+  font-size: 24px;
+  letter-spacing: .24em;
+  color: var(--deep);
+  margin-top: 10px;
+}
+/* Gold hairline beneath each name — the classical invitation cadence */
+.invite-copy .pair--line::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 1px;
+  margin: 7px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(176, 127, 47, .8), transparent);
+}
+.invite-copy > i {
+  font-size: 30px;
+  margin: 7px 0;
+  background: linear-gradient(180deg, #d9ab52, #a9761f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #b8860b;
+}
+.invite-copy .family {
+  font-size: 12.5px;
+  letter-spacing: .04em;
+  color: #7a5233;
+  margin-top: 6px;
+}
+@media (max-height: 700px) {
+  .invite-copy .invite-word { font-size: 50px; }
+  .invite-copy .pair--line { font-size: 20px; letter-spacing: .2em; }
+  .invite-copy .pair--line::after { margin-top: 5px; }
+  .invite-copy > i { font-size: 26px; margin: 5px 0; }
+  .invite-copy .ornament--narrow { margin: 8px auto; }
 }

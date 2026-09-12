@@ -60,45 +60,75 @@
   var audio = document.getElementById("bgm");
   var musicBtn = document.getElementById("musicBtn");
   var playing = false;
-  if (audio) audio.volume = 0.55;
+  if (audio) audio.volume = 0.5;
   if (audio && CFG.music && audio.getAttribute("src") !== CFG.music) audio.src = CFG.music;
 
-  /* Celebration film — preload="auto" + a same-frame poster layer means the
-     frame is alive instantly, then the video fades in over the poster the
-     moment it can play.  It only pauses when it leaves the viewport. */
+  /* Celebration film — the frame shows its poster instantly; the 4 MB clip is
+     only fetched once the section comes near the viewport (preload="metadata"
+     in HTML), and play/pause is owned entirely by intersection so nothing
+     decodes or animates behind the gate or off-screen. */
   var film = document.querySelector(".events-media__video");
   var filmFrame = film ? film.closest(".events-media__frame") : null;
 
   function filmReady() {
     if (filmFrame) filmFrame.classList.add("is-playing");
   }
+  function filmPlay() {
+    if (!film || REDUCED) return;
+    var p = film.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  function filmPause() {
+    if (!film) return;
+    try { film.pause(); } catch (err) {}
+  }
   if (film) {
     if (film.readyState >= 3) filmReady();
     film.addEventListener("canplay", filmReady);
     film.addEventListener("playing", filmReady);
-    var fp = film.play();
-    if (fp && fp.catch) fp.catch(function () {});
-    if ("IntersectionObserver" in window && !REDUCED) {
+    if ("IntersectionObserver" in window) {
+      /* Warm the clip a screen before it arrives, then stop observing.
+         Reduced-motion visitors keep the poster — never fetch the clip. */
+      if (!REDUCED) {
+        var warmObserver = new IntersectionObserver(function (entries) {
+          for (var w = 0; w < entries.length; w++) {
+            if (!entries[w].isIntersecting) continue;
+            if (film.preload !== "auto") {
+              film.preload = "auto";
+              try { film.load(); } catch (err) {}
+            }
+            warmObserver.disconnect();
+          }
+        }, { rootMargin: "100% 0px" });
+        warmObserver.observe(film);
+      }
       var vObserver = new IntersectionObserver(function (entries) {
         for (var e = 0; e < entries.length; e++) {
-          if (entries[e].isIntersecting) {
-            var p = film.play();
-            if (p && p.catch) p.catch(function () {});
-          } else {
-            try { film.pause(); } catch (err) {}
-          }
+          if (entries[e].isIntersecting) filmPlay();
+          else filmPause();
         }
       }, { threshold: 0.3 });
       vObserver.observe(film);
+    } else if (!REDUCED) {
+      film.preload = "auto";
+      try { film.load(); } catch (err) {}
+      filmPlay();
     }
   }
 
   function tryPlay() {
     if (!audio) return;
-    audio.play().then(function () {
+    var pr = audio.play();
+    /* Very old engines return undefined from play() — never assume a Promise. */
+    if (pr && pr.then) {
+      pr.then(function () {
+        playing = true;
+        if (musicBtn) musicBtn.classList.remove("is-off");
+      }).catch(function () {});
+    } else {
       playing = true;
       if (musicBtn) musicBtn.classList.remove("is-off");
-    }).catch(function () {});
+    }
   }
 
   if (musicBtn) {
@@ -268,7 +298,8 @@
     });
   }
   tick();
-  setInterval(tick, 1000);
+  /* Background tabs throttle timers anyway; skip work entirely when hidden. */
+  setInterval(function () { if (!document.hidden) tick(); }, 1000);
 
   /* config.js → DOM, so README's "personalise" actually works */
   function esc(s) {
@@ -380,6 +411,85 @@
     return card;
   }
 
+  /* Night screen — the heart of the invitation. The highlighted ceremony is
+     set as a centred gold-framed plaque; the other night events recede into
+     quiet glass strips so the main event carries the weight. */
+  function buildMainCard(ev) {
+    var card = document.createElement("article");
+    card.className = "card card--main reveal-fade";
+
+    var badge = document.createElement("p");
+    badge.className = "main__badge";
+    badge.textContent = "The Main Event";
+    card.appendChild(badge);
+
+    var h = document.createElement("h3");
+    h.className = "card__title main__title";
+    h.textContent = ev.title || "";
+    card.appendChild(h);
+
+    if (ev.subtitle) {
+      var sub = document.createElement("p");
+      sub.className = "card__sub main__sub";
+      sub.textContent = ev.subtitle;
+      card.appendChild(sub);
+    }
+
+    var rule = document.createElement("span");
+    rule.className = "main__rule";
+    rule.setAttribute("aria-hidden", "true");
+    rule.textContent = "\u2726";
+    card.appendChild(rule);
+
+    var when = document.createElement("p");
+    when.className = "main__when";
+    when.textContent = ((ev.date || "") + (ev.time ? "  \u00b7  " + ev.time : "")).trim();
+    card.appendChild(when);
+
+    if (ev.place) {
+      var place = document.createElement("p");
+      place.className = "main__place";
+      place.innerHTML = PIN_SVG;
+      place.appendChild(document.createTextNode(ev.place));
+      card.appendChild(place);
+    }
+
+    if (ev.note) {
+      var note = document.createElement("p");
+      note.className = "card__note main__note";
+      note.textContent = ev.note;
+      card.appendChild(note);
+    }
+    return card;
+  }
+
+  function buildQuietCard(ev) {
+    var card = document.createElement("article");
+    card.className = "card card--quiet reveal-fade";
+
+    var when = document.createElement("p");
+    when.className = "quiet__when";
+    when.textContent = ev.kicker || "";
+    card.appendChild(when);
+
+    var line = document.createElement("p");
+    line.className = "quiet__line";
+    var b = document.createElement("b");
+    b.textContent = ev.title || "";
+    line.appendChild(b);
+    var rest = [ev.time, ev.place].filter(Boolean).join("  \u00b7  ");
+    if (rest) line.appendChild(document.createTextNode("  \u00b7  " + rest));
+    card.appendChild(line);
+
+    if (ev.note) {
+      var note = document.createElement("p");
+      note.className = "quiet__note";
+      note.textContent = ev.note;
+      card.appendChild(note);
+    }
+    return card;
+  }
+
   function renderEvents() {
     var day = document.getElementById("dayEvents");
     var night = document.getElementById("nightEvents");
@@ -388,7 +498,10 @@
       var ev = CFG.events[ei];
       var isNight = /evening|night/i.test(ev.kicker || "");
       var host = (isNight ? night : day) || day || night;
-      if (host) host.appendChild(buildEventCard(ev, isNight));
+      if (!host) continue;
+      if (isNight && ev.highlight) host.appendChild(buildMainCard(ev));
+      else if (isNight) host.appendChild(buildQuietCard(ev));
+      else host.appendChild(buildEventCard(ev, false));
     }
   }
   renderEvents();
@@ -436,7 +549,13 @@
 
     var note = document.createElement("p");
     note.className = "venue-note reveal-fade";
-    note.textContent = "Reception & Vivaha \u00b7 tap for directions";
+    var nightTitles = [];
+    for (var ni = 0; ni < CFG.events.length; ni++) {
+      if (/evening|night/i.test(CFG.events[ni].kicker || "") && CFG.events[ni].title) {
+        nightTitles.push(CFG.events[ni].title);
+      }
+    }
+    note.textContent = (nightTitles.join(" & ") || "Venue") + " \u00b7 tap for directions";
     host.appendChild(note);
   }
   renderVenueLink();
@@ -491,6 +610,10 @@
 
   function tickPlx() {
     running = false;
+    /* Recompute targets once per frame here, not once per scroll/touch/resize
+       event — those can fire several times per frame and each targets() pass
+       reads layout for every parallax node. */
+    targets();
     var moving = false;
     for (var n = 0; n < plxNodes.length; n++) {
       var el = plxNodes[n];
@@ -509,7 +632,6 @@
   }
 
   function onScroll() {
-    targets();
     if (!running) {
       running = true;
       requestAnimationFrame(tickPlx);
@@ -524,121 +646,7 @@
     /* Re-aim after late assets (video, fonts) settle layout */
     setTimeout(onScroll, 600);
     setTimeout(onScroll, 2000);
-    targets();
     tickPlx();
   }
 
-  /* Our Story — one polaroid per tap, never overlapping */
-  var scatter = document.getElementById("scatter");
-  var stage = document.getElementById("scatterStage");
-  var storyOpen = document.getElementById("storyOpen");
-  var scatterClose = document.getElementById("scatterClose");
-  var scatterHint = document.getElementById("scatterHint");
-  var photoFiles = [
-    "assets/photos/story.webp",
-    "assets/photos/story-2.webp",
-    "assets/photos/story-3.webp",
-    "assets/photos/story-4.webp"
-  ];
-  var shown = 0;
-  var quadOrder = [];
-
-  function rand(min, max) {
-    return min + Math.random() * (max - min);
-  }
-
-  function shuffle(arr) {
-    var a = arr.slice();
-    for (var i = a.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var tmp = a[i];
-      a[i] = a[j];
-      a[j] = tmp;
-    }
-    return a;
-  }
-
-  function resetScatter() {
-    shown = 0;
-    if (stage) stage.innerHTML = "";
-    quadOrder = shuffle([0, 1, 2, 3]);
-    if (scatterHint) scatterHint.textContent = "Tap for another photo";
-  }
-
-  function addOnePhoto() {
-    if (!scatter || !stage) return;
-    if (shown >= photoFiles.length) {
-      if (scatterHint) scatterHint.textContent = "That’s all — tap × to close";
-      return;
-    }
-    var quadrants = [
-      { top: rand(2, 8), left: rand(2, 8), rot: rand(-11, -4) },
-      { top: rand(2, 8), left: rand(52, 56), rot: rand(4, 12) },
-      { top: rand(50, 56), left: rand(2, 8), rot: rand(5, 12) },
-      { top: rand(50, 56), left: rand(52, 56), rot: rand(-12, -4) }
-    ];
-    var slot = quadrants[quadOrder[shown]];
-    var src = photoFiles[shown];
-    var card = document.createElement("div");
-    card.className = "scatter__card";
-    card.style.top = slot.top + "%";
-    card.style.left = slot.left + "%";
-    card.style.setProperty("--rot", slot.rot.toFixed(1) + "deg");
-    var img = document.createElement("img");
-    img.alt = "Photo " + (shown + 1);
-    img.onerror = function () {
-      img.remove();
-      var ph = document.createElement("div");
-      ph.className = "scatter__ph";
-      ph.textContent = "Photo " + (shown);
-      card.appendChild(ph);
-    };
-    img.src = src;
-    card.appendChild(img);
-    stage.appendChild(card);
-    shown += 1;
-    if (scatterHint) {
-      scatterHint.textContent = shown >= photoFiles.length
-        ? "That’s all — tap × to close"
-        : "Tap for another photo";
-    }
-  }
-
-  function openScatter() {
-    if (!scatter) return;
-    if (scatter.hidden) {
-      resetScatter();
-      scatter.hidden = false;
-    }
-    addOnePhoto();
-  }
-
-  function closeScatter() {
-    if (scatter) scatter.hidden = true;
-    resetScatter();
-  }
-
-  if (storyOpen) {
-    storyOpen.addEventListener("click", function (e) {
-      e.preventDefault();
-      openScatter();
-    });
-    storyOpen.addEventListener("keydown", function (e) {
-      if (e.key === "Enter" || e.key === " " || e.key === "Spacebar") {
-        e.preventDefault();
-        openScatter();
-      }
-    });
-  }
-  if (scatterClose) scatterClose.addEventListener("click", function (e) {
-    e.stopPropagation();
-    closeScatter();
-  });
-  if (scatter) {
-    scatter.addEventListener("click", function (e) {
-      if (e.target === scatterClose) return;
-      if (e.target.closest && e.target.closest(".scatter__card")) return;
-      addOnePhoto();
-    });
-  }
 })();

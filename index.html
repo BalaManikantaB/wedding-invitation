@@ -14,8 +14,18 @@
   <meta name="theme-color" content="#7a1f2b" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <link rel="icon" href="assets/ganesha.webp" />
+  <!-- Gate art must be the first image the browser fetches: it is the only
+       opaque layer of the entry screen, so anything ahead of it in the queue
+       leaks through as a flash of the hero behind. -->
+  <link rel="preload" as="image" href="assets/gate.webp" fetchpriority="high" />
+  <!-- Critical gate typefaces: without these the entry screen paints with
+       fallbacks and then swaps (layout jump). Same-origin, subsetted, small. -->
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cinzel-latin-600-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/great-vibes-latin-400-normal.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-latin-400-italic.woff2" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/outfit-latin-600-normal.woff2" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=40" />
+  <link rel="stylesheet" href="styles.css?v=46" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -31,7 +41,7 @@
 
   <div class="device">
     <section class="gate" id="gate">
-      <img class="gate__bg" data-gate-plx="-46" src="assets/gate.webp" alt="" />
+      <img class="gate__bg" data-gate-plx="-46" src="assets/gate.webp" alt="" fetchpriority="high" decoding="sync" />
       <div class="gate__veil"></div>
       <div class="gate__frame" aria-hidden="true"></div>
       <div class="gate__card">
@@ -45,7 +55,7 @@
         <p class="gate__date reveal">14 October 2026</p>
       </div>
       <div class="gate__cta">
-        <button class="gate__btn reveal" id="openInvite" type="button" onclick="openInvitation()">
+        <button class="gate__btn reveal" id="openInvite" type="button">
           Open invitation
         </button>
         <p class="gate__hint reveal">Tap to enter</p>
@@ -55,7 +65,7 @@
     <main class="stage">
       <!-- 1. Hero 9:16 — temple back, trees front, text floats -->
       <section class="shot shot--hero parallax-scene" aria-labelledby="hero-title">
-        <img class="layer layer-back layer-temple" data-plx="68" src="assets/temple.webp" alt="Temple gopuram" fetchpriority="high" />
+        <img class="layer layer-back layer-temple" data-plx="68" src="assets/temple.webp" alt="Temple gopuram" fetchpriority="low" decoding="async" />
         <div class="shot__veil shot__veil--hero"></div>
         <div class="hero-topline layer" data-plx="-24" aria-hidden="true">
           <span class="hero-topline__line"></span>
@@ -87,6 +97,7 @@
       <!-- 2. Invite — toranam, cream mandala, and a divine wedding tableau. -->
       <section class="shot shot--invite parallax-scene">
         <img class="layer layer-back layer-invite" data-plx="36" src="assets/invite-cream.webp" alt="" loading="lazy" decoding="async" />
+        <div class="invite-frame" aria-hidden="true"></div>
         <div class="invite-copy layer" data-plx="-20">
           <p class="bless reveal">With the divine blessings of God<br>and our beloved parents,</p>
           <span class="ornament ornament--narrow reveal" aria-hidden="true">✦</span>
@@ -118,8 +129,8 @@
 
         <figure class="events-media" data-plx="-12">
           <div class="events-media__frame reveal-fade">
-            <img class="events-media__poster" src="assets/art-event-poster.webp" alt="" aria-hidden="true" fetchpriority="high" decoding="async" />
-            <video class="events-media__video" muted loop playsinline autoplay preload="auto" poster="assets/art-event-poster.webp">
+            <img class="events-media__poster" src="assets/art-event-poster.webp" alt="" aria-hidden="true" fetchpriority="low" loading="lazy" decoding="async" />
+            <video class="events-media__video" muted loop playsinline preload="metadata" poster="assets/art-event-poster.webp">
               <source src="assets/art-event.mp4" type="video/mp4" />
             </video>
             <div class="events-media__loader" aria-hidden="true"><span></span></div>
@@ -155,7 +166,7 @@
         </div>
       </section>
 
-      <!-- 5. Reception / Vivaha over night temple -->
+      <!-- 5. The heart of the invite — Reception & Muhurtham over the night temple -->
       <section class="shot shot--tall parallax-scene">
         <img class="layer layer-back" data-plx="64" src="assets/night.webp" alt="Temple at night" loading="lazy" decoding="async" />
         <div class="shot__veil shot__veil--night"></div>
@@ -165,11 +176,11 @@
         </div>
       </section>
 
-      <!-- 6. Story (tap for polaroids) -->
+      <!-- 6. Story -->
       <section class="shot parallax-scene" id="ourStory">
         <img class="layer layer-back" data-plx="66" src="assets/story-bg.webp" alt="" loading="lazy" decoding="async" />
         <div class="shot__veil shot__veil--story"></div>
-        <div class="story-copy layer" data-plx="-28" role="button" tabindex="0">
+        <div class="story-copy layer" data-plx="-28">
           <p class="kicker light reveal">Meet the bride &amp; groom</p>
           <h2 class="script cream-text reveal">Our Story</h2>
           <blockquote class="reveal">
@@ -211,18 +222,12 @@
     </main>
   </div>
 
-  <div class="scatter" id="scatter" hidden>
-    <button class="scatter__close" id="scatterClose" type="button" aria-label="Close">×</button>
-    <div class="scatter__stage" id="scatterStage"></div>
-    <p class="scatter__hint" id="scatterHint">Tap for another photo</p>
-  </div>
-
   <button class="music is-off" id="musicBtn" type="button" aria-label="Music">
     <svg class="play" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
     <svg class="eq" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="8" width="3" height="8" rx="1"/><rect x="10.5" y="4" width="3" height="16" rx="1"/><rect x="17" y="10" width="3" height="6" rx="1"/></svg>
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
-  <script src="config.js"></script>
-  <script src="app.js?v=23"></script>
+  <script src="config.js?v=3"></script>
+  <script src="app.js?v=26"></script>
 </body>
 </html>
