@@ -9,18 +9,28 @@
     # been swapped at the same URL), so `immutable` would strand returning
     # visitors on stale files for a year. Fresh for 1h, then served from cache
     # while revalidating in the background — fast repeats, updates propagate.
-    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800"
+    # stale-if-error: on flaky venue connections a failed revalidation still
+    # shows the cached invite instead of a browser error page.
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800, stale-if-error=604800"
+
+[[headers]]
+  for = "/"
+  [headers.values]
+    # The shared URL is the root path, which does NOT match "/*.html" — without
+    # this rule the root falls through to "/*" with no Cache-Control, and
+    # mobile browsers apply heuristic caching (days-stale invites).
+    Cache-Control = "public, max-age=0, must-revalidate, stale-if-error=604800"
 
 [[headers]]
   for = "/*.html"
   [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
+    Cache-Control = "public, max-age=0, must-revalidate, stale-if-error=604800"
 
 [[headers]]
   for = "/*.{css,js}"
   [headers.values]
     # Served with ?v= query versioning in index.html, so long cache is safe
-    Cache-Control = "public, max-age=2592000, must-revalidate"
+    Cache-Control = "public, max-age=2592000, must-revalidate, stale-if-error=604800"
 
 [[headers]]
   for = "/*"
