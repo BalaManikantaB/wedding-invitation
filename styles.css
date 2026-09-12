@@ -35,6 +35,10 @@ a { color: inherit; }
   width: 100%;
   max-width: 430px;
   margin: 0 auto;
+  /* Fallback chain: engines without dvh support (Chrome <108, Safari <15.4 —
+     still common on older Indian Android fleets) drop an unsupported value
+     outright, so the later line must never be the only one present. */
+  min-height: 100vh;
   min-height: 100dvh;
   background: #fbf6ec;
   position: relative;
@@ -46,12 +50,37 @@ a { color: inherit; }
   .device { max-width: 100%; }
 }
 
-@media (min-width: 481px) {
+/* "Desktop" here means *a mouse*, not *a wide window*. Width alone was the
+   old test and it lies for phones: with "Desktop site" forced on (Samsung
+   Internet / Chrome remember that toggle per site permanently), page zoom set
+   below 100%, or a browser that ignores <meta name="viewport"> and falls back
+   to a 980px canvas (Opera Mini extreme, several in-app browsers), a 360px
+   phone reports a ~1000px viewport. The frame then shrank the whole invite to
+   a 390px strip on a black backdrop and guests read a perfectly healthy card
+   as broken. Capability queries are the honest signal: a phone lying about its
+   width still reports `pointer: coarse` / `hover: none`. */
+@media (min-width: 481px) and (hover: hover) and (pointer: fine) {
   html, body { background: #24140f; }
   .device {
     width: 390px;
     max-width: 390px;
     box-shadow: 0 0 0 10px #1a100c, 0 24px 80px rgba(0,0,0,.45);
+  }
+}
+
+/* Wide viewport + touch = a phone pretending to be a desktop, or a tablet.
+   Keep it centred and readable, but never letterboxed in the fake phone case,
+   and pin the fixed overlays to the column instead of the viewport edge.
+   Browsers too old to parse (pointer:) skip both blocks and get the plain
+   centred base layout — degraded, never broken. */
+@media (min-width: 481px) and (pointer: coarse) {
+  .music { left: calc(50% - 201px); }
+  .petals {
+    left: 50%;
+    right: auto;
+    width: 430px;
+    max-width: 430px;
+    transform: translateX(-50%);
   }
 }
 
@@ -66,6 +95,10 @@ a { color: inherit; }
   transform: translateX(-50%);
   width: 100%;
   max-width: 430px;
+  /* Without a vh fallback the fixed cover collapses to zero height on any
+     engine missing dvh, and the guest sees the hero art with no names, no
+     date and no way in. */
+  height: 100vh;
   height: 100dvh;
   z-index: 100;
   overflow: hidden;
@@ -89,7 +122,10 @@ a { color: inherit; }
 @media (max-width: 480px) {
   .gate { max-width: none; left: 0; transform: none; width: 100%; }
 }
-@media (min-width: 481px) {
+/* Same rule as .device above: the phone frame is for mouse-driven screens, so
+   a phone in "Desktop site" mode keeps a full-bleed cover instead of a 390px
+   panel floating on black. */
+@media (min-width: 481px) and (hover: hover) and (pointer: fine) {
   .gate { width: 390px; max-width: 390px; }
 }
 .gate.is-open {
@@ -381,6 +417,7 @@ a { color: inherit; }
 .shot--tall,
 .shot.closing {
   aspect-ratio: auto;
+  min-height: 100vh;
   min-height: 100dvh;
 }
 
@@ -1662,6 +1699,7 @@ a { color: inherit; }
 .closing__inner {
   position: relative;
   z-index: 5;
+  min-height: 100vh;
   min-height: 100dvh;
   padding: 36px 18px 100px;
   display: flex;
@@ -1964,8 +2002,12 @@ a { color: inherit; }
    These overrides MUST live after the base rules above — the bases set
    `inset: 0` / `left: 14px`, and at equal specificity the later rule wins;
    kept earlier in the file they were silently reverted, snapping the
-   petals, lightbox and music button to the viewport's left edge. */
-@media (min-width: 481px) {
+   petals, lightbox and music button to the viewport's left edge.
+   `390px` here pairs with the 390px `.device` in the mouse-only frame block
+   near the top of this file — both must stay conditional on the same pointer
+   test, or a phone in "Desktop site" mode gets overlays pinned to a column it
+   no longer has. */
+@media (min-width: 481px) and (hover: hover) and (pointer: fine) {
   .music { left: calc(50% - 195px + 14px); }
   .petals {
     left: 50%;

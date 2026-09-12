@@ -25,7 +25,10 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-latin-400-italic.woff2" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/outfit-latin-600-normal.woff2" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=46" />
+  <!-- styles.css is served with a 30-day Cache-Control, so the ?v= token is the
+       only thing that replaces a guest's cached copy. Bump it on every CSS
+       change or the fix never reaches the phones that already visited. -->
+  <link rel="stylesheet" href="styles.css?v=47" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
