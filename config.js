@@ -29,7 +29,7 @@ window.WEDDING = {
       title: "Pelli Koduku",
       subtitle: "Groom’s Ceremony",
       date: "12 October 2026",
-      time: "10:00 AM",
+      time: "9:01 AM",
       place: "Kakinada",
       note: "Bala’s traditional ceremony with family, in Kakinada."
     },
@@ -38,7 +38,7 @@ window.WEDDING = {
       title: "Pelli Kuthuru",
       subtitle: "Bride’s Ceremony",
       date: "12 October 2026",
-      time: "10:00 AM",
+      time: "9:01 AM",
       place: "Kaikaluru",
       note: "Bhavana’s traditional ceremony with family, in Kaikaluru."
     },
@@ -57,7 +57,7 @@ window.WEDDING = {
       title: "Muhurtham",
       subtitle: "The Sacred Wedding",
       date: "14 October 2026",
-      time: "11:00 PM",
+      time: "11:20 PM",
       place: "Sreerastu Convention, Kakinada",
       note: "The sacred union, as two families become one.",
       map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
