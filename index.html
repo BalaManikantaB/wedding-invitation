@@ -25,7 +25,10 @@
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/cormorant-garamond-latin-400-italic.woff2" />
   <link rel="preload" as="font" type="font/woff2" crossorigin href="assets/fonts/outfit-latin-600-normal.woff2" />
   <link rel="stylesheet" href="fonts.css?v=1" />
-  <link rel="stylesheet" href="styles.css?v=46" />
+  <!-- styles.css is served with a 30-day Cache-Control, so the ?v= token is the
+       only thing that replaces a guest's cached copy. Bump it on every CSS
+       change or the fix never reaches the phones that already visited. -->
+  <link rel="stylesheet" href="styles.css?v=48" />
   <script>
     function openInvitation() {
       var gate = document.getElementById("gate");
@@ -227,7 +230,11 @@
     <svg class="eq" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><rect x="4" y="8" width="3" height="8" rx="1"/><rect x="10.5" y="4" width="3" height="16" rx="1"/><rect x="17" y="10" width="3" height="6" rx="1"/></svg>
   </button>
   <audio id="bgm" loop preload="metadata" src="assets/music.mp3"></audio>
-  <script src="config.js?v=3"></script>
+  <!-- config.js carries the ceremony TIMES, and /*.{css,js} is served with a
+       30-day Cache-Control, so the ?v= token is the only thing that replaces a
+       returning guest's copy. Bump it whenever config.js changes or people keep
+       seeing the old muhurtham time for a month. -->
+  <script src="config.js?v=4"></script>
   <script src="app.js?v=26"></script>
 </body>
 </html>
