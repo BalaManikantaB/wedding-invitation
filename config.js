@@ -9,7 +9,7 @@ window.WEDDING = {
   },
   bride: {
     first: "Bhavana",
-    parents: "Mr. Eshwara Prasad & Mrs. Naga Lakshmi",
+    parents: "Mr. Eswara Prasad & Mrs. Naga Lakshmi",
   },
 
   hashtag: "BalaWedsBhavana",
@@ -49,18 +49,19 @@ window.WEDDING = {
       date: "14 October 2026",
       time: "7:00 PM",
       place: "Sreerastu Convention, Kakinada",
-      note: "Join us at Sreerastu Convention, Rama Rao Peta, Kakinada, for dinner, music, and warm wishes.",
+      note: "Dinner, music, and warm wishes.",
       map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
     },
     {
       kicker: "14 October  ·  Night",
-      title: "Vivaha",
+      title: "Muhurtham",
       subtitle: "The Sacred Wedding",
       date: "14 October 2026",
       time: "11:00 PM",
       place: "Sreerastu Convention, Kakinada",
-      note: "The auspicious muhurtham, as two families become one.",
-      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9"
+      note: "The sacred union, as two families become one.",
+      map: "https://maps.app.goo.gl/4Kd52yMrVjZ5RzPW9",
+      highlight: true
     }
   ]
 };

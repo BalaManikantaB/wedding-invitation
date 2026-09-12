@@ -5,7 +5,11 @@
 [[headers]]
   for = "/assets/*"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    # Assets are replaced in place (music.mp3, gate.webp, og-social.jpg have all
+    # been swapped at the same URL), so `immutable` would strand returning
+    # visitors on stale files for a year. Fresh for 1h, then served from cache
+    # while revalidating in the background — fast repeats, updates propagate.
+    Cache-Control = "public, max-age=3600, stale-while-revalidate=604800"
 
 [[headers]]
   for = "/*.html"
