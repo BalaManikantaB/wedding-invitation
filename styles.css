@@ -1975,3 +1975,81 @@ a { color: inherit; }
     transform: translateX(-50%);
   }
 }
+
+/* ---- Invite screen — classical refinement ----
+   Same composition, quieter luxury: a double gold-hairline certificate
+   frame, a soft altar-glow lifting the copy off the mandala, richer name
+   typography with gold hairlines, and a gold-foil ampersand.
+   No new content — only finish. */
+.shot--invite::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 92% 58% at 50% 40%, rgba(255, 253, 248, .78), rgba(255, 253, 248, 0) 62%),
+    radial-gradient(ellipse 130% 96% at 50% 50%, transparent 58%, rgba(146, 101, 44, .12) 100%);
+}
+.invite-frame {
+  position: absolute;
+  z-index: 3;
+  inset: 16px;
+  pointer-events: none;
+  border: 1px solid rgba(176, 127, 47, .4);
+}
+.invite-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border: 1px solid rgba(176, 127, 47, .22);
+}
+.invite-toranam { filter: drop-shadow(0 6px 10px rgba(91, 48, 16, .16)); }
+.invite-copy .bless {
+  font-size: 13.5px;
+  letter-spacing: .05em;
+  color: #7a5233;
+}
+.invite-copy .ornament--narrow {
+  width: 46%;
+  margin: 12px auto;
+  color: #b8860b;
+}
+.invite-copy .invite-word { font-size: 62px; }
+.invite-copy .pair--line {
+  font-size: 24px;
+  letter-spacing: .24em;
+  color: var(--deep);
+  margin-top: 10px;
+}
+/* Gold hairline beneath each name — the classical invitation cadence */
+.invite-copy .pair--line::after {
+  content: "";
+  display: block;
+  width: 46px;
+  height: 1px;
+  margin: 7px auto 0;
+  background: linear-gradient(90deg, transparent, rgba(176, 127, 47, .8), transparent);
+}
+.invite-copy > i {
+  font-size: 30px;
+  margin: 7px 0;
+  background: linear-gradient(180deg, #d9ab52, #a9761f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #b8860b;
+}
+.invite-copy .family {
+  font-size: 12.5px;
+  letter-spacing: .04em;
+  color: #7a5233;
+  margin-top: 6px;
+}
+@media (max-height: 700px) {
+  .invite-copy .invite-word { font-size: 50px; }
+  .invite-copy .pair--line { font-size: 20px; letter-spacing: .2em; }
+  .invite-copy .pair--line::after { margin-top: 5px; }
+  .invite-copy > i { font-size: 26px; margin: 5px 0; }
+  .invite-copy .ornament--narrow { margin: 8px auto; }
+}
