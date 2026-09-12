@@ -10,6 +10,13 @@
   --script: "Great Vibes", "Segoe Script", cursive;
   --sans: "Outfit", system-ui, sans-serif;
   --ease: cubic-bezier(.22, 1, .36, 1);
+  /* Width of the invite column, shared by .device, .gate and the fixed
+     overlays so they can never drift apart. The phone size is the default and
+     the mouse-only block further down overrides it to fill a desktop window's
+     HEIGHT. Declaring a plain value here matters: an undefined var() resolves
+     to unset at computed-value time, which would silently widen the column to
+     100% on phones if the base rule were ever dropped. */
+  --frame-w: 430px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -50,36 +57,45 @@ a { color: inherit; }
   .device { max-width: 100%; }
 }
 
-/* "Desktop" here means *a mouse*, not *a wide window*. Width alone was the
-   old test and it lies for phones: with "Desktop site" forced on (Samsung
-   Internet / Chrome remember that toggle per site permanently), page zoom set
-   below 100%, or a browser that ignores <meta name="viewport"> and falls back
-   to a 980px canvas (Opera Mini extreme, several in-app browsers), a 360px
-   phone reports a ~1000px viewport. The frame then shrank the whole invite to
-   a 390px strip on a black backdrop and guests read a perfectly healthy card
-   as broken. Capability queries are the honest signal: a phone lying about its
-   width still reports `pointer: coarse` / `hover: none`. */
+/* Desktop renders the SAME full-screen invite a phone gets — no pretend
+   phone bezel, no dark letterbox. The width is driven by the viewport HEIGHT,
+   not a fixed 390px: every screen is `.shot { aspect-ratio: 9/16 }`, so
+   56.25vh (= 9/16 of the window height) makes each panel land at exactly one
+   window-tall, preserving the one-screen-one-beat scroll rhythm a phone has.
+   Capped at 768px because that is the native width of gate/night/paper/story
+   art — past it the painterly layers upscale visibly and go soft. The 100vw
+   term carries a scrollbar allowance: 100vw measures the viewport *including*
+   the scrollbar, so on a tall narrow window the column would otherwise sit
+   ~16px past the clipped edge.
+
+   Gated on *pointer capability*, never width alone. Width lies about phones:
+   "Desktop site" (Samsung/Chrome remember it per site permanently), page zoom
+   under 100%, and browsers that ignore <meta name=viewport> and fall back to a
+   980px canvas all make a 360px phone report ~1000px. A phone lying about its
+   width still honestly reports `pointer: coarse` / `hover: none`. */
 @media (min-width: 481px) and (hover: hover) and (pointer: fine) {
-  html, body { background: #24140f; }
+  :root { --frame-w: min(100vw - 16px, 56.25vh, 768px); }
   .device {
-    width: 390px;
-    max-width: 390px;
-    box-shadow: 0 0 0 10px #1a100c, 0 24px 80px rgba(0,0,0,.45);
+    width: var(--frame-w);
+    max-width: var(--frame-w);
   }
 }
 
-/* Wide viewport + touch = a phone pretending to be a desktop, or a tablet.
-   Keep it centred and readable, but never letterboxed in the fake phone case,
-   and pin the fixed overlays to the column instead of the viewport edge.
+/* Wide viewport + touch = a phone in "Desktop site" mode, or a tablet. It gets
+   the phone layout centred at its normal 430px, never a fake-phone letterbox.
+   Deliberately NOT height-scaled like real desktop: with a 980px layout
+   viewport the browser is already shrinking everything by ~2.7x, and the type
+   is mostly fixed px (70 rules) rather than fluid, so widening the column
+   would grow only the art and shrink the text relative to it.
    Browsers too old to parse (pointer:) skip both blocks and get the plain
    centred base layout — degraded, never broken. */
 @media (min-width: 481px) and (pointer: coarse) {
-  .music { left: calc(50% - 201px); }
+  .music { left: calc(50% - var(--frame-w) / 2 + 14px); }
   .petals {
     left: 50%;
     right: auto;
-    width: 430px;
-    max-width: 430px;
+    width: var(--frame-w);
+    max-width: var(--frame-w);
     transform: translateX(-50%);
   }
 }
@@ -122,11 +138,11 @@ a { color: inherit; }
 @media (max-width: 480px) {
   .gate { max-width: none; left: 0; transform: none; width: 100%; }
 }
-/* Same rule as .device above: the phone frame is for mouse-driven screens, so
-   a phone in "Desktop site" mode keeps a full-bleed cover instead of a 390px
+/* Same rule as .device above: the cover follows the desktop column width, and
+   a phone in "Desktop site" mode keeps a full-bleed cover instead of a narrow
    panel floating on black. */
 @media (min-width: 481px) and (hover: hover) and (pointer: fine) {
-  .gate { width: 390px; max-width: 390px; }
+  .gate { width: var(--frame-w); max-width: var(--frame-w); }
 }
 .gate.is-open {
   opacity: 0;
@@ -2003,17 +2019,16 @@ a { color: inherit; }
    `inset: 0` / `left: 14px`, and at equal specificity the later rule wins;
    kept earlier in the file they were silently reverted, snapping the
    petals, lightbox and music button to the viewport's left edge.
-   `390px` here pairs with the 390px `.device` in the mouse-only frame block
-   near the top of this file — both must stay conditional on the same pointer
-   test, or a phone in "Desktop site" mode gets overlays pinned to a column it
-   no longer has. */
+   Widths read `--frame-w`, declared near the top of this file, so the column,
+   the cover and these overlays can never drift out of sync when the desktop
+   size changes. */
 @media (min-width: 481px) and (hover: hover) and (pointer: fine) {
-  .music { left: calc(50% - 195px + 14px); }
+  .music { left: calc(50% - var(--frame-w) / 2 + 14px); }
   .petals {
     left: 50%;
     right: auto;
-    width: 390px;
-    max-width: 390px;
+    width: var(--frame-w);
+    max-width: var(--frame-w);
     transform: translateX(-50%);
   }
 }
